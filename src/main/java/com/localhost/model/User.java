@@ -2,61 +2,31 @@ package com.localhost.model;
 
 import com.localhost.repositories.Users;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class User implements IUser{
+public class User {
 
-    private String userName;
-    private int id;
+    private String login;
     private String address;
     private String phoneNumber;
     private String password;
-    private List<Counter> userCounters;
-    private final Users users;
+    private ArrayList<CounterType> userCounters;
 
-    public User(String userName, Users users, String address, String phoneNumber, String password) {
-        this.userName = userName;
-        this.users = users;
-        this.id = users.getUsersSize();
-        this.address = address;
+    public User(String login, String password, String phoneNumber, String address) {
+        this.login = login;
+        this.address = password;
         this.phoneNumber = phoneNumber;
-        this.password = password;
+        this.password = address;
+        userCounters = new ArrayList<>();
     }
 
-    @Override
-    public void createUser() {
-
+    public String getLogin() {
+        return login;
     }
 
-    @Override
-    public void loginUser() {
-
-    }
-
-    @Override
-    public void logoutUser() {
-
-    }
-
-    @Override
-    public void addCounter(Counter counter) {
-        userCounters.add(counter);
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getAddress() {
@@ -75,11 +45,23 @@ public class User implements IUser{
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Counter> getUserCounters() {
-        return userCounters;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserCounters(List<Counter> userCounters) {
-        this.userCounters = userCounters;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void addCounter(CounterType counterType) {
+        userCounters.add(counterType);
+    }
+
+    public void deleteCounter(CounterType counterType) {
+        userCounters.remove(counterType);
+    }
+
+    public ArrayList<CounterType> getUserCounters() {
+        return userCounters;
     }
 }
