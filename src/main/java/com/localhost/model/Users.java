@@ -2,7 +2,7 @@ package com.localhost.model;
 
 import java.util.ArrayList;
 
-public class Users {
+public class Users implements IUsers{
 
     private static ArrayList<User> users;
 
@@ -10,11 +10,13 @@ public class Users {
         users = new ArrayList<>();
     }
 
-    public static ArrayList<User> getUsers() {
+    @Override
+    public ArrayList<User> getUserList() {
         return users;
     }
 
-    public static boolean addUser(User user) {
+    @Override
+    public boolean addUser(User user) {
         boolean answer = false;
         if (!users.contains(user)) {
             users.add(user);
@@ -23,11 +25,13 @@ public class Users {
         return answer;
     }
 
-    public static void deleteUser(User user) {
+    @Override
+    public void deleteUser(User user) {
         users.remove(user);
     }
 
-    public static User getUser(String login) {
+    @Override
+    public User getUser(String login) {
         return (User) users.stream().filter(user -> user.getLogin().equals(login));
     }
 }

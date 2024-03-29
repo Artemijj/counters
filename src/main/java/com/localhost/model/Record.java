@@ -1,12 +1,12 @@
 package com.localhost.model;
 
-public class Reading {
+public class Record {
     private Integer id;
     private User user;
     private CounterType counterType;
     private CounterValue counterValue;
 
-    public Reading(Integer id, User user, CounterType counterType, CounterValue counterValue) {
+    public Record(Integer id, User user, CounterType counterType, CounterValue counterValue) {
         this.id = id;
         this.user = user;
         this.counterType = counterType;

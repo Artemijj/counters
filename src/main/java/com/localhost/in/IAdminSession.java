@@ -6,6 +6,7 @@ import com.localhost.model.User;
 
 public interface IAdminSession {
     void addUser(String login, String password) throws AdminException;
+    void addAdmin(String login, String password) throws AdminException;
     void removeUser(String login) throws AdminException;
     User[] getAllUsers() throws AdminException;
     User getUserData(String login) throws AdminException;

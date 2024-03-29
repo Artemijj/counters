@@ -1,43 +1,51 @@
 package com.localhost.in;
 
-import com.localhost.model.CounterType;
-import com.localhost.model.CounterValue;
-import com.localhost.model.User;
-import com.localhost.model.Users;
+import com.localhost.model.*;
 
 public class UserSession implements IUserSession{
 
     private User user;
+    private String login = null;
+    private IModel model;
 
-    @Override
-    public boolean createUser(String login, String password, String phoneNumber, String address) {
-        user = new User(login, password, phoneNumber, address);
-        return Users.addUser(user);
+    public UserSession() {
+        model = new Model();
     }
+
+//    @Override
+//    public boolean createUser(String login, String password, String phoneNumber, String address) {
+//        user = new User(login, password, phoneNumber, address);
+//        return Users.addUser(user);
+//    }
 
     @Override
     public boolean logIn(String user, String password) {
-        return false;
+        boolean answer = false;
+        if(model.getUsers().getUser(user).getPassword().equals(password)) {
+            login = user;
+            answer = true;
+        }
+        return answer;
     }
 
     @Override
     public void logout() {
-
+        login = null;
     }
 
     @Override
     public boolean isAdmin() {
-        return getLogin().equals("admin");
+        return model.getUsers().getUser(login).getIsAdmin();
     }
 
     @Override
     public boolean isUser() {
-        return !getLogin().equals("admin");
+        return !model.getUsers().getUser(login).getIsAdmin();
     }
 
     @Override
     public String getLogin() {
-        return user.getLogin();
+        return login;
     }
 
     @Override
@@ -52,6 +60,11 @@ public class UserSession implements IUserSession{
 
     @Override
     public IAdminSession getAdminSession() {
-        return null;
+        return new AdminSession(this);
+    }
+
+    @Override
+    public IModel getModel() {
+        return model;
     }
 }

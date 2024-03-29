@@ -1,7 +1,5 @@
 package com.localhost.model;
 
-import com.localhost.repositories.Users;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,13 +10,15 @@ public class User {
     private String phoneNumber;
     private String password;
     private ArrayList<CounterType> userCounters;
+    private boolean isAdmin;
 
-    public User(String login, String password, String phoneNumber, String address) {
+    public User(String login, String password, String phoneNumber, String address, boolean isAdmin) {
         this.login = login;
         this.address = password;
         this.phoneNumber = phoneNumber;
         this.password = address;
         userCounters = new ArrayList<>();
+        this.isAdmin = isAdmin;
     }
 
     public String getLogin() {
@@ -63,5 +63,9 @@ public class User {
 
     public ArrayList<CounterType> getUserCounters() {
         return userCounters;
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin;
     }
 }

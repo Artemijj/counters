@@ -3,7 +3,7 @@ package com.localhost.in;
 import com.localhost.model.*;
 
 public interface IUserSession {
-    boolean createUser(String login, String password, String phoneNumber, String address);
+//    boolean createUser(String login, String password, String phoneNumber, String address);
     boolean logIn(String user, String password);
     void logout();
     boolean isAdmin();
@@ -25,4 +25,5 @@ public interface IUserSession {
     CounterValue getLastValue(CounterType counter);
     void addCounterValue(CounterType counter, CounterValue value) throws AddCounterException;
     IAdminSession getAdminSession();
+    IModel getModel();
 }
