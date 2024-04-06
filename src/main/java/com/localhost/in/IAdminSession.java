@@ -2,6 +2,7 @@ package com.localhost.in;
 
 import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
+import com.localhost.model.Event;
 import com.localhost.model.User;
 
 public interface IAdminSession {
@@ -11,7 +12,7 @@ public interface IAdminSession {
     User[] getAllUsers() throws AdminException;
     User getUserData(String login) throws AdminException;
 
-    void SetPassword(String login, String password) throws AdminException;
+    void setPassword(String login, String password) throws AdminException;
     void setAddress(String login, String address) throws AdminException;
     void setPhone(String login, String phone) throws AdminException;
 
@@ -22,4 +23,6 @@ public interface IAdminSession {
     void linkCounter(String login, CounterType counter) throws AdminException;
     void unlinkCounter(String login, CounterType counter) throws AdminException;
     CounterValue[] getCounterValues(String login, CounterType counter) throws AdminException;
+    Event[] getUserActivities(String login);
+    boolean isUserExist(String login);
 }

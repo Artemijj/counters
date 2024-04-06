@@ -4,11 +4,13 @@ public class Model implements IModel{
     private IUsers users;
     private ICounters counters;
     private IRecordSet recordSet;
+    private IEventLog eventLog;
 
     public Model() {
         users = new Users();
         counters = new Counters();
         recordSet = new RecordSet();
+        eventLog = new EventLog();
     }
 
 
@@ -25,5 +27,10 @@ public class Model implements IModel{
     @Override
     public IRecordSet getRecordSet() {
         return recordSet;
+    }
+
+    @Override
+    public IEventLog getEventLog() {
+        return eventLog;
     }
 }

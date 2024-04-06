@@ -1,6 +1,7 @@
 package com.localhost.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class RecordSet implements IRecordSet{
@@ -29,6 +30,11 @@ public class RecordSet implements IRecordSet{
     @Override
     public void deleteRecord(Record record) {
         records.remove(record);
+    }
+
+    @Override
+    public int nextId() {
+        return records.stream().map(Record::getId).max(Comparator.naturalOrder()).get() + 1;
     }
 
 //    public ArrayList<Record> getReadingsByLogin(String login) {

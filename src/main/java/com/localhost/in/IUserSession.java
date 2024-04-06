@@ -5,7 +5,7 @@ import com.localhost.model.*;
 public interface IUserSession {
 //    boolean createUser(String login, String password, String phoneNumber, String address);
     boolean logIn(String user, String password);
-    void logout();
+    void logOut();
     boolean isAdmin();
     boolean isUser();
     String getLogin();
@@ -26,4 +26,5 @@ public interface IUserSession {
     void addCounterValue(CounterType counter, CounterValue value) throws AddCounterException;
     IAdminSession getAdminSession();
     IModel getModel();
+    void addEvent(String event);
 }

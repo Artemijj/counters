@@ -28,4 +28,9 @@ public class Counters implements ICounters{
     public void deleteCounter(CounterType counterType) {
         systemCounters.remove(counterType);
     }
+
+    @Override
+    public CounterType getCounter(String counter) {
+        return (CounterType) systemCounters.stream().filter(counterType -> counterType.getCounterTypeName().equals(counter));
+    }
 }

@@ -8,6 +8,7 @@ public class AdminSession implements IAdminSession{
     private IUsers thisUsers = userSession.getModel().getUsers();
     private ICounters thisCounters = userSession.getModel().getCounters();
     private IRecordSet thisRecordSet = userSession.getModel().getRecordSet();
+    private IEventLog thisEventLog = userSession.getModel().getEventLog();
 
     public AdminSession(IUserSession userSession) {
         this.userSession = userSession;
@@ -15,12 +16,16 @@ public class AdminSession implements IAdminSession{
 
     @Override
     public void addUser(String login, String password) throws AdminException {
-        thisUsers.addUser(new User(login, password, null, null, false));
+        if (!isUserExist(login)) {
+            thisUsers.addUser(new User(login, password, null, null, false));
+        }
     }
 
     @Override
     public void addAdmin(String login, String password) throws AdminException {
-        thisUsers.addUser(new User(login, password, null, null, true));
+        if (!isUserExist(login)) {
+            thisUsers.addUser(new User(login, password, null, null, true));
+        }
     }
 
     @Override
@@ -40,18 +45,24 @@ public class AdminSession implements IAdminSession{
     }
 
     @Override
-    public void SetPassword(String login, String password) throws AdminException {
-        thisUsers.getUser(login).setPassword(password);
+    public void setPassword(String login, String password) throws AdminException {
+        if (isUserExist(login)) {
+            thisUsers.getUser(login).setPassword(password);
+        }
     }
 
     @Override
     public void setAddress(String login, String address) throws AdminException {
-        thisUsers.getUser(login).setAddress(address);
+        if (isUserExist(login)) {
+            thisUsers.getUser(login).setAddress(address);
+        }
     }
 
     @Override
     public void setPhone(String login, String phone) throws AdminException {
-        thisUsers.getUser(login).setPhoneNumber(phone);
+        if (isUserExist(login)) {
+            thisUsers.getUser(login).setPhoneNumber(phone);
+        }
     }
 
     @Override
@@ -71,12 +82,16 @@ public class AdminSession implements IAdminSession{
 
     @Override
     public void linkCounter(String login, CounterType counter) throws AdminException {
-        thisUsers.getUser(login).addCounter(counter);
+        if (isUserExist(login)) {
+            thisUsers.getUser(login).addCounter(counter);
+        }
     }
 
     @Override
     public void unlinkCounter(String login, CounterType counter) throws AdminException {
-        thisUsers.getUser(login).deleteCounter(counter);
+        if (isUserExist(login)) {
+            thisUsers.getUser(login).deleteCounter(counter);
+        }
     }
 
     @Override
@@ -87,4 +102,16 @@ public class AdminSession implements IAdminSession{
                 .map(reading -> reading.getCounterValue())
                 .toArray();
     }
+
+    @Override
+    public Event[] getUserActivities(String login) {
+        return (Event[]) thisEventLog.getEventLog().stream()
+                .filter(event -> event.getUser().equals(thisUsers.getUser(login))).toArray();
+    }
+
+    @Override
+    public boolean isUserExist(String login) {
+        return thisUsers.getUserList().contains(thisUsers.getUser(login));
+    }
+
 }

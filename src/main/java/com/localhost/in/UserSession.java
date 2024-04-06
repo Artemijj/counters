@@ -1,11 +1,15 @@
 package com.localhost.in;
 
 import com.localhost.model.*;
+import com.localhost.model.Record;
+
+import java.util.Comparator;
+import java.util.Date;
 
 public class UserSession implements IUserSession{
 
-    private User user;
-    private String login = null;
+//    private User user;
+    private String login = "";
     private IModel model;
 
     public UserSession() {
@@ -29,8 +33,8 @@ public class UserSession implements IUserSession{
     }
 
     @Override
-    public void logout() {
-        login = null;
+    public void logOut() {
+        login = "";
     }
 
     @Override
@@ -50,12 +54,26 @@ public class UserSession implements IUserSession{
 
     @Override
     public CounterValue getLastValue(CounterType counter) {
-        return null;
+        Date maxDate = model.getRecordSet().getRecordSetList()
+                .stream()
+                .filter(record -> record.getUser().equals(model.getUsers().getUser(login)))
+                .filter(record -> record.getCounterType().equals(counter))
+                .map(Record::getCounterValue)
+                .map(CounterValue::getDate)
+                .max(Comparator.naturalOrder())
+                .get();
+
+        return (CounterValue) model.getRecordSet().getRecordSetList()
+                .stream()
+                .filter(record -> record.getUser().equals(model.getUsers().getUser(login)))
+                .filter(record -> record.getCounterType().equals(counter))
+                .filter(record -> record.getCounterValue().getDate().equals(maxDate))
+                .map(Record::getCounterValue);
     }
 
     @Override
     public void addCounterValue(CounterType counter, CounterValue value) throws AddCounterException {
-
+//        ????????????????????????????????????
     }
 
     @Override
@@ -66,5 +84,10 @@ public class UserSession implements IUserSession{
     @Override
     public IModel getModel() {
         return model;
+    }
+
+    @Override
+    public void addEvent(String event) {
+        model.getEventLog().addEvent(new Event(model.getEventLog().nextId(), model.getUsers().getUser(getLogin()), new Date(), event));
     }
 }
