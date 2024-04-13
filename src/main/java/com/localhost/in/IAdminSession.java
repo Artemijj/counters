@@ -24,5 +24,5 @@ public interface IAdminSession {
     void unlinkCounter(String login, CounterType counter) throws AdminException;
     CounterValue[] getCounterValues(String login, CounterType counter) throws AdminException;
     Event[] getUserActivities(String login);
-    boolean isUserExist(String login);
+//    boolean isUserExist(String login);
 }

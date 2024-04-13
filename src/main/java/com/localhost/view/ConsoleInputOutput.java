@@ -7,11 +7,15 @@ import java.io.InputStreamReader;
 public class ConsoleInputOutput implements IInputOutput{
     @Override
     public String get() {
-        String inputString;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+        String inputString = "";
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        try {
+
             inputString = reader.readLine();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            e.printStackTrace();
+            put("Some wrong...");
         }
         return inputString;
     }

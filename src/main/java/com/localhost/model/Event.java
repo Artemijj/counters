@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class Event {
     private int id;
-    private User user;
+    private String login;
     private Date date;
     private String activity;
 
-    public Event(int id, User user, Date date, String activity) {
+    public Event(int id, String login, Date date, String activity) {
         this.id = id;
-        this.user = user;
+        this.login = login;
         this.date = date;
         this.activity = activity;
     }
@@ -19,8 +19,8 @@ public class Event {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public String getLogin() {
+        return login;
     }
 
     public Date getDate() {

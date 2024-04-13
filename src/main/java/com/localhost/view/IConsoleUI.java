@@ -1,16 +1,9 @@
 package com.localhost.view;
 
+import com.localhost.in.IUserSession;
+import com.localhost.view.actions.IAction;
+
 public interface IConsoleUI {
-    void firstScreen();
-    void registrationNameScreen();
-    void registrationAddressScreen();
-    void registrationPhoneScreen();
-    void registrationPasswordScreen();
-    void loginNameScreen();
-    void loginPasswordScreen();
-    void countersSelectScreen();
-    void userHomeScreen();
-    void transmissionOfReadingsScreen();
-    void viewReadingsScreen();
-    void adminViewReadingsScreen();
+    void start(IAction action);
+    IUserSession getSession();
 }

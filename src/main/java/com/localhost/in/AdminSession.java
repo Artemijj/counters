@@ -1,14 +1,14 @@
 package com.localhost.in;
 
 import com.localhost.model.*;
+import com.localhost.model.counters.ICounters;
+import com.localhost.model.events.IEventLog;
+import com.localhost.model.records.IRecordSet;
+import com.localhost.model.users.IUsers;
 
 public class AdminSession implements IAdminSession{
 
     private IUserSession userSession;
-    private IUsers thisUsers = userSession.getModel().getUsers();
-    private ICounters thisCounters = userSession.getModel().getCounters();
-    private IRecordSet thisRecordSet = userSession.getModel().getRecordSet();
-    private IEventLog thisEventLog = userSession.getModel().getEventLog();
 
     public AdminSession(IUserSession userSession) {
         this.userSession = userSession;
@@ -16,102 +16,102 @@ public class AdminSession implements IAdminSession{
 
     @Override
     public void addUser(String login, String password) throws AdminException {
-        if (!isUserExist(login)) {
-            thisUsers.addUser(new User(login, password, null, null, false));
+        if (!userSession.isUserExist(login)) {
+            userSession.getModelUsers().addUser(new User(login, password, null, null, false));
         }
     }
 
     @Override
     public void addAdmin(String login, String password) throws AdminException {
-        if (!isUserExist(login)) {
-            thisUsers.addUser(new User(login, password, null, null, true));
+        if (!userSession.isUserExist(login)) {
+            userSession.getModelUsers().addUser(new User(login, password, null, null, true));
         }
     }
 
     @Override
     public void removeUser(String login) throws AdminException {
-        User user = thisUsers.getUser(login);
-        thisUsers.deleteUser(user);
+        User user = userSession.getModelUsers().getUser(login);
+        userSession.getModelUsers().deleteUser(user);
     }
 
     @Override
     public User[] getAllUsers() throws AdminException {
-        return thisUsers.getUserList().toArray(new User[0]);
+        return userSession.getModelUsers().getUserList().toArray(new User[0]);
     }
 
     @Override
     public User getUserData(String login) throws AdminException {
-        return thisUsers.getUser(login);
+        return userSession.getModelUsers().getUser(login);
     }
 
     @Override
     public void setPassword(String login, String password) throws AdminException {
-        if (isUserExist(login)) {
-            thisUsers.getUser(login).setPassword(password);
+        if (userSession.isUserExist(login)) {
+            userSession.getModelUsers().getUser(login).setPassword(password);
         }
     }
 
     @Override
     public void setAddress(String login, String address) throws AdminException {
-        if (isUserExist(login)) {
-            thisUsers.getUser(login).setAddress(address);
+        if (userSession.isUserExist(login)) {
+            userSession.getModelUsers().getUser(login).setAddress(address);
         }
     }
 
     @Override
     public void setPhone(String login, String phone) throws AdminException {
-        if (isUserExist(login)) {
-            thisUsers.getUser(login).setPhoneNumber(phone);
+        if (userSession.isUserExist(login)) {
+            userSession.getModelUsers().getUser(login).setPhoneNumber(phone);
         }
     }
 
     @Override
     public void createCounter(String counterName) throws AdminException {
-        thisCounters.addCounter(new CounterType(counterName));
+        userSession.getModelCounters().addCounter(new CounterType(counterName));
     }
 
     @Override
     public CounterType[] getAllSystemCounters() {
-        return thisCounters.getCounterList().toArray(new CounterType[0]);
+        return userSession.getModelCounters().getCounterList().toArray(new CounterType[0]);
     }
 
     @Override
     public CounterType[] getUserCounters(String login) throws AdminException {
-        return thisUsers.getUser(login).getUserCounters().toArray(new CounterType[0]);
+        return userSession.getModelUsers().getUser(login).getUserCounters().toArray(new CounterType[0]);
     }
 
     @Override
     public void linkCounter(String login, CounterType counter) throws AdminException {
-        if (isUserExist(login)) {
-            thisUsers.getUser(login).addCounter(counter);
+        if (userSession.isUserExist(login)) {
+            userSession.getModelUsers().getUser(login).addCounter(counter);
         }
     }
 
     @Override
     public void unlinkCounter(String login, CounterType counter) throws AdminException {
-        if (isUserExist(login)) {
-            thisUsers.getUser(login).deleteCounter(counter);
+        if (userSession.isUserExist(login)) {
+            userSession.getModelUsers().getUser(login).deleteCounter(counter);
         }
     }
 
     @Override
     public CounterValue[] getCounterValues(String login, CounterType counter) throws AdminException {
-        return (CounterValue[]) thisRecordSet.getRecordSetList().stream()
-                .filter(reading -> reading.getUser().equals(thisUsers.getUser(login)))
+        return userSession.getModelRecordSet().getRecordSetList().stream()
+                .filter(reading -> reading.getUser().equals(userSession.getModelUsers().getUser(login)))
                 .filter(reading -> reading.getCounterType().equals(counter))
                 .map(reading -> reading.getCounterValue())
-                .toArray();
+                .toArray(CounterValue[]::new);
     }
 
     @Override
     public Event[] getUserActivities(String login) {
-        return (Event[]) thisEventLog.getEventLog().stream()
-                .filter(event -> event.getUser().equals(thisUsers.getUser(login))).toArray();
+        return userSession.getModelEventLog().getEventLog().stream()
+                .filter(event -> event.getLogin().equals(login)).toArray(Event[]::new);
     }
 
-    @Override
-    public boolean isUserExist(String login) {
-        return thisUsers.getUserList().contains(thisUsers.getUser(login));
-    }
+//    @Override
+//    public boolean isUserExist(String login) {
+//        return userSession.getModelUsers().getUserList().contains(userSession.getModelUsers().getUser(login));
+//    }
 
 }

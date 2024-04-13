@@ -14,9 +14,9 @@ public class User {
 
     public User(String login, String password, String phoneNumber, String address, boolean isAdmin) {
         this.login = login;
-        this.address = password;
+        this.password = password;
         this.phoneNumber = phoneNumber;
-        this.password = address;
+        this.address = address;
         userCounters = new ArrayList<>();
         this.isAdmin = isAdmin;
     }
@@ -54,7 +54,9 @@ public class User {
     }
 
     public void addCounter(CounterType counterType) {
-        userCounters.add(counterType);
+        if (!userCounters.contains(counterType)) {
+            userCounters.add(counterType);
+        }
     }
 
     public void deleteCounter(CounterType counterType) {

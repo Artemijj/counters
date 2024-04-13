@@ -2,9 +2,14 @@ package com.localhost.in;
 
 import com.localhost.model.*;
 import com.localhost.model.Record;
+import com.localhost.model.counters.ICounters;
+import com.localhost.model.events.IEventLog;
+import com.localhost.model.records.IRecordSet;
+import com.localhost.model.users.IUsers;
 
 import java.util.Comparator;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 public class UserSession implements IUserSession{
 
@@ -23,10 +28,10 @@ public class UserSession implements IUserSession{
 //    }
 
     @Override
-    public boolean logIn(String user, String password) {
+    public boolean logIn(String name, String password) {
         boolean answer = false;
-        if(model.getUsers().getUser(user).getPassword().equals(password)) {
-            login = user;
+        if(isUserExist(name) && model.getUsers().getUser(name).getPassword().equals(password)) {
+            login = name;
             answer = true;
         }
         return answer;
@@ -54,21 +59,31 @@ public class UserSession implements IUserSession{
 
     @Override
     public CounterValue getLastValue(CounterType counter) {
-        Date maxDate = model.getRecordSet().getRecordSetList()
-                .stream()
-                .filter(record -> record.getUser().equals(model.getUsers().getUser(login)))
-                .filter(record -> record.getCounterType().equals(counter))
-                .map(Record::getCounterValue)
-                .map(CounterValue::getDate)
-                .max(Comparator.naturalOrder())
-                .get();
+        Date maxDate;
 
-        return (CounterValue) model.getRecordSet().getRecordSetList()
+        try {
+            maxDate = model.getRecordSet().getRecordSetList()
+                    .stream()
+                    .filter(record -> record.getUser().equals(model.getUsers().getUser(login)))
+                    .filter(record -> record.getCounterType().equals(counter))
+                    .map(Record::getCounterValue)
+                    .map(CounterValue::getDate)
+                    .max(Comparator.naturalOrder())
+                    .get();
+        } catch (NoSuchElementException e) {
+            return new CounterValue(new Date(0L), 0);
+        }
+
+//        if (maxDate.equals(null)) {
+//            return new CounterValue(new Date(0L), 0);
+//        }
+
+        return model.getRecordSet().getRecordSetList()
                 .stream()
                 .filter(record -> record.getUser().equals(model.getUsers().getUser(login)))
                 .filter(record -> record.getCounterType().equals(counter))
                 .filter(record -> record.getCounterValue().getDate().equals(maxDate))
-                .map(Record::getCounterValue);
+                .map(Record::getCounterValue).findFirst().orElse(null);
     }
 
     @Override
@@ -82,12 +97,33 @@ public class UserSession implements IUserSession{
     }
 
     @Override
-    public IModel getModel() {
-        return model;
+    public IUsers getModelUsers() {
+        return model.getUsers();
     }
 
     @Override
+    public ICounters getModelCounters() {
+        return model.getCounters();
+    }
+
+    @Override
+    public IRecordSet getModelRecordSet() {
+        return model.getRecordSet();
+    }
+
+    @Override
+    public IEventLog getModelEventLog() {
+        return model.getEventLog();
+    }
+
+
+    @Override
     public void addEvent(String event) {
-        model.getEventLog().addEvent(new Event(model.getEventLog().nextId(), model.getUsers().getUser(getLogin()), new Date(), event));
+        model.getEventLog().addEvent(new Event(model.getEventLog().nextId(), getLogin(), new Date(), event));
+    }
+
+    @Override
+    public boolean isUserExist(String login) {
+        return getModelUsers().getUserList().contains(getModelUsers().getUser(login));
     }
 }

@@ -1,5 +1,14 @@
 package com.localhost.model;
 
+import com.localhost.model.counters.Counters;
+import com.localhost.model.counters.ICounters;
+import com.localhost.model.events.EventLog;
+import com.localhost.model.events.IEventLog;
+import com.localhost.model.records.IRecordSet;
+import com.localhost.model.users.IUsers;
+import com.localhost.model.records.RecordSet;
+import com.localhost.model.users.Users;
+
 public class Model implements IModel{
     private IUsers users;
     private ICounters counters;
