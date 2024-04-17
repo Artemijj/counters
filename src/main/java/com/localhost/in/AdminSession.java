@@ -104,14 +104,15 @@ public class AdminSession implements IAdminSession{
     }
 
     @Override
-    public Event[] getUserActivities(String login) {
+    public Event[] getUserActivities(String login) throws AdminException {
         return userSession.getModelEventLog().getEventLog().stream()
                 .filter(event -> event.getLogin().equals(login)).toArray(Event[]::new);
     }
 
-//    @Override
-//    public boolean isUserExist(String login) {
-//        return userSession.getModelUsers().getUserList().contains(userSession.getModelUsers().getUser(login));
-//    }
-
+    @Override
+    public void setFio(String login, String fio) throws AdminException {
+        if (userSession.isUserExist(login)) {
+            userSession.getModelUsers().getUser(login).setFio(fio);
+        }
+    }
 }

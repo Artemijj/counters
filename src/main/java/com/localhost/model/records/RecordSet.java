@@ -36,22 +36,15 @@ public class RecordSet implements IRecordSet{
         }
         return answer;
     }
-
-    @Override
-    public void deleteRecord(Record record) {
-        records.remove(record);
-    }
+//
+//    @Override
+//    public void deleteRecord(Record record) {
+//        records.remove(record);
+//    }
 
     @Override
     public int nextId() {
         return (records.size() == 0) ? 1 : records.stream().map(Record::getId).max(Comparator.naturalOrder()).get() + 1;
     }
 
-//    public ArrayList<Record> getReadingsByLogin(String login) {
-//        return (ArrayList<Record>) records.stream().filter(record -> record.getUser().equals(Users.getUser(login))).collect(Collectors.toList());
-//    }
-//
-//    public ArrayList<Record> getReadingsByCounterType(CounterType counterType) {
-//        return (ArrayList<Record>) records.stream().filter(record -> record.getCounterType().equals(counterType));
-//    }
 }

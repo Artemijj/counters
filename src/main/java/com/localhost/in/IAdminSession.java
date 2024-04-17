@@ -23,6 +23,6 @@ public interface IAdminSession {
     void linkCounter(String login, CounterType counter) throws AdminException;
     void unlinkCounter(String login, CounterType counter) throws AdminException;
     CounterValue[] getCounterValues(String login, CounterType counter) throws AdminException;
-    Event[] getUserActivities(String login);
-//    boolean isUserExist(String login);
+    Event[] getUserActivities(String login) throws AdminException;
+    void setFio(String login, String fio) throws AdminException;
 }

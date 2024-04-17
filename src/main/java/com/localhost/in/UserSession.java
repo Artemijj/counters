@@ -13,19 +13,12 @@ import java.util.NoSuchElementException;
 
 public class UserSession implements IUserSession{
 
-//    private User user;
     private String login = "";
     private IModel model;
 
     public UserSession() {
         model = new Model();
     }
-
-//    @Override
-//    public boolean createUser(String login, String password, String phoneNumber, String address) {
-//        user = new User(login, password, phoneNumber, address);
-//        return Users.addUser(user);
-//    }
 
     @Override
     public boolean logIn(String name, String password) {
@@ -73,11 +66,6 @@ public class UserSession implements IUserSession{
         } catch (NoSuchElementException e) {
             return new CounterValue(new Date(0L), 0);
         }
-
-//        if (maxDate.equals(null)) {
-//            return new CounterValue(new Date(0L), 0);
-//        }
-
         return model.getRecordSet().getRecordSetList()
                 .stream()
                 .filter(record -> record.getUser().equals(model.getUsers().getUser(login)))

@@ -7,6 +7,6 @@ import java.util.ArrayList;
 public interface IRecordSet {
     ArrayList<Record> getRecordSetList();
     boolean addRecord(Record record);
-    void deleteRecord(Record record);
+//    void deleteRecord(Record record);
     int nextId();
 }

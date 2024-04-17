@@ -33,6 +33,10 @@ public class Counters implements ICounters{
 
     @Override
     public CounterType getCounter(String counter) {
-        return (CounterType) systemCounters.stream().filter(counterType -> counterType.getCounterTypeName().equals(counter));
+        return systemCounters.stream()
+                .filter(counterType -> counterType.getCounterTypeName().equals(counter))
+                .map(CounterType.class::cast)
+                .findFirst()
+                .orElse(null);
     }
 }

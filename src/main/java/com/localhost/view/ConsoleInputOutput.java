@@ -13,7 +13,6 @@ public class ConsoleInputOutput implements IInputOutput{
 
             inputString = reader.readLine();
         } catch (IOException e) {
-//            throw new RuntimeException(e);
             e.printStackTrace();
             put("Some wrong...");
         }

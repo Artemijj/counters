@@ -1,5 +1,6 @@
 package com.localhost.view.actions;
 
+import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
 import com.localhost.view.IInputOutput;
 
@@ -15,8 +16,12 @@ public class ViewUserActivitiesAction implements IAction{
                               "Для выхода на предыдущий экран введите - p.");
             login = inputOutput.get();
             if (!login.equals("p")) {
-                Arrays.stream(session.getAdminSession().getUserActivities(login))
-                        .forEach(event -> inputOutput.put(event.getId() + " " + event.getLogin() + " " + event.getDate() + " " + event.getActivity()));
+                try {
+                    Arrays.stream(session.getAdminSession().getUserActivities(login))
+                            .forEach(event -> inputOutput.put(event.getId() + " " + event.getLogin() + " " + event.getDate() + " " + event.getActivity()));
+                } catch (AdminException e) {
+                    throw new RuntimeException(e);
+                }
                 session.addEvent("Просмотр действий пользователя - " + login);
             } else {
                 return new AdminPageAction();

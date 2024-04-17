@@ -11,6 +11,7 @@ public class User {
     private String password;
     private ArrayList<CounterType> userCounters;
     private boolean isAdmin;
+    private String fio;
 
     public User(String login, String password, String phoneNumber, String address, boolean isAdmin) {
         this.login = login;
@@ -19,6 +20,7 @@ public class User {
         this.address = address;
         userCounters = new ArrayList<>();
         this.isAdmin = isAdmin;
+        fio = "";
     }
 
     public String getLogin() {
@@ -69,5 +71,13 @@ public class User {
 
     public boolean getIsAdmin() {
         return isAdmin;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public void setFio(String fio) {
+        this.fio = fio;
     }
 }

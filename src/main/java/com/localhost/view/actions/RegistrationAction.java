@@ -16,12 +16,15 @@ public class RegistrationAction implements IAction{
 //        if(!inputOutput.get().equals(password)) {
 //            System.out.println("Пароли не совпадают");
 //        }
+        inputOutput.put("Введите фамилию имя отчество:");
+        String fio = inputOutput.get();
         inputOutput.put("Введите номер телефона.");
         String phone = inputOutput.get();
         inputOutput.put("Введите адрес.");
         String address = inputOutput.get();
         IAdminSession adminSession = session.getAdminSession();
         try {
+            adminSession.setFio(name, fio);
             adminSession.addUser(name, password);
             adminSession.setPhone(name, phone);
             adminSession.setAddress(name, address);
