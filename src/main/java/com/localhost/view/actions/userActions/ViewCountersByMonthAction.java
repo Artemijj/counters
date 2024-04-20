@@ -1,17 +1,17 @@
-package com.localhost.view.actions;
+package com.localhost.view.actions.userActions;
 
 import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
 import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
-import com.localhost.model.Record;
 import com.localhost.model.Tools;
 import com.localhost.view.IInputOutput;
+import com.localhost.view.actions.IAction;
 
 import java.time.ZoneId;
 import java.util.Arrays;
 
-public class ViewCountersByMonthAction implements IAction{
+public class ViewCountersByMonthAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         CounterType[] types;

@@ -6,8 +6,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-
 @ExtendWith(MockitoExtension.class)
 public class UserTest {
     private User user;
@@ -25,7 +23,7 @@ public class UserTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User("name", "passwd", "+7123456", "addr", false);
+        user = new User("name", "passwd", false);
     }
 
     @Test
@@ -37,6 +35,7 @@ public class UserTest {
 
     @Test
     public void getAddressTest() {
+        user.setAddress("addr");
         String expectedAddress = "addr";
         String actualAddress = user.getAddress();
         Assertions.assertEquals(expectedAddress, actualAddress);
@@ -52,6 +51,7 @@ public class UserTest {
 
     @Test
     public void getPhoneNumberTest() {
+        user.setPhoneNumber("+7123456");
         String expectedPhone = "+7123456";
         String actualPhone = user.getPhoneNumber();
         Assertions.assertEquals(expectedPhone, actualPhone);

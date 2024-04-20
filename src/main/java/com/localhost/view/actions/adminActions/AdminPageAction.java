@@ -1,9 +1,10 @@
-package com.localhost.view.actions;
+package com.localhost.view.actions.adminActions;
 
 import com.localhost.in.IUserSession;
 import com.localhost.view.IInputOutput;
+import com.localhost.view.actions.*;
 
-public class AdminPageAction implements IAction{
+public class AdminPageAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         inputOutput.put("Выберите желаемое действие.\n" +

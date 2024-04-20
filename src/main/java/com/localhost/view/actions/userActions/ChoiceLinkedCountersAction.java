@@ -1,12 +1,11 @@
-package com.localhost.view.actions;
+package com.localhost.view.actions.userActions;
 
 import com.localhost.in.IUserSession;
 import com.localhost.model.*;
 import com.localhost.view.IInputOutput;
+import com.localhost.view.actions.IAction;
 
-import java.util.ArrayList;
-
-public class ChoiceLinkedCountersAction implements IAction{
+public class ChoiceLinkedCountersAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         inputOutput.put("Выберите тип счётчика, для добавления в свой кабинет.");

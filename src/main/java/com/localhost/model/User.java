@@ -1,7 +1,6 @@
 package com.localhost.model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class User {
 
@@ -13,11 +12,11 @@ public class User {
     private boolean isAdmin;
     private String fio;
 
-    public User(String login, String password, String phoneNumber, String address, boolean isAdmin) {
+    public User(String login, String password, boolean isAdmin) {
         this.login = login;
         this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
+        phoneNumber = "";
+        address = "";
         userCounters = new ArrayList<>();
         this.isAdmin = isAdmin;
         fio = "";

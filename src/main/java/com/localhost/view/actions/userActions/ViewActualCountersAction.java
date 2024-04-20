@@ -1,14 +1,16 @@
-package com.localhost.view.actions;
+package com.localhost.view.actions.userActions;
 
 import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
 import com.localhost.model.CounterType;
 import com.localhost.view.IInputOutput;
+import com.localhost.view.actions.FirstAction;
+import com.localhost.view.actions.IAction;
 
 import java.util.Arrays;
 import java.util.Date;
 
-public class ViewActualCountersAction implements IAction{
+public class ViewActualCountersAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         CounterType[] counterTypes;

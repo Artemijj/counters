@@ -1,12 +1,13 @@
-package com.localhost.view.actions;
+package com.localhost.view.actions.adminActions;
 
 import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
 import com.localhost.model.CounterType;
 import com.localhost.model.Tools;
 import com.localhost.view.IInputOutput;
+import com.localhost.view.actions.IAction;
 
-public class LinkedUserCountersTypeAction implements IAction{
+public class LinkedUserCountersTypeAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         inputOutput.put("Список существующих счётчиков:");

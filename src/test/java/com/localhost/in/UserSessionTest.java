@@ -16,7 +16,7 @@ import java.util.Date;
 
 public class UserSessionTest {
     private UserSession userSession;
-    private User user = new User("name", "pass", null, null, false);
+    private User user = new User("name", "pass", false);
 
     @BeforeEach
     public void setUp() {
@@ -75,8 +75,9 @@ public class UserSessionTest {
     @Test
     public void getLastValueClassTest() {
         CounterType counterType = new CounterType("type");
+        String counterTypeName = counterType.getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), 1);
-        Record record = new Record(1, user, counterType, counterValue);
+        Record record = new Record(1, "name", counterTypeName, counterValue);
         userSession.getModelRecordSet().addRecord(record);
         CounterValue actual = userSession.getLastValue(counterType);
         Assertions.assertInstanceOf(CounterValue.class, actual);
@@ -87,8 +88,9 @@ public class UserSessionTest {
         userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
         CounterType counterType = new CounterType("type");
+        String counterTypeName = counterType.getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), 1);
-        Record record = new Record(1, user, counterType, counterValue);
+        Record record = new Record(1, "name", counterTypeName, counterValue);
         userSession.getModelRecordSet().addRecord(record);
         int expectedValue = 1;
         CounterValue actualCounterValue = userSession.getLastValue(counterType);

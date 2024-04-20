@@ -198,19 +198,21 @@ public class AdminSessionTest {
     @Test
     public void getCounterValuesTest() {
         CounterType one = new CounterType("one");
+        String oneTypeName = one.getCounterTypeName();
         userSession.getModelCounters().addCounter(one);
-        User user;
+//        User user;
         try {
             adminSession.addUser("newUser", "passwd");
             adminSession.linkCounter("newUser", one);
-            user = adminSession.getUserData("newUser");
+//            user = adminSession.getUserData("newUser");
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
+        userSession.logIn("newUser", "passwd");
         CounterValue counterValue1 = new CounterValue(new Date(0L), 1);
         CounterValue counterValue2 = new CounterValue(new Date(), 2);
-        userSession.getModelRecordSet().addRecord(new Record(1, user, one, counterValue1));
-        userSession.getModelRecordSet().addRecord(new Record(2, user, one, counterValue2));
+        userSession.getModelRecordSet().addRecord(new Record(1, "newUser", oneTypeName, counterValue1));
+        userSession.getModelRecordSet().addRecord(new Record(2, "newUser", oneTypeName, counterValue2));
         CounterValue[] counterValues;
         try {
             counterValues = adminSession.getCounterValues("newUser", one);

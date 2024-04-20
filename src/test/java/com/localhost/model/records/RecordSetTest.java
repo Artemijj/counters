@@ -16,11 +16,11 @@ public class RecordSetTest {
 
     @Mock
     User user;
-    private CounterType counterType = new CounterType("type");// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    private String counterType = "type";// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private CounterValue counterValue = new CounterValue(new Date(), 1);// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-    private Record record = new Record(1, user, counterType, counterValue);
+    private Record record = new Record(1, "newUser", counterType, counterValue);
 
     @BeforeEach
     public void setUp() {

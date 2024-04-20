@@ -2,13 +2,13 @@ package com.localhost.model;
 
 public class Record {
     private Integer id;
-    private User user;
-    private CounterType counterType;
+    private String login;
+    private String counterType;
     private CounterValue counterValue;
 
-    public Record(Integer id, User user, CounterType counterType, CounterValue counterValue) {
+    public Record(Integer id, String login, String counterType, CounterValue counterValue) {
         this.id = id;
-        this.user = user;
+        this.login = login;
         this.counterType = counterType;
         this.counterValue = counterValue;
     }
@@ -17,11 +17,11 @@ public class Record {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public String getLogin() {
+        return login;
     }
 
-    public CounterType getCounterType() {
+    public String getCounterType() {
         return counterType;
     }
 

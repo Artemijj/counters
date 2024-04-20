@@ -1,10 +1,6 @@
 package com.localhost.in;
 
 import com.localhost.model.*;
-import com.localhost.model.counters.ICounters;
-import com.localhost.model.events.IEventLog;
-import com.localhost.model.records.IRecordSet;
-import com.localhost.model.users.IUsers;
 
 public class AdminSession implements IAdminSession{
 
@@ -17,14 +13,14 @@ public class AdminSession implements IAdminSession{
     @Override
     public void addUser(String login, String password) throws AdminException {
         if (!userSession.isUserExist(login)) {
-            userSession.getModelUsers().addUser(new User(login, password, null, null, false));
+            userSession.getModelUsers().addUser(new User(login, password, false));
         }
     }
 
     @Override
     public void addAdmin(String login, String password) throws AdminException {
         if (!userSession.isUserExist(login)) {
-            userSession.getModelUsers().addUser(new User(login, password, null, null, true));
+            userSession.getModelUsers().addUser(new User(login, password, true));
         }
     }
 
@@ -97,8 +93,9 @@ public class AdminSession implements IAdminSession{
     @Override
     public CounterValue[] getCounterValues(String login, CounterType counter) throws AdminException {
         return userSession.getModelRecordSet().getRecordSetList().stream()
-                .filter(reading -> reading.getUser().equals(userSession.getModelUsers().getUser(login)))
-                .filter(reading -> reading.getCounterType().equals(counter))
+//                .filter(reading -> reading.getLogin().equals(userSession.getModelUsers().getUser(login)))
+                .filter(reading -> reading.getLogin().equals(userSession.getLogin()))
+                .filter(reading -> reading.getCounterType().equals(counter.getCounterTypeName()))
                 .map(reading -> reading.getCounterValue())
                 .toArray(CounterValue[]::new);
     }

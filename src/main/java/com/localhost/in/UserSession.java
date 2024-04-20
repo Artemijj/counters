@@ -57,19 +57,22 @@ public class UserSession implements IUserSession{
         try {
             maxDate = model.getRecordSet().getRecordSetList()
                     .stream()
-                    .filter(record -> record.getUser().equals(model.getUsers().getUser(login)))
-                    .filter(record -> record.getCounterType().equals(counter))
+//                    .filter(record -> record.getLogin().equals(model.getUsers().getUser(login)))
+                    .filter(record -> record.getLogin().equals(login))
+                    .filter(record -> record.getCounterType().equals(counter.getCounterTypeName()))
                     .map(Record::getCounterValue)
                     .map(CounterValue::getDate)
                     .max(Comparator.naturalOrder())
                     .get();
         } catch (NoSuchElementException e) {
+//            e.printStackTrace();
             return new CounterValue(new Date(0L), 0);
         }
         return model.getRecordSet().getRecordSetList()
                 .stream()
-                .filter(record -> record.getUser().equals(model.getUsers().getUser(login)))
-                .filter(record -> record.getCounterType().equals(counter))
+//                .filter(record -> record.getLogin().equals(model.getUsers().getUser(login)))
+                .filter(record -> record.getLogin().equals(login))
+                .filter(record -> record.getCounterType().equals(counter.getCounterTypeName()))
                 .filter(record -> record.getCounterValue().getDate().equals(maxDate))
                 .map(Record::getCounterValue).findFirst().orElse(null);
     }

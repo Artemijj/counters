@@ -1,21 +1,24 @@
-package com.localhost.view.actions;
+package com.localhost.view.actions.userActions;
 
 import com.localhost.in.AdminException;
 import com.localhost.in.IAdminSession;
 import com.localhost.in.IUserSession;
 import com.localhost.view.IInputOutput;
+import com.localhost.view.actions.FirstAction;
+import com.localhost.view.actions.IAction;
 
-public class RegistrationAction implements IAction{
+public class RegistrationAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         inputOutput.put("Введите имя.");
         String name = inputOutput.get();
         inputOutput.put("Введите пароль.");
         String password = inputOutput.get();
-//        System.out.println("Повторите пароль.");
-//        if(!inputOutput.get().equals(password)) {
-//            System.out.println("Пароли не совпадают");
-//        }
+        System.out.println("Повторите пароль.");
+        if(!inputOutput.get().equals(password)) {
+            System.out.println("Пароли не совпадают");
+            return new FirstAction();
+        }
         inputOutput.put("Введите фамилию имя отчество:");
         String fio = inputOutput.get();
         inputOutput.put("Введите номер телефона.");
@@ -29,7 +32,8 @@ public class RegistrationAction implements IAction{
             adminSession.setPhone(name, phone);
             adminSession.setAddress(name, address);
         } catch (AdminException e) {
-            throw new RuntimeException(e);
+            return new FirstAction();
+//            throw new RuntimeException(e);
         }
         return new UserLoginAction();
     }

@@ -1,11 +1,11 @@
-package com.localhost.view.actions;
+package com.localhost.view.actions.userActions;
 
 import com.localhost.in.*;
 import com.localhost.model.*;
 import com.localhost.model.Record;
 import com.localhost.view.IInputOutput;
+import com.localhost.view.actions.IAction;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class ChoiceSendCounterAction implements IAction {
@@ -43,10 +43,10 @@ public class ChoiceSendCounterAction implements IAction {
         inputOutput.put("Введите показание счётчика (целое число).");
         int value = Integer.parseInt(inputOutput.get());
         int id = session.getModelRecordSet().nextId();
-        User user = session.getModelUsers().getUser(session.getLogin());
-        CounterType counterType = types[selectedNumber];
+//        User user = session.getModelUsers().getUser(session.getLogin());
+        String counterType = types[selectedNumber].getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), value);
-        boolean result = session.getModelRecordSet().addRecord(new Record(id, user, counterType, counterValue));
+        boolean result = session.getModelRecordSet().addRecord(new Record(id, session.getLogin(), counterType, counterValue));
         if (result) {
             session.addEvent("Передал показания счётчика " + types[selectedNumber].getCounterTypeName());
         } else {

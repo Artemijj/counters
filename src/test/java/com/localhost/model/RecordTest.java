@@ -9,14 +9,13 @@ public class RecordTest {
     private Record record;
     @Mock
     User user;
-    @Mock
-    CounterType counterType;
+    private String counterType = "type";
     @Mock
     CounterValue counterValue;
 
     @BeforeEach
     public void setUp() {
-        record = new Record(1, user, counterType, counterValue);
+        record = new Record(1, "newUser", counterType, counterValue);
     }
 
     @Test
@@ -27,16 +26,16 @@ public class RecordTest {
     }
 
     @Test
-    public void getUserTest() {
-        User expectedUser = user;
-        User actualUser = record.getUser();
+    public void getLoginTest() {
+        String expectedUser = "newUser";
+        String actualUser = record.getLogin();
         Assertions.assertEquals(expectedUser, actualUser);
     }
 
     @Test
     public void getCounterTypeTest() {
-        CounterType expectedCounterType = counterType;
-        CounterType actualCounterType = record.getCounterType();
+        String expectedCounterType = counterType;
+        String actualCounterType = record.getCounterType();
         Assertions.assertEquals(expectedCounterType, actualCounterType);
     }
 

@@ -1,13 +1,12 @@
-package com.localhost.view.actions;
+package com.localhost.view.actions.userActions;
 
 import com.localhost.in.*;
 import com.localhost.model.*;
 import com.localhost.model.Record;
 import com.localhost.view.IInputOutput;
+import com.localhost.view.actions.IAction;
 
-import java.util.ArrayList;
-
-public class ChoiceViewedCountersAction implements IAction{
+public class ChoiceViewedCountersAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         CounterType[] types;
@@ -40,7 +39,7 @@ public class ChoiceViewedCountersAction implements IAction{
 
         inputOutput.put("Показания счётчика " + types[selectedNumber].getCounterTypeName() + ":");
         session.getModelRecordSet().getRecordSetList().stream()
-                        .filter(record -> record.getUser().equals(session.getModelUsers().getUser(session.getLogin())))
+                        .filter(record -> record.getLogin().equals(session.getModelUsers().getUser(session.getLogin())))
                         .filter(record -> record.getCounterType().equals(types[selectedNumber]))
                         .map(Record::getCounterValue)
                         .forEach(counterValue -> inputOutput.put(counterValue.getDate() + " | " + counterValue.getValue()));
