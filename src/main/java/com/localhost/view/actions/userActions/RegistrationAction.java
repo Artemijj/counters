@@ -14,9 +14,9 @@ public class RegistrationAction implements IAction {
         String name = inputOutput.get();
         inputOutput.put("Введите пароль.");
         String password = inputOutput.get();
-        System.out.println("Повторите пароль.");
+        inputOutput.put("Повторите пароль.");
         if(!inputOutput.get().equals(password)) {
-            System.out.println("Пароли не совпадают");
+            inputOutput.put("Пароли не совпадают");
             return new FirstAction();
         }
         inputOutput.put("Введите фамилию имя отчество:");
@@ -33,7 +33,6 @@ public class RegistrationAction implements IAction {
             adminSession.setAddress(name, address);
         } catch (AdminException e) {
             return new FirstAction();
-//            throw new RuntimeException(e);
         }
         return new UserLoginAction();
     }

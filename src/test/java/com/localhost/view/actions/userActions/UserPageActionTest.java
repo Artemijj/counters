@@ -67,4 +67,11 @@ public class UserPageActionTest {
         IAction actual = userPageAction.execute(userSession, tio);
         Assertions.assertInstanceOf(FirstAction.class, actual);
     }
+
+    @Test
+    public void defaultTest() {
+        TestInputOutput tio = new TestInputOutput("p");
+        IAction actual = userPageAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(UserPageAction.class, actual);
+    }
 }

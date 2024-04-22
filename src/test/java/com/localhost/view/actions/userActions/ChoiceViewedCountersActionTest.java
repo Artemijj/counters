@@ -8,18 +8,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ChoiceUnlinkedCountersActionTest {
+public class ChoiceViewedCountersActionTest {
     private IUserSession userSession = new UserSession();
 
-    private ChoiceUnlinkedCountersAction choiceUnlinkedCountersAction;
+    private ChoiceViewedCountersAction choiceViewedCountersAction;
 
     @BeforeEach
     public void setUp() {
-        choiceUnlinkedCountersAction = new ChoiceUnlinkedCountersAction();
+        choiceViewedCountersAction = new ChoiceViewedCountersAction();
     }
 
     @Test
-    public void choiceUnlinkedCountersTest() {
+    public void choiceViewedCountersTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
         try {
@@ -35,12 +35,12 @@ public class ChoiceUnlinkedCountersActionTest {
             throw new RuntimeException(e);
         }
         TestInputOutput tio = new TestInputOutput("0");
-        IAction actual = choiceUnlinkedCountersAction.execute(userSession, tio);
-        Assertions.assertInstanceOf(ChoiceUnlinkedCountersAction.class, actual);
+        IAction actual = choiceViewedCountersAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(ChoiceViewedCountersAction.class, actual);
     }
 
     @Test
-    public void choiceUnlinkedWrongCountersTest() {
+    public void choiceViewedWrongCountersTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
         try {
@@ -56,8 +56,8 @@ public class ChoiceUnlinkedCountersActionTest {
             throw new RuntimeException(e);
         }
         TestInputOutput tio = new TestInputOutput("3");
-        IAction actual = choiceUnlinkedCountersAction.execute(userSession, tio);
-        Assertions.assertInstanceOf(ChoiceUnlinkedCountersAction.class, actual);
+        IAction actual = choiceViewedCountersAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(ChoiceViewedCountersAction.class, actual);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class ChoiceUnlinkedCountersActionTest {
         }
         userSession.logIn("name", "passwd");
         TestInputOutput tio = new TestInputOutput("p");
-        IAction actual = choiceUnlinkedCountersAction.execute(userSession, tio);
+        IAction actual = choiceViewedCountersAction.execute(userSession, tio);
         Assertions.assertInstanceOf(UserPageAction.class, actual);
     }
 }

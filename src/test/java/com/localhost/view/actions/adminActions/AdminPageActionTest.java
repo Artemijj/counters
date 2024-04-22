@@ -103,4 +103,11 @@ public class AdminPageActionTest {
         IAction actual = adminPageAction.execute(userSession, tio);
         Assertions.assertInstanceOf(FirstAction.class, actual);
     }
+
+    @Test
+    public void defaultTest() {
+        TestInputOutput tio = new TestInputOutput("p");
+        IAction actual = adminPageAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(AdminPageAction.class, actual);
+    }
 }

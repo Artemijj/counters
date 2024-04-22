@@ -23,7 +23,7 @@ public class AddAdminAction implements IAction {
         String password = inputOutput.get();
         try {
             session.getAdminSession().addAdmin(login, password);
-            session.addEvent("Создание администратора - " + login);
+            session.addEvent("Администратор " + session.getLogin() + " создал администратора - " + login);
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }

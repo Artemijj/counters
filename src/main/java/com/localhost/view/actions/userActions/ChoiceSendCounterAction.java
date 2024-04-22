@@ -41,14 +41,14 @@ public class ChoiceSendCounterAction implements IAction {
         }
 
         inputOutput.put("Введите показание счётчика (целое число).");
-        int value = Integer.parseInt(inputOutput.get());
+        int value = Tools.parse(inputOutput.get());
         int id = session.getModelRecordSet().nextId();
 //        User user = session.getModelUsers().getUser(session.getLogin());
         String counterType = types[selectedNumber].getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), value);
         boolean result = session.getModelRecordSet().addRecord(new Record(id, session.getLogin(), counterType, counterValue));
         if (result) {
-            session.addEvent("Передал показания счётчика " + types[selectedNumber].getCounterTypeName());
+            session.addEvent("Передал показания счётчика " + types[selectedNumber].getCounterTypeName() + " - " + value);
         } else {
             inputOutput.put("Показания можно передавать один раз в месяц.");
         }

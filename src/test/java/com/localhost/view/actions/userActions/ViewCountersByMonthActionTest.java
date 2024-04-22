@@ -2,24 +2,29 @@ package com.localhost.view.actions.userActions;
 
 import com.localhost.in.*;
 import com.localhost.model.CounterType;
+import com.localhost.model.CounterValue;
+import com.localhost.model.Record;
 import com.localhost.view.TestInputOutput;
 import com.localhost.view.actions.IAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ChoiceUnlinkedCountersActionTest {
+import java.time.ZoneId;
+import java.util.Date;
+
+public class ViewCountersByMonthActionTest {
     private IUserSession userSession = new UserSession();
 
-    private ChoiceUnlinkedCountersAction choiceUnlinkedCountersAction;
+    private ViewCountersByMonthAction viewCountersByMonthAction;
 
     @BeforeEach
     public void setUp() {
-        choiceUnlinkedCountersAction = new ChoiceUnlinkedCountersAction();
+        viewCountersByMonthAction = new ViewCountersByMonthAction();
     }
 
     @Test
-    public void choiceUnlinkedCountersTest() {
+    public void viewCountersByMonthTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
         try {
@@ -34,13 +39,19 @@ public class ChoiceUnlinkedCountersActionTest {
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
-        TestInputOutput tio = new TestInputOutput("0");
-        IAction actual = choiceUnlinkedCountersAction.execute(userSession, tio);
-        Assertions.assertInstanceOf(ChoiceUnlinkedCountersAction.class, actual);
+        Date date = new Date();
+        userSession.getModelRecordSet().addRecord(new Record(1, "name", "one", new CounterValue(date, 123)));
+        userSession.getModelRecordSet().addRecord(new Record(2, "name", "two", new CounterValue(date, 321)));
+        String counterNumber = "0";
+        String year = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear() + "";
+        String month = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() + "";
+        TestInputOutput tio = new TestInputOutput("0", year, month);
+        IAction actual = viewCountersByMonthAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(ViewCountersByMonthAction.class, actual);
     }
 
     @Test
-    public void choiceUnlinkedWrongCountersTest() {
+    public void viewCountersByMonthWrongCounterTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
         try {
@@ -55,9 +66,15 @@ public class ChoiceUnlinkedCountersActionTest {
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
-        TestInputOutput tio = new TestInputOutput("3");
-        IAction actual = choiceUnlinkedCountersAction.execute(userSession, tio);
-        Assertions.assertInstanceOf(ChoiceUnlinkedCountersAction.class, actual);
+        Date date = new Date();
+        userSession.getModelRecordSet().addRecord(new Record(1, "name", "one", new CounterValue(date, 123)));
+        userSession.getModelRecordSet().addRecord(new Record(2, "name", "two", new CounterValue(date, 321)));
+        String counterNumber = "0";
+        String year = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear() + "";
+        String month = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() + "";
+        TestInputOutput tio = new TestInputOutput("100", year, month);
+        IAction actual = viewCountersByMonthAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(ViewCountersByMonthAction.class, actual);
     }
 
     @Test
@@ -71,7 +88,7 @@ public class ChoiceUnlinkedCountersActionTest {
         }
         userSession.logIn("name", "passwd");
         TestInputOutput tio = new TestInputOutput("p");
-        IAction actual = choiceUnlinkedCountersAction.execute(userSession, tio);
+        IAction actual = viewCountersByMonthAction.execute(userSession, tio);
         Assertions.assertInstanceOf(UserPageAction.class, actual);
     }
 }

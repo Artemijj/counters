@@ -2,55 +2,49 @@ package com.localhost.view.actions.userActions;
 
 import com.localhost.in.*;
 import com.localhost.view.TestInputOutput;
+import com.localhost.view.actions.FirstAction;
 import com.localhost.view.actions.IAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ChoiceLinkedCountersActionTest {
+public class ViewActualCountersActionTest {
     private IUserSession userSession = new UserSession();
 
-    private ChoiceLinkedCountersAction choiceLinkedCountersAction;
+    private ViewActualCountersAction viewActualCountersAction;
 
     @BeforeEach
     public void setUp() {
-        choiceLinkedCountersAction = new ChoiceLinkedCountersAction();
-    }
-
-    @Test
-    public void choiceLinkedCountersTest() {
-        try {
-            userSession.getAdminSession().createCounter("one");
-            userSession.getAdminSession().createCounter("two");
-            userSession.getAdminSession().addUser("name", "passwd");
-        } catch (AdminException e) {
-            throw new RuntimeException(e);
-        }
-        userSession.logIn("name", "passwd");
-        TestInputOutput tio = new TestInputOutput("0");
-        IAction actual = choiceLinkedCountersAction.execute(userSession, tio);
-        Assertions.assertInstanceOf(ChoiceLinkedCountersAction.class, actual);
-    }
-
-    @Test
-    public void choiceLinkedWrongCountersTest() {
-        try {
-            userSession.getAdminSession().createCounter("one");
-            userSession.getAdminSession().createCounter("two");
-            userSession.getAdminSession().addUser("name", "passwd");
-        } catch (AdminException e) {
-            throw new RuntimeException(e);
-        }
-        userSession.logIn("name", "passwd");
-        TestInputOutput tio = new TestInputOutput("3");
-        IAction actual = choiceLinkedCountersAction.execute(userSession, tio);
-        Assertions.assertInstanceOf(ChoiceLinkedCountersAction.class, actual);
+        viewActualCountersAction = new ViewActualCountersAction();
     }
 
     @Test
     public void userPageTest() {
+        try {
+            userSession.getAdminSession().createCounter("one");
+            userSession.getAdminSession().createCounter("two");
+            userSession.getAdminSession().addUser("name", "passwd");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        userSession.logIn("name", "passwd");
         TestInputOutput tio = new TestInputOutput("p");
-        IAction actual = choiceLinkedCountersAction.execute(userSession, tio);
+        IAction actual = viewActualCountersAction.execute(userSession, tio);
         Assertions.assertInstanceOf(UserPageAction.class, actual);
+    }
+
+    @Test
+    public void firstTest() {
+        try {
+            userSession.getAdminSession().createCounter("one");
+            userSession.getAdminSession().createCounter("two");
+            userSession.getAdminSession().addUser("name", "passwd");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        userSession.logIn("name", "passwd");
+        TestInputOutput tio = new TestInputOutput("q");
+        IAction actual = viewActualCountersAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(FirstAction.class, actual);
     }
 }

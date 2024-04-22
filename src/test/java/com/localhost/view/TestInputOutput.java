@@ -2,19 +2,32 @@ package com.localhost.view;
 
 public class TestInputOutput implements IInputOutput{
 
-    private String result;
+    private String[] result;
+    private int count = 0;
+    private String message;
 
-    public TestInputOutput(String result) {
+//    public TestInputOutput() {
+//        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//    }
+
+    public TestInputOutput(String... result) {
         this.result = result;
+        message = "";
     }
 
     @Override
     public String get() {
-        return result;
+        String res = result[count];
+        count++;
+        return res;
     }
 
     @Override
-    public void put(String message) {
+    public void put(String txt) {
+        message = txt;
+    }
 
+    public String getMessage() {
+        return message;
     }
 }

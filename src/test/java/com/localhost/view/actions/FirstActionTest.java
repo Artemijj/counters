@@ -9,11 +9,20 @@ import com.localhost.view.actions.userActions.UserLoginAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 public class FirstActionTest {
     private IUserSession userSession = new UserSession();
 
     private FirstAction firstAction;
+
+    @Mock
+    TestInputOutput tioMock;
 
     @BeforeEach
     public void setUp() {
@@ -47,4 +56,19 @@ public class FirstActionTest {
         IAction actual = firstAction.execute(userSession, tio);
         Assertions.assertInstanceOf(FinallyAction.class, actual);
     }
+
+    @Test
+    public void defaultTest() {
+        TestInputOutput tio = new TestInputOutput("p");
+        IAction actual = firstAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(FirstAction.class, actual);
+    }
+
+//    @Test
+//    public void defaultMessageTest() {
+//        tioMock = new TestInputOutput("p");
+//        IAction actual = firstAction.execute(userSession, tioMock);
+////        Assertions.assertInstanceOf(FirstAction.class, actual);
+//        Mockito.verify(tioMock, Mockito.times(1)).put("Введено некорректное значение.");
+//    }
 }
