@@ -28,10 +28,9 @@ public class LinkedUserCountersTypeAction implements IAction {
             return new LinkedUserCountersTypeAction();
         }
 
-//        String counterType = inputOutput.get();
         try {
             session.getAdminSession().linkCounter(login, counters[selectedNumber]);
-            session.addEvent("Добавление счётчика " + counters[selectedNumber].getCounterTypeName() + " пользователю " + login);
+            session.addEvent(session.getLogin() + " добавил счётчик " + counters[selectedNumber].getCounterTypeName() + " пользователю " + login);
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }

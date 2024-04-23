@@ -40,4 +40,23 @@ public class LinkedUserCountersTypeActionTest {
         IAction actual = linkedUserCountersTypeAction.execute(userSession, tio);
         Assertions.assertInstanceOf(AdminPageAction.class, actual);
     }
+
+    @Test
+    public void linkedUserCountersTypeMessageTest() {
+        CounterType one = new CounterType("one");
+        CounterType two = new CounterType("two");
+        userSession.getModelCounters().addCounter(one);
+        userSession.getModelCounters().addCounter(two);
+        try {
+            userSession.getAdminSession().addUser("user", "passwd");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        String wrongNumber = Integer.MAX_VALUE + "";
+        TestInputOutput tio = new TestInputOutput("user", wrongNumber);
+        linkedUserCountersTypeAction.execute(userSession, tio);
+        String expected = "Введите корректный номер счётчика.";
+        String actual = tio.getMessage();
+        Assertions.assertEquals(expected, actual);
+    }
 }

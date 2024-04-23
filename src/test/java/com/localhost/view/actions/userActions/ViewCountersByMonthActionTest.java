@@ -69,10 +69,8 @@ public class ViewCountersByMonthActionTest {
         Date date = new Date();
         userSession.getModelRecordSet().addRecord(new Record(1, "name", "one", new CounterValue(date, 123)));
         userSession.getModelRecordSet().addRecord(new Record(2, "name", "two", new CounterValue(date, 321)));
-        String counterNumber = "0";
-        String year = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear() + "";
-        String month = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() + "";
-        TestInputOutput tio = new TestInputOutput("100", year, month);
+        String counterNumber = "100";
+        TestInputOutput tio = new TestInputOutput(counterNumber);
         IAction actual = viewCountersByMonthAction.execute(userSession, tio);
         Assertions.assertInstanceOf(ViewCountersByMonthAction.class, actual);
     }
@@ -90,5 +88,32 @@ public class ViewCountersByMonthActionTest {
         TestInputOutput tio = new TestInputOutput("p");
         IAction actual = viewCountersByMonthAction.execute(userSession, tio);
         Assertions.assertInstanceOf(UserPageAction.class, actual);
+    }
+
+    @Test
+    public void wrongCounterMessageTest() {
+        CounterType one = new CounterType("one");
+        CounterType two = new CounterType("two");
+        try {
+            userSession.getAdminSession().addUser("name", "passwd");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        userSession.logIn("name", "passwd");
+        try {
+            userSession.getAdminSession().linkCounter("name", one);
+            userSession.getAdminSession().linkCounter("name", two);
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        Date date = new Date();
+        userSession.getModelRecordSet().addRecord(new Record(1, "name", "one", new CounterValue(date, 123)));
+        userSession.getModelRecordSet().addRecord(new Record(2, "name", "two", new CounterValue(date, 321)));
+        String counterNumber = "100";
+        TestInputOutput tio = new TestInputOutput(counterNumber);
+        viewCountersByMonthAction.execute(userSession, tio);
+        String expected = "Введите корректный номер счётчика.";
+        String actual = tio.getMessage();
+        Assertions.assertEquals(expected, actual);
     }
 }

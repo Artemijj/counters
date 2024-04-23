@@ -10,13 +10,13 @@ import java.util.Arrays;
 public class ViewAllCountersAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
+        inputOutput.put("Существующие счётчики:");
         Arrays.stream(session.getAdminSession().getAllSystemCounters()).forEach(counterType -> inputOutput.put(counterType.getCounterTypeName()));
-        session.addEvent("Просмотр существующих счётчиков.");
+        session.addEvent(session.getLogin() + "просмотрел существующие счётчики.");
         inputOutput.put("Для выхода на предыдущий экран введите - p.");
-        while (true) {
-            if (inputOutput.get().equals("p")) {
-                return new AdminPageAction();
-            }
+        if (inputOutput.get().equals("p")) {
+            return new AdminPageAction();
         }
+        return this;
     }
 }

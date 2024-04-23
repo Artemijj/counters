@@ -23,4 +23,11 @@ public class ViewAllUsersActionTest {
         IAction actual = viewAllUsersAction.execute(userSession, tio);
         Assertions.assertInstanceOf(AdminPageAction.class, actual);
     }
+
+    @Test
+    public void thisTest() {
+        TestInputOutput tio = new TestInputOutput("q");
+        IAction actual = viewAllUsersAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(ViewAllUsersAction.class, actual);
+    }
 }

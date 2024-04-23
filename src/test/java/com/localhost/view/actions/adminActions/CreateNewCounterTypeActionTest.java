@@ -19,7 +19,26 @@ public class CreateNewCounterTypeActionTest {
 
     @Test
     public void adminPageTest() {
-        TestInputOutput tio = new TestInputOutput("counter", "p");
+        TestInputOutput tio = new TestInputOutput("counter");
+        IAction actual = createNewCounterTypeAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(AdminPageAction.class, actual);
+    }
+
+    @Test
+    public void exitTest() {
+        TestInputOutput tio = new TestInputOutput("p");
+        IAction actual = createNewCounterTypeAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(AdminPageAction.class, actual);
+    }
+
+    @Test
+    public void duplicateTest() {
+        try {
+            userSession.getAdminSession().createCounter("counter");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        TestInputOutput tio = new TestInputOutput("counter");
         IAction actual = createNewCounterTypeAction.execute(userSession, tio);
         Assertions.assertInstanceOf(AdminPageAction.class, actual);
     }

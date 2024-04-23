@@ -74,4 +74,27 @@ public class ChoiceViewedCountersActionTest {
         IAction actual = choiceViewedCountersAction.execute(userSession, tio);
         Assertions.assertInstanceOf(UserPageAction.class, actual);
     }
+
+    @Test
+    public void wrongMessageTest() {
+        CounterType one = new CounterType("one");
+        CounterType two = new CounterType("two");
+        try {
+            userSession.getAdminSession().addUser("name", "passwd");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        userSession.logIn("name", "passwd");
+        try {
+            userSession.getAdminSession().linkCounter("name", one);
+            userSession.getAdminSession().linkCounter("name", two);
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        TestInputOutput tio = new TestInputOutput("3");
+        choiceViewedCountersAction.execute(userSession, tio);
+        String expected = "Введите корректный номер счётчика.";
+        String actual = tio.getMessage();
+        Assertions.assertEquals(expected, actual);
+    }
 }

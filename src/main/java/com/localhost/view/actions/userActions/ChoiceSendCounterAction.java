@@ -43,7 +43,6 @@ public class ChoiceSendCounterAction implements IAction {
         inputOutput.put("Введите показание счётчика (целое число).");
         int value = Tools.parse(inputOutput.get());
         int id = session.getModelRecordSet().nextId();
-//        User user = session.getModelUsers().getUser(session.getLogin());
         String counterType = types[selectedNumber].getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), value);
         boolean result = session.getModelRecordSet().addRecord(new Record(id, session.getLogin(), counterType, counterValue));

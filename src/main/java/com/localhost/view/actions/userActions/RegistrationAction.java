@@ -16,7 +16,7 @@ public class RegistrationAction implements IAction {
         String password = inputOutput.get();
         inputOutput.put("Повторите пароль.");
         if(!inputOutput.get().equals(password)) {
-            inputOutput.put("Пароли не совпадают");
+            inputOutput.put("Пароли не совпадают.");
             return new FirstAction();
         }
         inputOutput.put("Введите фамилию имя отчество:");

@@ -9,21 +9,17 @@ public class CreateNewCounterTypeAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         String counterType;
-        while (true) {
-            inputOutput.put("Введите название нового счётчика.\n" +
-                                "Для выхода на предыдущий экран введите - p.");
-            counterType = inputOutput.get();
-            if (!counterType.equals("p")) {
-                try {
-                    session.getAdminSession().createCounter(counterType);
-                } catch (AdminException e) {
-                    throw new RuntimeException(e);
-                }
+        inputOutput.put("Введите название нового счётчика.\n" +
+                "Для выхода на предыдущий экран введите - p.");
+        counterType = inputOutput.get();
+        if (!counterType.equals("p") && !session.getModelCounters().getCounterList().contains(session.getModelCounters().getCounter(counterType))) {
+            try {
+                session.getAdminSession().createCounter(counterType);
                 session.addEvent("Создание счётчика - " + counterType);
-            } else {
+            } catch (AdminException e) {
                 return new AdminPageAction();
             }
-
         }
+        return new AdminPageAction();
     }
 }

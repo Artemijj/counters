@@ -34,11 +34,10 @@ public class AddAdminActionTest {
         }
         userSession.logIn("admin", "pass");
         TestInputOutput tio = new TestInputOutput("admin");
-        String expected = "Пользователь с таким именем существует.\n +" +
+        String expected = "Пользователь с таким именем существует.\n" +
                         "Введите другое имя администратора.";
+        addAdminAction.execute(userSession, tio);
         String actual = tio.getMessage();
         Assertions.assertEquals(expected, actual);
-//        IAction actual = addAdminAction.execute(userSession, tio);
-//        Assertions.assertInstanceOf(AdminPageAction.class, actual);
     }
 }

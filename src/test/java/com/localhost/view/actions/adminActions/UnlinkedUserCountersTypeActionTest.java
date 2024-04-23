@@ -55,4 +55,25 @@ public class UnlinkedUserCountersTypeActionTest {
         IAction actual = unlinkedUserCountersTypeAction.execute(userSession, tio);
         Assertions.assertInstanceOf(AdminPageAction.class, actual);
     }
+
+    @Test
+    public void linkedUserCountersTypeMessageTest() {
+        CounterType one = new CounterType("one");
+        CounterType two = new CounterType("two");
+        userSession.getModelCounters().addCounter(one);
+        userSession.getModelCounters().addCounter(two);
+        try {
+            userSession.getAdminSession().addUser("user", "passwd");
+            userSession.getAdminSession().linkCounter("user", one);
+            userSession.getAdminSession().linkCounter("user", two);
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        String wrongNumber = Integer.MAX_VALUE + "";
+        TestInputOutput tio = new TestInputOutput("user", wrongNumber);
+        unlinkedUserCountersTypeAction.execute(userSession, tio);
+        String expected = "Введите корректный номер счётчика.";
+        String actual = tio.getMessage();
+        Assertions.assertEquals(expected, actual);
+    }
 }

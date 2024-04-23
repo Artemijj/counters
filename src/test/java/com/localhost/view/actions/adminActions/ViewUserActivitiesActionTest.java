@@ -33,15 +33,15 @@ public class ViewUserActivitiesActionTest {
     }
 
     @Test
-    public void adminPageNameTest() {
+    public void thisTest() {
         try {
             userSession.getAdminSession().addUser("user", "passwd");
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
         userSession.getModelEventLog().addEvent(new Event(1,"user", new Date(), "event"));
-        TestInputOutput tio = new TestInputOutput("user", "p");
+        TestInputOutput tio = new TestInputOutput("user");
         IAction actual = viewUserActivitiesAction.execute(userSession, tio);
-        Assertions.assertInstanceOf(AdminPageAction.class, actual);
+        Assertions.assertInstanceOf(ViewUserActivitiesAction.class, actual);
     }
 }

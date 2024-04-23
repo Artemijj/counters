@@ -38,8 +38,8 @@ public class ViewUserCountersActionTest {
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
-        TestInputOutput tio = new TestInputOutput("user", "p");
+        TestInputOutput tio = new TestInputOutput("user");
         IAction actual = viewUserCountersAction.execute(userSession, tio);
-        Assertions.assertInstanceOf(AdminPageAction.class, actual);
+        Assertions.assertInstanceOf(ViewUserCountersAction.class, actual);
     }
 }

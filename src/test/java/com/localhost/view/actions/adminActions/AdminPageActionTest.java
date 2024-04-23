@@ -110,4 +110,13 @@ public class AdminPageActionTest {
         IAction actual = adminPageAction.execute(userSession, tio);
         Assertions.assertInstanceOf(AdminPageAction.class, actual);
     }
+
+    @Test
+    public void messageTest() {
+        TestInputOutput tio = new TestInputOutput("qwe");
+        adminPageAction.execute(userSession, tio);
+        String expected = "Введено некорректное значение.";
+        String actual = tio.getMessage();
+        Assertions.assertEquals(expected, actual);
+    }
 }

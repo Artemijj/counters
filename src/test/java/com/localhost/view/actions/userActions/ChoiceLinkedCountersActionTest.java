@@ -53,4 +53,21 @@ public class ChoiceLinkedCountersActionTest {
         IAction actual = choiceLinkedCountersAction.execute(userSession, tio);
         Assertions.assertInstanceOf(UserPageAction.class, actual);
     }
+
+    @Test
+    public void messageTest() {
+        try {
+            userSession.getAdminSession().createCounter("one");
+            userSession.getAdminSession().createCounter("two");
+            userSession.getAdminSession().addUser("name", "passwd");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        userSession.logIn("name", "passwd");
+        TestInputOutput tio = new TestInputOutput("3");
+        choiceLinkedCountersAction.execute(userSession, tio);
+        String expected = "Введите корректный номер счётчика.";
+        String actual = tio.getMessage();
+        Assertions.assertEquals(expected, actual);
+    }
 }

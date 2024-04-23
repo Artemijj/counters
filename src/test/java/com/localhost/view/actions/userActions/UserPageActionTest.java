@@ -74,4 +74,13 @@ public class UserPageActionTest {
         IAction actual = userPageAction.execute(userSession, tio);
         Assertions.assertInstanceOf(UserPageAction.class, actual);
     }
+
+    @Test
+    public void messageTest() {
+        TestInputOutput tio = new TestInputOutput("qwe");
+        userPageAction.execute(userSession, tio);
+        String expected = "Введено некорректное значение.";
+        String actual = tio.getMessage();
+        Assertions.assertEquals(expected, actual);
+    }
 }

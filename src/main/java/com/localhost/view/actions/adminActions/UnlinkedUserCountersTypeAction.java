@@ -25,7 +25,6 @@ public class UnlinkedUserCountersTypeAction implements IAction {
         }
 
         inputOutput.put("Введите номер удаляемого счётчика.");
-//        String counterType = inputOutput.get();
         String read = inputOutput.get();
         int selectedNumber = Tools.parse(read);
 
@@ -37,7 +36,7 @@ public class UnlinkedUserCountersTypeAction implements IAction {
 
         try {
             session.getAdminSession().unlinkCounter(login, counters[selectedNumber]);
-            session.addEvent("Удаление счётчика " + counters[selectedNumber].getCounterTypeName() + " у пользователя " + login);
+            session.addEvent(session.getLogin() + " удалил счётчик " + counters[selectedNumber].getCounterTypeName() + " у пользователя " + login);
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }

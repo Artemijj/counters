@@ -28,4 +28,15 @@ public class ViewAllCountersActionTest {
         IAction actual = viewAllCountersAction.execute(userSession, tio);
         Assertions.assertInstanceOf(AdminPageAction.class, actual);
     }
+
+    @Test
+    public void thisTest() {
+        CounterType one = new CounterType("one");
+        CounterType two = new CounterType("two");
+        userSession.getModelCounters().addCounter(one);
+        userSession.getModelCounters().addCounter(two);
+        TestInputOutput tio = new TestInputOutput("123");
+        IAction actual = viewAllCountersAction.execute(userSession, tio);
+        Assertions.assertInstanceOf(ViewAllCountersAction.class, actual);
+    }
 }

@@ -16,12 +16,11 @@ public class ViewAllUsersAction implements IAction {
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
-        session.addEvent("Просмотр существующих пользователей.");
+        session.addEvent(session.getLogin() + " просмотрел существующих пользователей.");
         inputOutput.put("Для выхода на предыдущий экран введите - p.");
-        while (true) {
-            if (inputOutput.get().equals("p")) {
-                return new AdminPageAction();
-            }
+        if (inputOutput.get().equals("p")) {
+            return new AdminPageAction();
         }
+        return this;
     }
 }

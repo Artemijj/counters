@@ -28,8 +28,17 @@ public class RegistrationActionTest {
 
     @Test
     public void registrationNotEqualPassTest() {
-        TestInputOutput tio = new TestInputOutput("name", "pass", "pass1", "fio", "+7896321", "address");
+        TestInputOutput tio = new TestInputOutput("name", "pass", "pass1");
         IAction actual = registrationAction.execute(userSession, tio);
         Assertions.assertInstanceOf(FirstAction.class, actual);
+    }
+
+    @Test
+    public void registrationNotEqualPassMessageTest() {
+        TestInputOutput tio = new TestInputOutput("name", "pass", "pass1");
+        registrationAction.execute(userSession, tio);
+        String expected = "Пароли не совпадают.";
+        String actual = tio.getMessage();
+        Assertions.assertEquals(expected, actual);
     }
 }
