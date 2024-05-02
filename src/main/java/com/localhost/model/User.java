@@ -8,7 +8,7 @@ public class User {
     private String address;
     private String phoneNumber;
     private String password;
-    private ArrayList<CounterType> userCounters;
+//    private ArrayList<CounterType> userCounters;
     private boolean isAdmin;
     private String fio;
 
@@ -17,7 +17,7 @@ public class User {
         this.password = password;
         phoneNumber = "";
         address = "";
-        userCounters = new ArrayList<>();
+//        userCounters = new ArrayList<>();
         this.isAdmin = isAdmin;
         fio = "";
     }
@@ -54,19 +54,19 @@ public class User {
         this.password = password;
     }
 
-    public void addCounter(CounterType counterType) {
-        if (!userCounters.contains(counterType)) {
-            userCounters.add(counterType);
-        }
-    }
+//    public void addCounter(CounterType counterType) {
+//        if (!userCounters.contains(counterType)) {
+//            userCounters.add(counterType);
+//        }
+//    }
 
-    public void deleteCounter(CounterType counterType) {
-        userCounters.remove(counterType);
-    }
+//    public void deleteCounter(CounterType counterType) {
+//        userCounters.remove(counterType);
+//    }
 
-    public ArrayList<CounterType> getUserCounters() {
-        return userCounters;
-    }
+//    public ArrayList<CounterType> getUserCounters() {
+//        return userCounters;
+//    }
 
     public boolean getIsAdmin() {
         return isAdmin;

@@ -1,9 +1,10 @@
 package com.localhost.in;
 
 import com.localhost.model.*;
-import com.localhost.model.counters.ICounters;
+import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
+import com.localhost.model.userCounters.IUserCounters;
 import com.localhost.model.users.IUsers;
 
 public interface IUserSession {
@@ -30,9 +31,12 @@ public interface IUserSession {
     void addCounterValue(CounterType counter, CounterValue value) throws AddCounterException;
     IAdminSession getAdminSession();
     IUsers getModelUsers();
-    ICounters getModelCounters();
+    IUserCounters getModelUserCounters();
+    ISystemCounters getModelSystemCounters();
     IRecordSet getModelRecordSet();
     IEventLog getModelEventLog();
     void addEvent(String event);
     boolean isUserExist(String login);
+    void addCounter(CounterType counterType) throws AddCounterException;
+    void deleteCounter(CounterType counterType) throws AddCounterException;
 }

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-public class EventLogTest {
+public class EventLogListTest {
     private IEventLog eventLog;
 
     @Mock
@@ -14,7 +14,7 @@ public class EventLogTest {
 
     @BeforeEach
     public void setUp() {
-        eventLog = new EventLog();
+        eventLog = new EventLogList();
     }
 
     @Test

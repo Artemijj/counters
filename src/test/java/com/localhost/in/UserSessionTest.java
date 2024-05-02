@@ -4,7 +4,7 @@ import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
 import com.localhost.model.Record;
 import com.localhost.model.User;
-import com.localhost.model.counters.ICounters;
+import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
 import com.localhost.model.users.IUsers;
@@ -112,8 +112,8 @@ public class UserSessionTest {
 
     @Test
     public void getModelCountersTest() {
-        ICounters actualCounters = userSession.getModelCounters();
-        Assertions.assertInstanceOf(ICounters.class, actualCounters);
+        ISystemCounters actualCounters = userSession.getModelSystemCounters();
+        Assertions.assertInstanceOf(ISystemCounters.class, actualCounters);
     }
 
     @Test
@@ -143,5 +143,38 @@ public class UserSessionTest {
         userSession.getModelUsers().addUser(user);
         boolean actual = userSession.isUserExist("name");
         Assertions.assertTrue(actual);
+    }
+
+    @Test
+    public void addCounterTest() {
+        userSession.getModelUsers().addUser(user);
+        userSession.logIn("name", "pass");
+        CounterType one = new CounterType("one");
+        userSession.addCounter(one);
+        int expectedNumber = 1;
+        int actualNumber;
+        try {
+            actualNumber = userSession.getAdminSession().getUserCounters("name").length;
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        Assertions.assertEquals(expectedNumber, actualNumber);
+    }
+
+    @Test
+    public void deleteCounterTest() {
+        userSession.getModelUsers().addUser(user);
+        userSession.logIn("name", "pass");
+        CounterType one = new CounterType("one");
+        userSession.addCounter(one);
+        userSession.deleteCounter(one);
+        int expectedNumber = 0;
+        int actualNumber;
+        try {
+            actualNumber = userSession.getAdminSession().getUserCounters("name").length;
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+        Assertions.assertEquals(expectedNumber, actualNumber);
     }
 }

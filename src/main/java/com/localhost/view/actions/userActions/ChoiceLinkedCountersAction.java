@@ -1,5 +1,6 @@
 package com.localhost.view.actions.userActions;
 
+import com.localhost.in.AddCounterException;
 import com.localhost.in.IUserSession;
 import com.localhost.model.*;
 import com.localhost.view.IInputOutput;
@@ -39,7 +40,12 @@ public class ChoiceLinkedCountersAction implements IAction {
             return new ChoiceLinkedCountersAction();
         }
 
-        session.getModelUsers().getUser(session.getLogin()).addCounter(counters[selectedNumber]);
+//        session.getModelUsers().getUser(session.getLogin()).addCounter(counters[selectedNumber]);
+        try {
+            session.addCounter(counters[selectedNumber]);
+        } catch (AddCounterException e) {
+            throw new RuntimeException(e);
+        }
         inputOutput.put("Счётчик добавлен.");
         session.addEvent("Добавил счётчик " + counters[selectedNumber].getCounterTypeName());
 

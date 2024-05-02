@@ -2,14 +2,18 @@ package com.localhost.in;
 
 import com.localhost.model.*;
 import com.localhost.model.Record;
-import com.localhost.model.counters.ICounters;
+import com.localhost.model.model.IModel;
+import com.localhost.model.model.ModelList;
+import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
+import com.localhost.model.userCounters.IUserCounters;
 import com.localhost.model.users.IUsers;
 
 import java.util.Comparator;
 import java.util.Date;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class UserSession implements IUserSession{
 
@@ -17,7 +21,7 @@ public class UserSession implements IUserSession{
     private IModel model;
 
     public UserSession() {
-        model = new Model();
+        model = new ModelList();
     }
 
     @Override
@@ -93,8 +97,13 @@ public class UserSession implements IUserSession{
     }
 
     @Override
-    public ICounters getModelCounters() {
-        return model.getCounters();
+    public IUserCounters getModelUserCounters() {
+        return model.getUserCounters();
+    }
+
+    @Override
+    public ISystemCounters getModelSystemCounters() {
+        return model.getSystemCounters();
     }
 
     @Override
@@ -116,5 +125,22 @@ public class UserSession implements IUserSession{
     @Override
     public boolean isUserExist(String login) {
         return getModelUsers().getUserList().contains(getModelUsers().getUser(login));
+    }
+
+    @Override
+    public void addCounter(CounterType counterType) {
+//        getModelUserCounters().getUserCountersList().add(new UserCounter(getLogin(), counterType.getCounterTypeName()));
+        getModelUserCounters().addUserCounter(new UserCounter(model.getUserCounters().nextId(), getLogin(), counterType.getCounterTypeName()));
+    }
+
+    @Override
+    public void deleteCounter(CounterType counterType) {
+        UserCounter userCounter = getModelUserCounters().getUserCountersList().stream()
+                .filter(uC -> uC.getLogin().equals(getLogin()))
+                .filter(uC -> uC.getCounterName().equals(counterType.getCounterTypeName()))
+                .findFirst().orElse(null);
+        if (!Objects.isNull(userCounter)) {
+            getModelUserCounters().deleteUserCounter(userCounter);
+        }
     }
 }

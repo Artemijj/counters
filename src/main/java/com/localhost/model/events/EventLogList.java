@@ -5,10 +5,10 @@ import com.localhost.model.Event;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class EventLog implements IEventLog{
+public class EventLogList implements IEventLog{
     private static ArrayList<Event> events;
 
-    public EventLog() {
+    public EventLogList() {
         events = new ArrayList<>();
     }
 

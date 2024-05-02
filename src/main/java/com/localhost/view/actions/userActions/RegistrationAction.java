@@ -31,6 +31,7 @@ public class RegistrationAction implements IAction {
             adminSession.addUser(name, password);
             adminSession.setPhone(name, phone);
             adminSession.setAddress(name, address);
+            session.addEvent("Зарегистрировался пользователь с именем: " + name);
         } catch (AdminException e) {
             return new FirstAction();
         }

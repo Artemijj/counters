@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
-public class RecordSet implements IRecordSet{
+public class RecordSetList implements IRecordSet{
 
     private static ArrayList<Record> records;
 
-    public RecordSet() {
+    public RecordSetList() {
         records = new ArrayList<>();
     }
 

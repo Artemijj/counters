@@ -80,29 +80,29 @@ public class UserTest {
         Assertions.assertEquals(expectedPassword, actualPassword);
     }
 
-    @Test
-    public void addCounterTest() {
-        int expectedNumber = 1;
-        user.addCounter(counterType);
-        int actualNumber = user.getUserCounters().size();
-        Assertions.assertEquals(expectedNumber, actualNumber);
-    }
-
-    @Test
-    public void deleteCounterTest() {
-        int expectedNumber = 0;
-        user.addCounter(counterType);
-        user.deleteCounter(counterType);
-        int actualNumber = user.getUserCounters().size();
-        Assertions.assertEquals(expectedNumber, actualNumber);
-    }
-
-    @Test
-    public void getUserCountersTest() {
-        int expectedNumber = 0;
-        int actualNumber = user.getUserCounters().size();
-        Assertions.assertEquals(expectedNumber, actualNumber);
-    }
+//    @Test
+//    public void addCounterTest() {
+//        int expectedNumber = 1;
+//        user.addCounter(counterType);
+//        int actualNumber = user.getUserCounters().size();
+//        Assertions.assertEquals(expectedNumber, actualNumber);
+//    }
+//
+//    @Test
+//    public void deleteCounterTest() {
+//        int expectedNumber = 0;
+//        user.addCounter(counterType);
+//        user.deleteCounter(counterType);
+//        int actualNumber = user.getUserCounters().size();
+//        Assertions.assertEquals(expectedNumber, actualNumber);
+//    }
+//
+//    @Test
+//    public void getUserCountersTest() {
+//        int expectedNumber = 0;
+//        int actualNumber = user.getUserCounters().size();
+//        Assertions.assertEquals(expectedNumber, actualNumber);
+//    }
 
     @Test
     public void getIsAdminTest() {

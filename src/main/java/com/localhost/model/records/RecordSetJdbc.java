@@ -1,29 +1,30 @@
-package com.localhost.model.events;
+package com.localhost.model.records;
 
+import com.localhost.model.CounterValue;
 import com.localhost.model.DBCPDataSourceFactory;
-import com.localhost.model.Event;
+import com.localhost.model.Record;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EventLogJdbc implements IEventLog{
+public class RecordSetJdbc implements IRecordSet{
 //    private Connection connection;
 //
-//    public EventLogJdbc() {
+//    public RecordSetJdbc() {
 //        connection = DBCPDataSourceFactory.getConnection();
 //    }
 
     @Override
-    public ArrayList<Event> getEventLog() {
-        ArrayList<Event> events = new ArrayList<>();
-        String sql = "SELECT * FROM events";
+    public ArrayList<Record> getRecordSetList() {
+        ArrayList<Record> records = new ArrayList<>();
+        String sql = "SELECT * FROM records";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
-                Event event = new Event(resultSet.getInt("id"), resultSet.getString("login"), new Date(resultSet.getTimestamp("date").getTime()), resultSet.getString("event"));
-                events.add(event);
+                Record record = new Record(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getTimestamp("date").getTime()), resultSet.getInt("value")));
+                records.add(record);
             }
 //            connection.close();
         } catch (SQLException e) {
@@ -31,23 +32,25 @@ public class EventLogJdbc implements IEventLog{
             System.err.println(e.getMessage());
 //            throw new RuntimeException(e);
         }
-        return events;
+        return records;
     }
 
     @Override
-    public boolean addEvent(Event event) {
+    public boolean addRecord(Record record) {
         int id = nextId();
-        String login = event.getLogin();
-        Timestamp date = new Timestamp(event.getDate().getTime());
-        String txt = event.getActivity();
-        String sql = "INSERT INTO events VALUES (?, ?, ?, ?)";
+        String login = record.getLogin();
+        String counterType = record.getCounterType();
+        Timestamp date = new Timestamp(record.getCounterValue().getDate().getTime());
+        int value = record.getCounterValue().getValue();
+        String sql = "INSERT INTO records VALUES (?, ?, ?, ?, ?)";
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             stmt.setString(2, login);
-            stmt.setTimestamp(3, date);
-            stmt.setString(4, txt);
+            stmt.setString(3, counterType);
+            stmt.setTimestamp(4, date);
+            stmt.setInt(5, value);
             result = stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
@@ -60,7 +63,7 @@ public class EventLogJdbc implements IEventLog{
 
     @Override
     public int nextId() {
-        String sql = "SELECT id FROM events ORDER BY id DESC LIMIT 1";
+        String sql = "SELECT id FROM records ORDER BY id DESC LIMIT 1";
         int id = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             Statement stmt = connection.createStatement();

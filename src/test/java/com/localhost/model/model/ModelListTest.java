@@ -1,43 +1,43 @@
-package com.localhost.model;
+package com.localhost.model.model;
 
-import com.localhost.model.counters.ICounters;
+import com.localhost.model.model.ModelList;
+import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
 import com.localhost.model.users.IUsers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
-public class ModelTest {
-    Model model;
+public class ModelListTest {
+    ModelList modelList;
 
     @BeforeEach
     public void setUp() {
-        model = new Model();
+        modelList = new ModelList();
     }
 
     @Test
     public void getUsersTest() {
-        IUsers actualUsers = model.getUsers();
+        IUsers actualUsers = modelList.getUsers();
         Assertions.assertInstanceOf(IUsers.class, actualUsers);
     }
 
     @Test
     public void getCountersTest() {
-        ICounters actualCounters = model.getCounters();
-        Assertions.assertInstanceOf(ICounters.class, actualCounters);
+        ISystemCounters actualCounters = modelList.getSystemCounters();
+        Assertions.assertInstanceOf(ISystemCounters.class, actualCounters);
     }
 
     @Test
     public void getRecordSetTest() {
-        IRecordSet actualRecordSet = model.getRecordSet();
+        IRecordSet actualRecordSet = modelList.getRecordSet();
         Assertions.assertInstanceOf(IRecordSet.class, actualRecordSet);
     }
 
     @Test
     public void getEventLogTest() {
-        IEventLog actualEventLog = model.getEventLog();
+        IEventLog actualEventLog = modelList.getEventLog();
         Assertions.assertInstanceOf(IEventLog.class, actualEventLog);
     }
 }

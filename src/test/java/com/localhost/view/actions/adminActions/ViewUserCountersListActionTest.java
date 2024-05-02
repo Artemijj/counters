@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ViewUserCountersActionTest {
+public class ViewUserCountersListActionTest {
     private IUserSession userSession = new UserSession();
 
     private ViewUserCountersAction viewUserCountersAction;
@@ -29,8 +29,8 @@ public class ViewUserCountersActionTest {
     public void adminPageNameTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
-        userSession.getModelCounters().addCounter(one);
-        userSession.getModelCounters().addCounter(two);
+        userSession.getModelSystemCounters().addCounter(one);
+        userSession.getModelSystemCounters().addCounter(two);
         try {
             userSession.getAdminSession().addUser("user", "passwd");
             userSession.getAdminSession().linkCounter("user", one);

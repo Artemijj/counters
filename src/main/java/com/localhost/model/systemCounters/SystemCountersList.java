@@ -1,13 +1,13 @@
-package com.localhost.model.counters;
+package com.localhost.model.systemCounters;
 
 import com.localhost.model.CounterType;
 
 import java.util.ArrayList;
 
-public class Counters implements ICounters{
+public class SystemCountersList implements ISystemCounters {
     private static ArrayList<CounterType> systemCounters;
 
-    public Counters() {
+    public SystemCountersList() {
         systemCounters = new ArrayList<>();
     }
 
@@ -19,7 +19,10 @@ public class Counters implements ICounters{
     @Override
     public boolean addCounter(CounterType counterType) {
         boolean answer = false;
-        if (!systemCounters.contains(counterType)) {
+        long counterTypeCount = systemCounters.stream()
+                .filter(cT -> cT.getCounterTypeName().equals(counterType.getCounterTypeName()))
+                .count();
+        if ((counterTypeCount == 0) && (!systemCounters.contains(counterType))) {
             systemCounters.add(counterType);
             answer = true;
         }

@@ -14,6 +14,7 @@ public class UserLoginAction implements IAction {
         inputOutput.put("Введите пароль.");
         String password = inputOutput.get();
         if (session.logIn(login, password)) {
+            session.addEvent("Вошёл в личный кабинет.");
             return new UserPageAction();
         }
         return new FirstAction();

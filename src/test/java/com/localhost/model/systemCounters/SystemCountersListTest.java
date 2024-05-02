@@ -1,20 +1,19 @@
-package com.localhost.model.counters;
+package com.localhost.model.systemCounters;
 
 import com.localhost.model.CounterType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 
-public class CountersTest {
-    private ICounters counters;
+public class SystemCountersListTest {
+    private ISystemCounters counters;
 
-    @Mock
-    CounterType counterType;
+//    @Mock
+    CounterType counterType = new CounterType("type");
 
     @BeforeEach
     public void setUp() {
-        counters = new Counters();
+        counters = new SystemCountersList();
     }
 
     @Test

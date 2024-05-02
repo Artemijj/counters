@@ -3,13 +3,12 @@ package com.localhost.model.users;
 import com.localhost.model.User;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-public class Users implements IUsers{
+public class UsersList implements IUsers{
 
     private static ArrayList<User> users;
 
-    public Users() {
+    public UsersList() {
         users = new ArrayList<>();
     }
 
@@ -21,7 +20,9 @@ public class Users implements IUsers{
     @Override
     public boolean addUser(User user) {
         boolean answer = false;
-        if (!users.contains(user)) {
+        long userCount = users.stream()
+                .filter(u -> u.getLogin().equals(user.getLogin())).count();
+        if ((userCount == 0) && (!users.contains(user))) {
             users.add(user);
             answer = true;
         }

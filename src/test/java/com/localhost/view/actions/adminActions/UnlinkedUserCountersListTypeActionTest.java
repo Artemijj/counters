@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class UnlinkedUserCountersTypeActionTest {
+public class UnlinkedUserCountersListTypeActionTest {
     private IUserSession userSession = new UserSession();
 
     private UnlinkedUserCountersTypeAction unlinkedUserCountersTypeAction;
@@ -22,8 +22,8 @@ public class UnlinkedUserCountersTypeActionTest {
     public void unlinkedUserCountersTypeTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
-        userSession.getModelCounters().addCounter(one);
-        userSession.getModelCounters().addCounter(two);
+        userSession.getModelSystemCounters().addCounter(one);
+        userSession.getModelSystemCounters().addCounter(two);
         try {
             userSession.getAdminSession().addUser("user", "passwd");
         } catch (AdminException e) {
@@ -38,8 +38,8 @@ public class UnlinkedUserCountersTypeActionTest {
     public void adminTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
-        userSession.getModelCounters().addCounter(one);
-        userSession.getModelCounters().addCounter(two);
+        userSession.getModelSystemCounters().addCounter(one);
+        userSession.getModelSystemCounters().addCounter(two);
         try {
             userSession.getAdminSession().addUser("user", "passwd");
         } catch (AdminException e) {
@@ -60,8 +60,8 @@ public class UnlinkedUserCountersTypeActionTest {
     public void linkedUserCountersTypeMessageTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
-        userSession.getModelCounters().addCounter(one);
-        userSession.getModelCounters().addCounter(two);
+        userSession.getModelSystemCounters().addCounter(one);
+        userSession.getModelSystemCounters().addCounter(two);
         try {
             userSession.getAdminSession().addUser("user", "passwd");
             userSession.getAdminSession().linkCounter("user", one);

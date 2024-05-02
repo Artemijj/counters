@@ -1,6 +1,5 @@
 package com.localhost.model.records;
 
-import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
 import com.localhost.model.Record;
 import com.localhost.model.User;
@@ -11,7 +10,7 @@ import org.mockito.Mock;
 
 import java.util.Date;
 
-public class RecordSetTest {
+public class RecordSetListTest {
     private IRecordSet recordSet;
 
     @Mock
@@ -24,7 +23,7 @@ public class RecordSetTest {
 
     @BeforeEach
     public void setUp() {
-        recordSet = new RecordSet();
+        recordSet = new RecordSetList();
     }
 
     @Test

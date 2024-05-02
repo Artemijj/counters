@@ -22,8 +22,8 @@ public class ViewAllCountersActionTest {
     public void adminPageTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
-        userSession.getModelCounters().addCounter(one);
-        userSession.getModelCounters().addCounter(two);
+        userSession.getModelSystemCounters().addCounter(one);
+        userSession.getModelSystemCounters().addCounter(two);
         TestInputOutput tio = new TestInputOutput("p");
         IAction actual = viewAllCountersAction.execute(userSession, tio);
         Assertions.assertInstanceOf(AdminPageAction.class, actual);
@@ -33,8 +33,8 @@ public class ViewAllCountersActionTest {
     public void thisTest() {
         CounterType one = new CounterType("one");
         CounterType two = new CounterType("two");
-        userSession.getModelCounters().addCounter(one);
-        userSession.getModelCounters().addCounter(two);
+        userSession.getModelSystemCounters().addCounter(one);
+        userSession.getModelSystemCounters().addCounter(two);
         TestInputOutput tio = new TestInputOutput("123");
         IAction actual = viewAllCountersAction.execute(userSession, tio);
         Assertions.assertInstanceOf(ViewAllCountersAction.class, actual);
