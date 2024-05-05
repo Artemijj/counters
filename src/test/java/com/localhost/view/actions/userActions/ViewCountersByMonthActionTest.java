@@ -1,7 +1,6 @@
 package com.localhost.view.actions.userActions;
 
 import com.localhost.in.*;
-import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
 import com.localhost.model.Record;
 import com.localhost.view.TestInputOutput;
@@ -25,8 +24,8 @@ public class ViewCountersByMonthActionTest {
 
     @Test
     public void viewCountersByMonthTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
@@ -52,8 +51,8 @@ public class ViewCountersByMonthActionTest {
 
     @Test
     public void viewCountersByMonthWrongCounterTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
@@ -92,8 +91,8 @@ public class ViewCountersByMonthActionTest {
 
     @Test
     public void wrongCounterMessageTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {

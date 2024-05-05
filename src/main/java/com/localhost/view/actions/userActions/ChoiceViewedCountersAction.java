@@ -9,7 +9,7 @@ import com.localhost.view.actions.IAction;
 public class ChoiceViewedCountersAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
-        CounterType[] types;
+        String[] types;
         try {
             types = session.userCounters();
         } catch (AdminException e) {
@@ -20,7 +20,7 @@ public class ChoiceViewedCountersAction implements IAction {
 
         inputOutput.put("Выберите тип счётчика, для просмотра показаний.");
         for (int i = 0; i <= arrLength - 1; i++) {
-            inputOutput.put(i + " - " + types[i].getCounterTypeName());
+            inputOutput.put(i + " - " + types[i]);
         }
         inputOutput.put("p - Выход на предыдущий экран.");
 
@@ -37,13 +37,13 @@ public class ChoiceViewedCountersAction implements IAction {
             return new ChoiceViewedCountersAction();
         }
 
-        inputOutput.put("Показания счётчика " + types[selectedNumber].getCounterTypeName() + ":");
+        inputOutput.put("Показания счётчика " + types[selectedNumber] + ":");
         session.getModelRecordSet().getRecordSetList().stream()
                         .filter(record -> record.getLogin().equals(session.getModelUsers().getUser(session.getLogin())))
                         .filter(record -> record.getCounterType().equals(types[selectedNumber]))
                         .map(Record::getCounterValue)
                         .forEach(counterValue -> inputOutput.put(counterValue.getDate() + " | " + counterValue.getValue()));
-        session.addEvent("Просмотрел показания счётчика " + types[selectedNumber].getCounterTypeName());
+        session.addEvent("Просмотрел показания счётчика " + types[selectedNumber]);
 
         return this;
     }

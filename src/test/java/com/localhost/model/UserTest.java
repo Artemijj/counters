@@ -11,8 +11,8 @@ public class UserTest {
     private User user;
     @Mock
     User userMock;
-    @Mock
-    CounterType counterType;
+//    @Mock
+//    CounterType counterType;
 
     @Test
     public void setLoginTest() {

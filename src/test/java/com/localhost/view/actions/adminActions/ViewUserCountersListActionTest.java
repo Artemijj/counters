@@ -1,7 +1,6 @@
 package com.localhost.view.actions.adminActions;
 
 import com.localhost.in.*;
-import com.localhost.model.CounterType;
 import com.localhost.view.TestInputOutput;
 import com.localhost.view.actions.IAction;
 import org.junit.jupiter.api.Assertions;
@@ -27,8 +26,8 @@ public class ViewUserCountersListActionTest {
 
     @Test
     public void adminPageNameTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         try {

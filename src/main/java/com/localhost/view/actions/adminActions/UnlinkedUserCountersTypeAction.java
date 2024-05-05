@@ -2,7 +2,6 @@ package com.localhost.view.actions.adminActions;
 
 import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
-import com.localhost.model.CounterType;
 import com.localhost.model.Tools;
 import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
@@ -13,7 +12,7 @@ public class UnlinkedUserCountersTypeAction implements IAction {
         inputOutput.put("Введите имя пользователя.");
         String login = inputOutput.get();
         inputOutput.put("Список подключенных счётчиков пользователя " + login + ":");
-        CounterType[] counters;
+        String[] counters;
         try {
             counters = session.getAdminSession().getUserCounters(login);
         } catch (AdminException e) {
@@ -21,7 +20,7 @@ public class UnlinkedUserCountersTypeAction implements IAction {
         }
         int arrLength = counters.length;
         for (int i = 0; i < arrLength; i++) {
-            inputOutput.put(i + " - " + counters[i].getCounterTypeName());
+            inputOutput.put(i + " - " + counters[i]);
         }
 
         inputOutput.put("Введите номер удаляемого счётчика.");
@@ -36,7 +35,7 @@ public class UnlinkedUserCountersTypeAction implements IAction {
 
         try {
             session.getAdminSession().unlinkCounter(login, counters[selectedNumber]);
-            session.addEvent(session.getLogin() + " удалил счётчик " + counters[selectedNumber].getCounterTypeName() + " у пользователя " + login);
+            session.addEvent(session.getLogin() + " удалил счётчик " + counters[selectedNumber] + " у пользователя " + login);
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }

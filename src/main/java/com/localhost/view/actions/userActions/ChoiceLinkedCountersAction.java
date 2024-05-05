@@ -15,10 +15,10 @@ public class ChoiceLinkedCountersAction implements IAction {
 ////        for (int i = 0; i <= size - 1; i++) {
 ////            inputOutput.put(i + " - " + counters.get(i).getCounterTypeName());
 ////        }
-        CounterType[] counters = session.getAdminSession().getAllSystemCounters();
+        String[] counters = session.getAdminSession().getAllSystemCounters();
         int length = counters.length;
         for (int i = 0; i < length; i++) {
-            inputOutput.put(i + " - " + counters[i].getCounterTypeName());
+            inputOutput.put(i + " - " + counters[i]);
         }
 
 //        counters.stream()
@@ -47,7 +47,7 @@ public class ChoiceLinkedCountersAction implements IAction {
             throw new RuntimeException(e);
         }
         inputOutput.put("Счётчик добавлен.");
-        session.addEvent("Добавил счётчик " + counters[selectedNumber].getCounterTypeName());
+        session.addEvent("Добавил счётчик " + counters[selectedNumber]);
 
         return this;
     }

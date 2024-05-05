@@ -1,7 +1,6 @@
 package com.localhost.view.actions.adminActions;
 
 import com.localhost.in.*;
-import com.localhost.model.CounterType;
 import com.localhost.view.TestInputOutput;
 import com.localhost.view.actions.IAction;
 import org.junit.jupiter.api.Assertions;
@@ -20,8 +19,8 @@ public class ViewAllCountersActionTest {
 
     @Test
     public void adminPageTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         TestInputOutput tio = new TestInputOutput("p");
@@ -31,8 +30,8 @@ public class ViewAllCountersActionTest {
 
     @Test
     public void thisTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         TestInputOutput tio = new TestInputOutput("123");

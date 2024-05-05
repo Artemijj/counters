@@ -19,7 +19,7 @@ public class ChoiceUnlinkedCountersAction implements IAction {
 ////        for (int i = 0; i <= size - 1; i++) {
 ////            inputOutput.put(i + " - " + counters.get(i).getCounterTypeName());
 ////        }
-        CounterType[] types;
+        String[] types;
         try {
             types = session.userCounters();
         } catch (AdminException e) {
@@ -29,7 +29,7 @@ public class ChoiceUnlinkedCountersAction implements IAction {
         int arrLength = types.length;
 
         for (int i = 0; i <= arrLength - 1; i++) {
-            inputOutput.put(i + " - " + types[i].getCounterTypeName());
+            inputOutput.put(i + " - " + types[i]);
         }
         inputOutput.put("p - Выход на предыдущий экран.");
 
@@ -60,7 +60,7 @@ public class ChoiceUnlinkedCountersAction implements IAction {
             throw new RuntimeException(e);
         }
         inputOutput.put("Счётчик удалён.");
-        session.addEvent("Удалил из личного кабинета  счётчик - " + types[selectedNumber].getCounterTypeName());
+        session.addEvent("Удалил из личного кабинета  счётчик - " + types[selectedNumber]);
 
         return this;
     }

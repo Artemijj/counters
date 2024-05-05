@@ -65,39 +65,39 @@ public class AdminSession implements IAdminSession{
 
     @Override
     public void createCounter(String counterName) throws AdminException {
-        userSession.getModelSystemCounters().addCounter(new CounterType(counterName));
+        userSession.getModelSystemCounters().addCounter(counterName);
     }
 
     @Override
-    public CounterType[] getAllSystemCounters() {
-        return userSession.getModelSystemCounters().getCounterList().toArray(new CounterType[0]);
+    public String[] getAllSystemCounters() {
+        return userSession.getModelSystemCounters().getCounterList().toArray(new String[0]);
     }
 
     @Override
-    public CounterType[] getUserCounters(String login) throws AdminException {
+    public String[] getUserCounters(String login) throws AdminException {
         return userSession.getModelUserCounters().getUserCountersListByUser(login)
                 .stream()
                 .map(userCounter -> userCounter.getCounterName())
-                .map(name -> new CounterType(name))
-                .toArray(CounterType[]::new);
+//                .map(name -> new CounterType(name))
+                .toArray(String[]::new);
 //                .toArray(new CounterType[0]);
     }
 
     @Override
-    public void linkCounter(String login, CounterType counter) throws AdminException {
+    public void linkCounter(String login, String counter) throws AdminException {
         if (userSession.isUserExist(login)) {
 //            userSession.getModelUsers().getUser(login).addCounter(counter);
-            userSession.getModelUserCounters().addUserCounter(new UserCounter(userSession.getModelUserCounters().nextId(), login, counter.getCounterTypeName()));
+            userSession.getModelUserCounters().addUserCounter(new UserCounter(login, counter));
         }
     }
 
     @Override
-    public void unlinkCounter(String login, CounterType counter) throws AdminException {
+    public void unlinkCounter(String login, String counter) throws AdminException {
         if (userSession.isUserExist(login)) {
 //            userSession.getModelUsers().getUser(login).deleteCounter(counter);
             UserCounter userCounter = userSession.getModelUserCounters().getUserCountersList().stream()
                 .filter(uC -> uC.getLogin().equals(login))
-                .filter(uC -> uC.getCounterName().equals(counter.getCounterTypeName()))
+                .filter(uC -> uC.getCounterName().equals(counter))
                 .findFirst().orElse(null);
         if (!Objects.isNull(userCounter)) {
             userSession.getModelUserCounters().deleteUserCounter(userCounter);
@@ -106,11 +106,11 @@ public class AdminSession implements IAdminSession{
     }
 
     @Override
-    public CounterValue[] getCounterValues(String login, CounterType counter) throws AdminException {
+    public CounterValue[] getCounterValues(String login, String counter) throws AdminException {
         return userSession.getModelRecordSet().getRecordSetList().stream()
 //                .filter(reading -> reading.getLogin().equals(userSession.getModelUsers().getUser(login)))
                 .filter(reading -> reading.getLogin().equals(userSession.getLogin()))
-                .filter(reading -> reading.getCounterType().equals(counter.getCounterTypeName()))
+                .filter(reading -> reading.getCounterType().equals(counter))
                 .map(reading -> reading.getCounterValue())
                 .toArray(CounterValue[]::new);
     }

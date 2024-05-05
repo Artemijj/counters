@@ -11,7 +11,7 @@ public class ViewAllCountersAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         inputOutput.put("Существующие счётчики:");
-        Arrays.stream(session.getAdminSession().getAllSystemCounters()).forEach(counterType -> inputOutput.put(counterType.getCounterTypeName()));
+        Arrays.stream(session.getAdminSession().getAllSystemCounters()).forEach(counterType -> inputOutput.put(counterType));
         session.addEvent(session.getLogin() + "просмотрел существующие счётчики.");
         inputOutput.put("Для выхода на предыдущий экран введите - p.");
         if (inputOutput.get().equals("p")) {

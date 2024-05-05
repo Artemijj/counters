@@ -1,28 +1,27 @@
 package com.localhost.model.systemCounters;
 
-import com.localhost.model.CounterType;
 
 import java.util.ArrayList;
 
 public class SystemCountersList implements ISystemCounters {
-    private static ArrayList<CounterType> systemCounters;
+    private static ArrayList<String> systemCounters;
 
     public SystemCountersList() {
         systemCounters = new ArrayList<>();
     }
 
     @Override
-    public ArrayList<CounterType> getCounterList() {
+    public ArrayList<String> getCounterList() {
         return systemCounters;
     }
 
     @Override
-    public boolean addCounter(CounterType counterType) {
+    public boolean addCounter(String counterType) {
         boolean answer = false;
-        long counterTypeCount = systemCounters.stream()
-                .filter(cT -> cT.getCounterTypeName().equals(counterType.getCounterTypeName()))
-                .count();
-        if ((counterTypeCount == 0) && (!systemCounters.contains(counterType))) {
+//        long counterTypeCount = systemCounters.stream()
+//                .filter(cT -> cT.getCounterTypeName().equals(counterType.getCounterTypeName()))
+//                .count();
+        if (!systemCounters.contains(counterType)) {
             systemCounters.add(counterType);
             answer = true;
         }
@@ -30,16 +29,16 @@ public class SystemCountersList implements ISystemCounters {
     }
 
     @Override
-    public void deleteCounter(CounterType counterType) {
+    public void deleteCounter(String counterType) {
         systemCounters.remove(counterType);
     }
 
-    @Override
-    public CounterType getCounter(String counter) {
-        return systemCounters.stream()
-                .filter(counterType -> counterType.getCounterTypeName().equals(counter))
-                .map(CounterType.class::cast)
-                .findFirst()
-                .orElse(null);
-    }
+//    @Override
+//    public CounterType getCounter(String counter) {
+//        return systemCounters.stream()
+//                .filter(counterType -> counterType.getCounterTypeName().equals(counter))
+//                .map(CounterType.class::cast)
+//                .findFirst()
+//                .orElse(null);
+//    }
 }

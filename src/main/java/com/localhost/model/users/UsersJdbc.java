@@ -83,7 +83,7 @@ public class UsersJdbc implements IUsers {
 
     @Override
     public User getUser(String login) {
-        User user;
+        User user = null;
         String sql = "SELECT * FROM users WHERE login=?";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -97,7 +97,7 @@ public class UsersJdbc implements IUsers {
         } catch (SQLException e) {
             System.err.println("SQL error code - " + e.getErrorCode());
             System.err.println(e.getMessage());
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
         return user;
     }

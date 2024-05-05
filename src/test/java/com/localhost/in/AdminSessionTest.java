@@ -125,13 +125,13 @@ public class AdminSessionTest {
 
     @Test
     public void getAllSystemCountersTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
-        CounterType three = new CounterType("three");
+        String one = "one";
+        String two = "two";
+        String three = "three";
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         userSession.getModelSystemCounters().addCounter(three);
-        CounterType[] systemCounters = adminSession.getAllSystemCounters();
+        String[] systemCounters = adminSession.getAllSystemCounters();
         int expectedNumber = 3;
         int actualNumber = systemCounters.length;
         Assertions.assertEquals(expectedNumber, actualNumber);
@@ -139,13 +139,13 @@ public class AdminSessionTest {
 
     @Test
     public void getUserCountersTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
-        CounterType three = new CounterType("three");
+        String one = "one";
+        String two = "two";
+        String three = "three";
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         userSession.getModelSystemCounters().addCounter(three);
-        CounterType[] userCounters;
+        String[] userCounters;
         try {
             adminSession.addUser("newUser", "passwd");
             adminSession.linkCounter("newUser", one);
@@ -162,9 +162,9 @@ public class AdminSessionTest {
 
     @Test
     public void linkCounterTest() {
-        CounterType one = new CounterType("one");
+        String one = "one";
         userSession.getModelSystemCounters().addCounter(one);
-        CounterType[] userCounters;
+        String[] userCounters;
         try {
             adminSession.addUser("newUser", "passwd");
             adminSession.linkCounter("newUser", one);
@@ -179,9 +179,9 @@ public class AdminSessionTest {
 
     @Test
     public void unlinkCounterTest() {
-        CounterType one = new CounterType("one");
+        String one = "one";
         userSession.getModelSystemCounters().addCounter(one);
-        CounterType[] userCounters;
+        String[] userCounters;
         try {
             adminSession.addUser("newUser", "passwd");
             adminSession.linkCounter("newUser", one);
@@ -197,8 +197,8 @@ public class AdminSessionTest {
 
     @Test
     public void getCounterValuesTest() {
-        CounterType one = new CounterType("one");
-        String oneTypeName = one.getCounterTypeName();
+        String one = "one";
+//        String oneTypeName = one.getCounterTypeName();
         userSession.getModelSystemCounters().addCounter(one);
 //        User user;
         try {
@@ -211,8 +211,8 @@ public class AdminSessionTest {
         userSession.logIn("newUser", "passwd");
         CounterValue counterValue1 = new CounterValue(new Date(0L), 1);
         CounterValue counterValue2 = new CounterValue(new Date(), 2);
-        userSession.getModelRecordSet().addRecord(new Record(1, "newUser", oneTypeName, counterValue1));
-        userSession.getModelRecordSet().addRecord(new Record(2, "newUser", oneTypeName, counterValue2));
+        userSession.getModelRecordSet().addRecord(new Record(1, "newUser", one, counterValue1));
+        userSession.getModelRecordSet().addRecord(new Record(2, "newUser", one, counterValue2));
         CounterValue[] counterValues;
         try {
             counterValues = adminSession.getCounterValues("newUser", one);

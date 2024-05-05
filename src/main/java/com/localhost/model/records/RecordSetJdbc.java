@@ -77,4 +77,9 @@ public class RecordSetJdbc implements IRecordSet{
         }
         return ++id;
     }
+
+    private boolean checkDate() {
+        String sql = "SELECT date FROM records";
+        return false;
+    }
 }

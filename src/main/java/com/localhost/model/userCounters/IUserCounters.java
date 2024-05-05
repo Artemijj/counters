@@ -9,5 +9,5 @@ public interface IUserCounters {
     ArrayList<UserCounter> getUserCountersListByUser(String login);
     boolean addUserCounter(UserCounter userCounter);
     void deleteUserCounter(UserCounter userCounter);
-    int nextId();
+//    int nextId();
 }

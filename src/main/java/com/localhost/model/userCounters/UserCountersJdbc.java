@@ -21,12 +21,14 @@ public class UserCountersJdbc implements IUserCounters{
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
-                UserCounter userCounter = new UserCounter(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_name"));
+                UserCounter userCounter = new UserCounter(resultSet.getString("login"), resultSet.getString("counter_name"));
                 userCounters.add(userCounter);
             }
 //            connection.close();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+//            throw new RuntimeException(e);
         }
         return userCounters;
     }
@@ -40,7 +42,7 @@ public class UserCountersJdbc implements IUserCounters{
             stmt.setString(1, login);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
-                UserCounter userCounter = new UserCounter(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_name"));
+                UserCounter userCounter = new UserCounter(resultSet.getString("login"), resultSet.getString("counter_name"));
                 userCounters.add(userCounter);
             }
 //            connection.close();
@@ -54,16 +56,16 @@ public class UserCountersJdbc implements IUserCounters{
 
     @Override
     public boolean addUserCounter(UserCounter userCounter) {
-        int id = nextId();
+//        int id = nextId();
         String login = userCounter.getLogin();
         String counterName = userCounter.getCounterName();
-        String sql = "INSERT INTO events VALUES (?, ?, ?)";
+        String sql = "INSERT INTO events VALUES (?, ?)";
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, id);
-            stmt.setString(2, login);
-            stmt.setString(3, counterName);
+//            stmt.setInt(1, id);
+            stmt.setString(1, login);
+            stmt.setString(2, counterName);
             result = stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
@@ -91,20 +93,20 @@ public class UserCountersJdbc implements IUserCounters{
     }
 
 
-    @Override
-    public int nextId() {
-        String sql = "SELECT id FROM user_counters ORDER BY id DESC LIMIT 1";
-        int id = 0;
-        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery(sql);
-            id = resultSet.getInt("id");
-//            connection.close();
-        } catch (SQLException e) {
-            System.err.println("SQL error code - " + e.getErrorCode());
-            System.err.println(e.getMessage());
-//            throw new RuntimeException(e);
-        }
-        return ++id;
-    }
+//    @Override
+//    public int nextId() {
+//        String sql = "SELECT id FROM user_counters ORDER BY id DESC LIMIT 1";
+//        int id = 0;
+//        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+//            Statement stmt = connection.createStatement();
+//            ResultSet resultSet = stmt.executeQuery(sql);
+//            id = resultSet.getInt("id");
+////            connection.close();
+//        } catch (SQLException e) {
+//            System.err.println("SQL error code - " + e.getErrorCode());
+//            System.err.println(e.getMessage());
+////            throw new RuntimeException(e);
+//        }
+//        return ++id;
+//    }
 }

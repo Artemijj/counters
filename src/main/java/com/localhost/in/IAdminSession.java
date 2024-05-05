@@ -1,6 +1,5 @@
 package com.localhost.in;
 
-import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
 import com.localhost.model.Event;
 import com.localhost.model.User;
@@ -18,11 +17,11 @@ public interface IAdminSession {
 
     void createCounter(String counterName) throws AdminException;
 
-    CounterType[] getAllSystemCounters();
-    CounterType[] getUserCounters(String login) throws AdminException;
-    void linkCounter(String login, CounterType counter) throws AdminException;
-    void unlinkCounter(String login, CounterType counter) throws AdminException;
-    CounterValue[] getCounterValues(String login, CounterType counter) throws AdminException;
+    String[] getAllSystemCounters();
+    String[] getUserCounters(String login) throws AdminException;
+    void linkCounter(String login, String counter) throws AdminException;
+    void unlinkCounter(String login, String counter) throws AdminException;
+    CounterValue[] getCounterValues(String login, String counter) throws AdminException;
     Event[] getUserActivities(String login) throws AdminException;
     void setFio(String login, String fio) throws AdminException;
 }

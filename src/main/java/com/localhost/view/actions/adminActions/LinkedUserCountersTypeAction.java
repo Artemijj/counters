@@ -2,7 +2,6 @@ package com.localhost.view.actions.adminActions;
 
 import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
-import com.localhost.model.CounterType;
 import com.localhost.model.Tools;
 import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
@@ -11,10 +10,10 @@ public class LinkedUserCountersTypeAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         inputOutput.put("Список существующих счётчиков:");
-        CounterType[] counters = session.getAdminSession().getAllSystemCounters();
+        String[] counters = session.getAdminSession().getAllSystemCounters();
         int arrLength = counters.length;
         for (int i = 0; i < arrLength; i++) {
-            inputOutput.put(i + " - " + counters[i].getCounterTypeName());
+            inputOutput.put(i + " - " + counters[i]);
         }
 
         inputOutput.put("Введите имя пользователя.");
@@ -30,7 +29,7 @@ public class LinkedUserCountersTypeAction implements IAction {
 
         try {
             session.getAdminSession().linkCounter(login, counters[selectedNumber]);
-            session.addEvent(session.getLogin() + " добавил счётчик " + counters[selectedNumber].getCounterTypeName() + " пользователю " + login);
+            session.addEvent(session.getLogin() + " добавил счётчик " + counters[selectedNumber] + " пользователю " + login);
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }

@@ -14,7 +14,7 @@ public class UserCountersListTest {
     @BeforeEach
     public void setUp() {
         userCountersList = new UserCountersList();
-        userCounter = new UserCounter(userCountersList.nextId(), "name", counterName);
+        userCounter = new UserCounter("name", counterName);
     }
 
     @Test

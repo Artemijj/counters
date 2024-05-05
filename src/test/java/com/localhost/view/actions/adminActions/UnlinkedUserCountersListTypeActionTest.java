@@ -1,7 +1,6 @@
 package com.localhost.view.actions.adminActions;
 
 import com.localhost.in.*;
-import com.localhost.model.CounterType;
 import com.localhost.view.TestInputOutput;
 import com.localhost.view.actions.IAction;
 import org.junit.jupiter.api.Assertions;
@@ -20,8 +19,8 @@ public class UnlinkedUserCountersListTypeActionTest {
 
     @Test
     public void unlinkedUserCountersTypeTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         try {
@@ -36,8 +35,8 @@ public class UnlinkedUserCountersListTypeActionTest {
 
     @Test
     public void adminTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         try {
@@ -58,8 +57,8 @@ public class UnlinkedUserCountersListTypeActionTest {
 
     @Test
     public void linkedUserCountersTypeMessageTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         try {

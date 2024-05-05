@@ -12,7 +12,7 @@ public class CreateNewCounterTypeAction implements IAction {
         inputOutput.put("Введите название нового счётчика.\n" +
                 "Для выхода на предыдущий экран введите - p.");
         counterType = inputOutput.get();
-        if (!counterType.equals("p") && !session.getModelSystemCounters().getCounterList().contains(session.getModelSystemCounters().getCounter(counterType))) {
+        if (!counterType.equals("p") && !session.getModelSystemCounters().getCounterList().contains(counterType)) {
             try {
                 session.getAdminSession().createCounter(counterType);
                 session.addEvent("Создание счётчика - " + counterType);

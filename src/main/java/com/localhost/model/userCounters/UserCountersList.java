@@ -44,8 +44,8 @@ public class UserCountersList implements IUserCounters{
         userCounters.remove(userCounter);
     }
 
-    @Override
-    public int nextId() {
-        return (userCounters.size() == 0) ? 1 : userCounters.stream().map(UserCounter::getId).max(Comparator.naturalOrder()).get() + 1;
-    }
+//    @Override
+//    public int nextId() {
+//        return (userCounters.size() == 0) ? 1 : userCounters.stream().map(UserCounter::getId).max(Comparator.naturalOrder()).get() + 1;
+//    }
 }

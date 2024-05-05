@@ -2,7 +2,6 @@ package com.localhost.view.actions.userActions;
 
 import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
-import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
 import com.localhost.model.Tools;
 import com.localhost.view.IInputOutput;
@@ -14,7 +13,7 @@ import java.util.Arrays;
 public class ViewCountersByMonthAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
-        CounterType[] types;
+        String[] types;
         try {
             types = session.userCounters();
         } catch (AdminException e) {
@@ -26,7 +25,7 @@ public class ViewCountersByMonthAction implements IAction {
         inputOutput.put("Выберите тип счётчика, для просмотра показаний.");
 
         for (int i = 0; i <= arrLength - 1; i++) {
-            inputOutput.put(i + " - " + types[i].getCounterTypeName());
+            inputOutput.put(i + " - " + types[i]);
         }
         inputOutput.put("p - Выход на предыдущий экран.");
 
@@ -56,13 +55,13 @@ public class ViewCountersByMonthAction implements IAction {
             throw new RuntimeException(e);
         }
 
-        inputOutput.put("Счётчик - " + types[selectedNumber].getCounterTypeName() + ":");
+        inputOutput.put("Счётчик - " + types[selectedNumber] + ":");
 
         Arrays.stream(values)
                 .filter(counterValue ->  counterValue.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear() == year)
                 .filter(counterValue ->  counterValue.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() == month)
                 .forEach(counterValue -> inputOutput.put(counterValue.getDate() + " | " + counterValue.getValue()));
-        session.addEvent("Просмотрел показания счётчика " + types[selectedNumber].getCounterTypeName());
+        session.addEvent("Просмотрел показания счётчика " + types[selectedNumber]);
 
         return new ViewCountersByMonthAction();
     }

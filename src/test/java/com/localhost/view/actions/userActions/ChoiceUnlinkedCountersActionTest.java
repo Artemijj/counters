@@ -1,7 +1,6 @@
 package com.localhost.view.actions.userActions;
 
 import com.localhost.in.*;
-import com.localhost.model.CounterType;
 import com.localhost.view.TestInputOutput;
 import com.localhost.view.actions.IAction;
 import org.junit.jupiter.api.Assertions;
@@ -20,8 +19,8 @@ public class ChoiceUnlinkedCountersActionTest {
 
     @Test
     public void choiceUnlinkedCountersTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
@@ -41,8 +40,8 @@ public class ChoiceUnlinkedCountersActionTest {
 
     @Test
     public void choiceUnlinkedWrongCountersTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
@@ -77,8 +76,8 @@ public class ChoiceUnlinkedCountersActionTest {
 
     @Test
     public void messageTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
             userSession.getAdminSession().linkCounter("name", one);

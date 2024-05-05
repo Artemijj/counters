@@ -18,7 +18,7 @@ public class ViewUserCountersAction implements IAction {
         if (!login.equals("p")) {
             try {
                 Arrays.stream(session.getAdminSession().getUserCounters(login))
-                        .forEach(counterType -> inputOutput.put(counterType.getCounterTypeName()));
+                        .forEach(counterType -> inputOutput.put(counterType));
             } catch (AdminException e) {
                 return new AdminPageAction();
             }

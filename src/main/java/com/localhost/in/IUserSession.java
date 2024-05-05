@@ -19,16 +19,16 @@ public interface IUserSession {
         return getAdminSession().getUserData(getLogin());
     }
 
-    default CounterType[] userCounters() throws AdminException {
+    default String[] userCounters() throws AdminException {
         return getAdminSession().getUserCounters(getLogin());
     }
 
-    default CounterValue[] getCounterValues(CounterType counter) throws AdminException {
+    default CounterValue[] getCounterValues(String counter) throws AdminException {
         return getAdminSession().getCounterValues(getLogin(), counter);
     }
 
-    CounterValue getLastValue(CounterType counter);
-    void addCounterValue(CounterType counter, CounterValue value) throws AddCounterException;
+    CounterValue getLastValue(String counter);
+    void addCounterValue(String counter, CounterValue value) throws AddCounterException;
     IAdminSession getAdminSession();
     IUsers getModelUsers();
     IUserCounters getModelUserCounters();
@@ -37,6 +37,6 @@ public interface IUserSession {
     IEventLog getModelEventLog();
     void addEvent(String event);
     boolean isUserExist(String login);
-    void addCounter(CounterType counterType) throws AddCounterException;
-    void deleteCounter(CounterType counterType) throws AddCounterException;
+    void addCounter(String counterType) throws AddCounterException;
+    void deleteCounter(String counterType) throws AddCounterException;
 }

@@ -1,6 +1,5 @@
 package com.localhost.in;
 
-import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
 import com.localhost.model.Record;
 import com.localhost.model.User;
@@ -74,10 +73,10 @@ public class UserSessionTest {
 
     @Test
     public void getLastValueClassTest() {
-        CounterType counterType = new CounterType("type");
-        String counterTypeName = counterType.getCounterTypeName();
+        String counterType = "type";
+//        String counterTypeName = counterType.getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), 1);
-        Record record = new Record(1, "name", counterTypeName, counterValue);
+        Record record = new Record(1, "name", counterType, counterValue);
         userSession.getModelRecordSet().addRecord(record);
         CounterValue actual = userSession.getLastValue(counterType);
         Assertions.assertInstanceOf(CounterValue.class, actual);
@@ -87,10 +86,10 @@ public class UserSessionTest {
     public void getLastValueValueTest() {
         userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
-        CounterType counterType = new CounterType("type");
-        String counterTypeName = counterType.getCounterTypeName();
+        String counterType = "type";
+//        String counterTypeName = counterType.getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), 1);
-        Record record = new Record(1, "name", counterTypeName, counterValue);
+        Record record = new Record(1, "name", counterType, counterValue);
         userSession.getModelRecordSet().addRecord(record);
         int expectedValue = 1;
         CounterValue actualCounterValue = userSession.getLastValue(counterType);
@@ -149,7 +148,7 @@ public class UserSessionTest {
     public void addCounterTest() {
         userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
-        CounterType one = new CounterType("one");
+        String one = "one";
         userSession.addCounter(one);
         int expectedNumber = 1;
         int actualNumber;
@@ -165,7 +164,7 @@ public class UserSessionTest {
     public void deleteCounterTest() {
         userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
-        CounterType one = new CounterType("one");
+        String one = "one";
         userSession.addCounter(one);
         userSession.deleteCounter(one);
         int expectedNumber = 0;

@@ -3,7 +3,6 @@ package com.localhost.view.actions.userActions;
 import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
 import com.localhost.in.UserSession;
-import com.localhost.model.CounterType;
 import com.localhost.model.CounterValue;
 import com.localhost.model.Record;
 import com.localhost.view.TestInputOutput;
@@ -26,8 +25,8 @@ public class ChoiceSendCounterActionTest {
 
     @Test
     public void choiceSendCounterTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
@@ -47,8 +46,8 @@ public class ChoiceSendCounterActionTest {
 
     @Test
     public void choiceSendWrongCounterNumberTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
@@ -68,8 +67,8 @@ public class ChoiceSendCounterActionTest {
 
     @Test
     public void choiceSendWrongValueCounterTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
@@ -104,8 +103,8 @@ public class ChoiceSendCounterActionTest {
 
     @Test
     public void wrongCounterNumberMessageTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
@@ -127,8 +126,8 @@ public class ChoiceSendCounterActionTest {
 
     @Test
     public void wrongDateMessageTest() {
-        CounterType one = new CounterType("one");
-        CounterType two = new CounterType("two");
+        String one = "one";
+        String two = "two";
         try {
             userSession.getAdminSession().addUser("name", "passwd");
         } catch (AdminException e) {
