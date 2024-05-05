@@ -13,7 +13,7 @@ public class EventLogList implements IEventLog{
     }
 
     @Override
-    public ArrayList<Event> getEventLog() {
+    public ArrayList<Event> getEventLogList() {
         return events;
     }
 
@@ -27,8 +27,8 @@ public class EventLogList implements IEventLog{
         return answer;
     }
 
-    @Override
-    public int nextId() {
-        return (events.size() == 0) ? 1 : events.stream().map(Event::getId).max(Comparator.naturalOrder()).get() + 1;
-    }
+//    @Override
+//    public int nextId() {
+//        return (events.size() == 0) ? 1 : events.stream().map(Event::getId).max(Comparator.naturalOrder()).get() + 1;
+//    }
 }

@@ -2,7 +2,7 @@ package com.localhost.model;
 
 import java.util.Date;
 
-public class Event {
+public class Event implements Id{
     private int id;
     private String login;
     private Date date;

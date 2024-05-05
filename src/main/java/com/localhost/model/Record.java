@@ -1,6 +1,6 @@
 package com.localhost.model;
 
-public class Record {
+public class Record implements Id{
     private Integer id;
     private String login;
     private String counterType;
@@ -13,7 +13,7 @@ public class Record {
         this.counterValue = counterValue;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

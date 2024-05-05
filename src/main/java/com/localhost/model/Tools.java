@@ -17,7 +17,8 @@ public class Tools {
     }
 
     public static <T> int nextIdList(ArrayList<T> list) {
-        return (list.size() == 0) ? 1 : list.stream().map(T::getId).max(Comparator.naturalOrder()).get() + 1;
+        ArrayList<Id> newList = (ArrayList<Id>) list;
+        return (newList.size() == 0) ? 1 : newList.stream().map(Id::getId).max(Comparator.naturalOrder()).get() + 1;
     }
 
     public static int nextIdJdbc() {

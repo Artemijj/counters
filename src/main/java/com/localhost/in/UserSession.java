@@ -118,7 +118,7 @@ public class UserSession implements IUserSession{
 
     @Override
     public void addEvent(String event) {
-        model.getEventLog().addEvent(new Event(model.getEventLog().nextId(), getLogin(), new Date(), event));
+        model.getEventLog().addEvent(new Event(Tools.nextIdList(model.getEventLog().getEventLogList()), getLogin(), new Date(), event));
     }
 
     @Override

@@ -37,7 +37,7 @@ public class RecordSetJdbc implements IRecordSet{
 
     @Override
     public boolean addRecord(Record record) {
-        int id = nextId();
+/////        int id = nextId();
         String login = record.getLogin();
         String counterType = record.getCounterType();
         Timestamp date = new Timestamp(record.getCounterValue().getDate().getTime());
@@ -46,7 +46,7 @@ public class RecordSetJdbc implements IRecordSet{
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, id);
+/////            stmt.setInt(1, id);
             stmt.setString(2, login);
             stmt.setString(3, counterType);
             stmt.setTimestamp(4, date);
@@ -61,22 +61,22 @@ public class RecordSetJdbc implements IRecordSet{
         return result == 1;
     }
 
-    @Override
-    public int nextId() {
-        String sql = "SELECT id FROM records ORDER BY id DESC LIMIT 1";
-        int id = 0;
-        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery(sql);
-            id = resultSet.getInt("id");
-//            connection.close();
-        } catch (SQLException e) {
-            System.err.println("SQL error code - " + e.getErrorCode());
-            System.err.println(e.getMessage());
-//            throw new RuntimeException(e);
-        }
-        return ++id;
-    }
+//    @Override
+//    public int nextId() {
+//        String sql = "SELECT id FROM records ORDER BY id DESC LIMIT 1";
+//        int id = 0;
+//        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+//            Statement stmt = connection.createStatement();
+//            ResultSet resultSet = stmt.executeQuery(sql);
+//            id = resultSet.getInt("id");
+////            connection.close();
+//        } catch (SQLException e) {
+//            System.err.println("SQL error code - " + e.getErrorCode());
+//            System.err.println(e.getMessage());
+////            throw new RuntimeException(e);
+//        }
+//        return ++id;
+//    }
 
     private boolean checkDate() {
         String sql = "SELECT date FROM records";

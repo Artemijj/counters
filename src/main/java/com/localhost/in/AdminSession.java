@@ -117,7 +117,7 @@ public class AdminSession implements IAdminSession{
 
     @Override
     public Event[] getUserActivities(String login) throws AdminException {
-        return userSession.getModelEventLog().getEventLog().stream()
+        return userSession.getModelEventLog().getEventLogList().stream()
                 .filter(event -> event.getLogin().equals(login)).toArray(Event[]::new);
     }
 

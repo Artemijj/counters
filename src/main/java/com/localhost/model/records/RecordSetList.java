@@ -42,9 +42,9 @@ public class RecordSetList implements IRecordSet{
 //        records.remove(record);
 //    }
 
-    @Override
-    public int nextId() {
-        return (records.size() == 0) ? 1 : records.stream().map(Record::getId).max(Comparator.naturalOrder()).get() + 1;
-    }
+//    @Override
+//    public int nextId() {
+//        return (records.size() == 0) ? 1 : records.stream().map(Record::getId).max(Comparator.naturalOrder()).get() + 1;
+//    }
 
 }
