@@ -6,7 +6,6 @@ import com.localhost.model.Record;
 import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class ChoiceSendCounterAction implements IAction {
@@ -43,7 +42,7 @@ public class ChoiceSendCounterAction implements IAction {
 
         inputOutput.put("Введите показание счётчика (целое число).");
         int value = Tools.parse(inputOutput.get());
-        int id = Tools.nextIdList(session.getModelRecordSet().getRecordSetList());
+        int id = Tools.nextId(session.getModelRecordSet().getRecordSetList());
         String counterType = types[selectedNumber];
         CounterValue counterValue = new CounterValue(new Date(), value);
         boolean result = session.getModelRecordSet().addRecord(new Record(id, session.getLogin(), counterType, counterValue));

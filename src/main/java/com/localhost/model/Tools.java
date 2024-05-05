@@ -1,7 +1,5 @@
 package com.localhost.model;
 
-import com.localhost.in.AdminException;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -16,12 +14,8 @@ public class Tools {
         return selectedNumber;
     }
 
-    public static <T> int nextIdList(ArrayList<T> list) {
+    public static <T> int nextId(ArrayList<T> list) {
         ArrayList<Id> newList = (ArrayList<Id>) list;
         return (newList.size() == 0) ? 1 : newList.stream().map(Id::getId).max(Comparator.naturalOrder()).get() + 1;
-    }
-
-    public static int nextIdJdbc() {
-        return 0;
     }
 }

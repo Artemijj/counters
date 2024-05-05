@@ -3,6 +3,7 @@ package com.localhost.model.records;
 import com.localhost.model.CounterValue;
 import com.localhost.model.DBCPDataSourceFactory;
 import com.localhost.model.Record;
+import com.localhost.model.Tools;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class RecordSetJdbc implements IRecordSet{
 
     @Override
     public boolean addRecord(Record record) {
-/////        int id = nextId();
+        int id = Tools.nextId(getRecordSetList());
         String login = record.getLogin();
         String counterType = record.getCounterType();
         Timestamp date = new Timestamp(record.getCounterValue().getDate().getTime());
@@ -46,7 +47,7 @@ public class RecordSetJdbc implements IRecordSet{
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-/////            stmt.setInt(1, id);
+            stmt.setInt(1, id);
             stmt.setString(2, login);
             stmt.setString(3, counterType);
             stmt.setTimestamp(4, date);

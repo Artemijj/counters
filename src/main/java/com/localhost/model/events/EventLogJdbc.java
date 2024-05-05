@@ -2,6 +2,7 @@ package com.localhost.model.events;
 
 import com.localhost.model.DBCPDataSourceFactory;
 import com.localhost.model.Event;
+import com.localhost.model.Tools;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class EventLogJdbc implements IEventLog{
 
     @Override
     public boolean addEvent(Event event) {
-/////        int id = nextId();
+        int id = Tools.nextId(getEventLogList());
         String login = event.getLogin();
         Timestamp date = new Timestamp(event.getDate().getTime());
         String txt = event.getActivity();
@@ -44,7 +45,7 @@ public class EventLogJdbc implements IEventLog{
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-/////            stmt.setInt(1, id);
+            stmt.setInt(1, id);
             stmt.setString(2, login);
             stmt.setTimestamp(3, date);
             stmt.setString(4, txt);
