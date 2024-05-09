@@ -7,11 +7,11 @@ import com.localhost.model.users.IUsers;
 import org.junit.jupiter.api.*;
 
 public class ModelJdbcTest {
-    ModelList modelJdbc;
+    ModelJdbc modelJdbc;
 
     @BeforeEach
     public void setUp() {
-        modelJdbc = new ModelList();
+        modelJdbc = new ModelJdbc();
     }
 
     @Test

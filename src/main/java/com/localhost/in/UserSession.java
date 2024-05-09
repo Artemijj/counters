@@ -3,6 +3,7 @@ package com.localhost.in;
 import com.localhost.model.*;
 import com.localhost.model.Record;
 import com.localhost.model.model.IModel;
+import com.localhost.model.model.ModelJdbc;
 import com.localhost.model.model.ModelList;
 import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.IEventLog;
@@ -20,7 +21,7 @@ public class UserSession implements IUserSession{
     private IModel model;
 
     public UserSession() {
-        model = new ModelList();
+        model = new ModelJdbc();
     }
 
     @Override
