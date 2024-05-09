@@ -23,7 +23,7 @@ public class SystemCountersJdbc implements ISystemCounters {
     @Override
     public ArrayList<String> getCounterList() {
         ArrayList<String> counterTypes = new ArrayList<>();
-        String sql = "SELECT * FROM counters";
+        String sql = "SELECT * FROM counter.system_counters";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
@@ -43,12 +43,12 @@ public class SystemCountersJdbc implements ISystemCounters {
     @Override
     public boolean addCounter(String counterType) {
 //        String counterName = counterType.getCounterTypeName();
-        String sql = "INSERT INTO counters VALUES (?)";
+        String sql = "INSERT INTO counter.system_counters VALUES (?)";
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            result = stmt.executeUpdate();
             stmt.setString(1, counterType);
+            result = stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
             System.err.println("SQL error code - " + e.getErrorCode());
@@ -61,11 +61,11 @@ public class SystemCountersJdbc implements ISystemCounters {
     @Override
     public void deleteCounter(String counterType) {
 //        String counterName = counterType.getCounterTypeName();
-        String sql = "DELETE FROM counters WHERE counter_type=?";
+        String sql = "DELETE FROM counter.system_counters WHERE counter_type=?";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.executeUpdate();
             stmt.setString(1, counterType);
+            stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
             System.err.println("SQL error code - " + e.getErrorCode());

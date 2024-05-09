@@ -5,7 +5,7 @@ import com.localhost.model.UserCounter;
 import org.junit.jupiter.api.*;
 
 public class UserCountersListTest {
-    private UserCountersList userCountersList;
+    private IUserCounters userCountersList;
     private User user = new User("name", "pass", false);
     private String counterName = "counterName";
 

@@ -14,7 +14,7 @@ public class Tools {
         return selectedNumber;
     }
 
-    public static <T> int nextId(ArrayList<T> list) {
+    public static synchronized <T> int nextId(ArrayList<T> list) {
         ArrayList<Id> newList = (ArrayList<Id>) list;
         return (newList.size() == 0) ? 1 : newList.stream().map(Id::getId).max(Comparator.naturalOrder()).get() + 1;
     }

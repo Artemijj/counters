@@ -15,7 +15,7 @@ public class DBCPDataSourceFactory {
         BasicDataSource localDataSource = dataSource;
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("db.properties"));
+            properties.load(new FileInputStream("./src/main/resources/db.properties"));
         } catch (IOException e) {
             System.err.println("The file does not exist...");
         }

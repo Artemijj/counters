@@ -36,11 +36,11 @@ public class RecordSetList implements IRecordSet{
         }
         return answer;
     }
-//
-//    @Override
-//    public void deleteRecord(Record record) {
-//        records.remove(record);
-//    }
+
+    @Override
+    public void deleteRecord(Record record) {
+        records.remove(record);
+    }
 
 //    @Override
 //    public int nextId() {

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+‹!-- Здесь мы позже напишем скрипт -->
+    <changeSet id="create_table_users" author="artemij">
+        <createTable tableName="users">
+            <column name="login" type="varchar">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_admin" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fio" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="address" type="varchar">
+                <constraints nullable="true"/>
+            </column>
+            <column name="phone" type="varchar">
+                <constraints nullable="true" unique="true" uniqueConstraintName="users_phone_key"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

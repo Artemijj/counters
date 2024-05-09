@@ -18,12 +18,13 @@ public class EventLogJdbc implements IEventLog{
     @Override
     public ArrayList<Event> getEventLogList() {
         ArrayList<Event> events = new ArrayList<>();
-        String sql = "SELECT * FROM events";
+        String sql = "SELECT * FROM counter.events";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
-                Event event = new Event(resultSet.getInt("id"), resultSet.getString("login"), new Date(resultSet.getTimestamp("date").getTime()), resultSet.getString("event"));
+//                Event event = new Event(resultSet.getInt("id"), resultSet.getString("login"), new Date(resultSet.getTimestamp("date").getTime()), resultSet.getString("event"));
+                Event event = new Event(resultSet.getInt("id"), resultSet.getString("login"), new Date(resultSet.getDate("date").getTime()), resultSet.getString("event"));
                 events.add(event);
             }
 //            connection.close();
@@ -37,17 +38,18 @@ public class EventLogJdbc implements IEventLog{
 
     @Override
     public boolean addEvent(Event event) {
-        int id = Tools.nextId(getEventLogList());
+        int id = event.getId();
         String login = event.getLogin();
-        Timestamp date = new Timestamp(event.getDate().getTime());
+//        Timestamp date = new Timestamp(event.getDate().getTime());
+        java.sql.Date date = new java.sql.Date(event.getDate().getTime());
         String txt = event.getActivity();
-        String sql = "INSERT INTO events VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO counter.events VALUES (?, ?, ?, ?)";
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, id);
             stmt.setString(2, login);
-            stmt.setTimestamp(3, date);
+            stmt.setDate(3, date);
             stmt.setString(4, txt);
             result = stmt.executeUpdate();
 //            connection.close();

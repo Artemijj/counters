@@ -6,7 +6,9 @@ import com.localhost.model.Record;
 import com.localhost.model.Tools;
 
 import java.sql.*;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class RecordSetJdbc implements IRecordSet{
@@ -19,12 +21,13 @@ public class RecordSetJdbc implements IRecordSet{
     @Override
     public ArrayList<Record> getRecordSetList() {
         ArrayList<Record> records = new ArrayList<>();
-        String sql = "SELECT * FROM records";
+        String sql = "SELECT * FROM counter.records";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
-                Record record = new Record(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getTimestamp("date").getTime()), resultSet.getInt("value")));
+//                Record record = new Record(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getTimestamp("date").getTime()), resultSet.getInt("value")));
+                Record record = new Record(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getDate("date").getTime()), resultSet.getInt("value")));
                 records.add(record);
             }
 //            connection.close();
@@ -38,28 +41,47 @@ public class RecordSetJdbc implements IRecordSet{
 
     @Override
     public boolean addRecord(Record record) {
-        int id = Tools.nextId(getRecordSetList());
+        int id = record.getId();
         String login = record.getLogin();
         String counterType = record.getCounterType();
-        Timestamp date = new Timestamp(record.getCounterValue().getDate().getTime());
+//        Timestamp date = new Timestamp(record.getCounterValue().getDate().getTime());
+        java.sql.Date date = new java.sql.Date(record.getCounterValue().getDate().getTime());
         int value = record.getCounterValue().getValue();
-        String sql = "INSERT INTO records VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO counter.records VALUES (?, ?, ?, ?, ?)";
         int result = 0;
+        if (checkDate()) {
+            try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+                PreparedStatement stmt = connection.prepareStatement(sql);
+                stmt.setInt(1, id);
+                stmt.setString(2, login);
+                stmt.setString(3, counterType);
+                stmt.setDate(4, date);
+                stmt.setInt(5, value);
+                result = stmt.executeUpdate();
+//            connection.close();
+            } catch (SQLException e) {
+                System.err.println("SQL error code - " + e.getErrorCode());
+                System.err.println(e.getMessage());
+//            throw new RuntimeException(e);
+            }
+        }
+        return result == 1;
+    }
+
+    @Override
+    public void deleteRecord(Record record) {
+        int id = record.getId();
+        String sql = "DELETE FROM counter.records WHERE id=?";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.executeUpdate();
             stmt.setInt(1, id);
-            stmt.setString(2, login);
-            stmt.setString(3, counterType);
-            stmt.setTimestamp(4, date);
-            stmt.setInt(5, value);
-            result = stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
             System.err.println("SQL error code - " + e.getErrorCode());
             System.err.println(e.getMessage());
 //            throw new RuntimeException(e);
         }
-        return result == 1;
     }
 
 //    @Override
@@ -80,7 +102,25 @@ public class RecordSetJdbc implements IRecordSet{
 //    }
 
     private boolean checkDate() {
-        String sql = "SELECT date FROM records";
-        return false;
+        Date currentDate = new Date();
+        int actualMonth = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue();
+        int actualYear = currentDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+        String sql = "SELECT count(*) FROM counter.records WHERE EXTRACT(MONTH FROM date) = ? AND EXTRACT(YEAR FROM date) = ?";
+        int result = 1;
+        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, actualMonth);
+            stmt.setInt(2, actualYear);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                result = resultSet.getInt("count");
+            }
+//            connection.close();
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+//            throw new RuntimeException(e);
+        }
+        return result == 0;
     }
 }

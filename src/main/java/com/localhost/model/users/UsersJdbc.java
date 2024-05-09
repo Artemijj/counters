@@ -17,7 +17,7 @@ public class UsersJdbc implements IUsers {
     @Override
     public ArrayList<User> getUserList() {
         ArrayList<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM counter.users";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
@@ -45,7 +45,7 @@ public class UsersJdbc implements IUsers {
         String fio = user.getFio();
         String phone = user.getPhoneNumber();
         String address = user.getAddress();
-        String sql = "INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO counter.users VALUES (?, ?, ?, ?, ?, ?)";
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -68,11 +68,11 @@ public class UsersJdbc implements IUsers {
     @Override
     public void deleteUser(User user) {
         String login = user.getLogin();
-        String sql = "DELETE FROM users WHERE login=?";
+        String sql = "DELETE FROM counter.users WHERE login=?";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.executeUpdate();
             stmt.setString(1, login);
+            stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
             System.err.println("SQL error code - " + e.getErrorCode());
@@ -84,15 +84,17 @@ public class UsersJdbc implements IUsers {
     @Override
     public User getUser(String login) {
         User user = null;
-        String sql = "SELECT * FROM users WHERE login=?";
+        String sql = "SELECT * FROM counter.users WHERE login=?";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
-            ResultSet resultSet = stmt.executeQuery(sql);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
             user = new User(resultSet.getString("login"), resultSet.getString("password"), resultSet.getBoolean("is_admin"));
             user.setFio(resultSet.getString("fio"));
             user.setPhoneNumber(resultSet.getString("phone"));
             user.setAddress(resultSet.getString("address"));
+            }
 //            connection.close();
         } catch (SQLException e) {
             System.err.println("SQL error code - " + e.getErrorCode());

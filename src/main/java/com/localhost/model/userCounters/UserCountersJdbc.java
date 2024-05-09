@@ -16,7 +16,7 @@ public class UserCountersJdbc implements IUserCounters{
     @Override
     public ArrayList<UserCounter> getUserCountersList() {
         ArrayList<UserCounter> userCounters = new ArrayList<>();
-        String sql = "SELECT * FROM user_counters";
+        String sql = "SELECT * FROM counter.user_counters";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
@@ -36,7 +36,7 @@ public class UserCountersJdbc implements IUserCounters{
     @Override
     public ArrayList<UserCounter> getUserCountersListByUser(String login) {
         ArrayList<UserCounter> userCounters = new ArrayList<>();
-        String sql = "SELECT * FROM user_counters WHERE login=?";
+        String sql = "SELECT * FROM counter.user_counters WHERE login=?";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
@@ -59,7 +59,7 @@ public class UserCountersJdbc implements IUserCounters{
 //        int id = nextId();
         String login = userCounter.getLogin();
         String counterName = userCounter.getCounterName();
-        String sql = "INSERT INTO events VALUES (?, ?)";
+        String sql = "INSERT INTO counter.user_counters VALUES (?, ?)";
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -79,7 +79,7 @@ public class UserCountersJdbc implements IUserCounters{
     @Override
     public void deleteUserCounter(UserCounter userCounter) {
         String login = userCounter.getLogin();
-        String sql = "DELETE FROM user_counters WHERE login=?";
+        String sql = "DELETE FROM counter.user_counters WHERE login=?";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.executeUpdate();

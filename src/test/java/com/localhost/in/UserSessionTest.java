@@ -133,7 +133,7 @@ public class UserSessionTest {
         userSession.logIn("name", "pass");
         userSession.addEvent("event");
         int expectedNumber = 1;
-        int actualNumber = userSession.getModelEventLog().getEventLog().size();
+        int actualNumber = userSession.getModelEventLog().getEventLogList().size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
