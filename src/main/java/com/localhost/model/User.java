@@ -15,11 +15,11 @@ public class User {
     public User(String login, String password, boolean isAdmin) {
         this.login = login;
         this.password = password;
-        phoneNumber = "";
-        address = "";
+        phoneNumber = null;
+        address = null;
 //        userCounters = new ArrayList<>();
         this.isAdmin = isAdmin;
-        fio = "";
+        fio = null;
     }
 
     public String getLogin() {

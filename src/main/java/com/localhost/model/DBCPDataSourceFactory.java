@@ -15,7 +15,8 @@ public class DBCPDataSourceFactory {
         BasicDataSource localDataSource = dataSource;
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream("./src/main/resources/db.properties"));
+//            properties.load(new FileInputStream("./src/main/resources/db.properties"));
+            properties.load(new FileInputStream("./src/main/resources/liquibase.properties"));
         } catch (IOException e) {
             System.err.println("The file does not exist...");
         }
@@ -24,9 +25,12 @@ public class DBCPDataSourceFactory {
                 localDataSource = dataSource;
                 if (localDataSource == null) {
                     dataSource = localDataSource = new BasicDataSource();
-                    dataSource.setUrl(properties.getProperty("db.url"));
-                    dataSource.setUsername(properties.getProperty("db.username"));
-                    dataSource.setPassword(properties.getProperty("db.password"));
+//                    dataSource.setUrl(properties.getProperty("db.url"));
+                    dataSource.setUrl(properties.getProperty("url"));
+//                    dataSource.setUsername(properties.getProperty("db.username"));
+                    dataSource.setUsername(properties.getProperty("username"));
+//                    dataSource.setPassword(properties.getProperty("db.password"));
+                    dataSource.setPassword(properties.getProperty("password"));
                 }
             }
         }

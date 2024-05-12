@@ -4,7 +4,6 @@ import com.localhost.model.*;
 import com.localhost.model.Record;
 import com.localhost.model.model.IModel;
 import com.localhost.model.model.ModelJdbc;
-import com.localhost.model.model.ModelList;
 import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
@@ -27,7 +26,8 @@ public class UserSession implements IUserSession{
     @Override
     public boolean logIn(String name, String password) {
         boolean answer = false;
-        if(isUserExist(name) && model.getUsers().getUser(name).getPassword().equals(password)) {
+        String hash = Tools.getMD5Hash(password);
+        if(isUserExist(name) && model.getUsers().getUser(name).getPassword().equals(hash)) {
             login = name;
             answer = true;
         }
@@ -119,12 +119,13 @@ public class UserSession implements IUserSession{
 
     @Override
     public void addEvent(String event) {
-        model.getEventLog().addEvent(new Event(Tools.nextId(model.getEventLog().getEventLogList()), getLogin(), new Date(), event));
+        model.getEventLog().addEvent(new Event(getLogin(), new Date(), event));
     }
 
     @Override
     public boolean isUserExist(String login) {
-        return getModelUsers().getUserList().contains(getModelUsers().getUser(login));
+//        return getModelUsers().getUserList().contains(getModelUsers().getUser(login));
+        return getModelUsers().getUser(login) != null;
     }
 
     @Override

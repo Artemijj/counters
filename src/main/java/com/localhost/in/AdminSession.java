@@ -4,7 +4,7 @@ import com.localhost.model.*;
 
 import java.util.Objects;
 
-public class AdminSession implements IAdminSession{
+public class AdminSession implements IAdminSession {
 
     private IUserSession userSession;
 
@@ -15,21 +15,25 @@ public class AdminSession implements IAdminSession{
     @Override
     public void addUser(String login, String password) throws AdminException {
         if (!userSession.isUserExist(login)) {
-            userSession.getModelUsers().addUser(new User(login, password, false));
+            String hash = Tools.getMD5Hash(password);
+            userSession.getModelUsers().addUser(new User(login, hash, false));
         }
     }
 
     @Override
     public void addAdmin(String login, String password) throws AdminException {
         if (!userSession.isUserExist(login)) {
-            userSession.getModelUsers().addUser(new User(login, password, true));
+            String hash = Tools.getMD5Hash(password);
+            userSession.getModelUsers().addUser(new User(login, hash, true));
         }
     }
 
     @Override
     public void removeUser(String login) throws AdminException {
-        User user = userSession.getModelUsers().getUser(login);
-        userSession.getModelUsers().deleteUser(user);
+        if (userSession.isUserExist(login)) {
+            User user = userSession.getModelUsers().getUser(login);
+            userSession.getModelUsers().deleteUser(user);
+        }
     }
 
     @Override
@@ -45,21 +49,37 @@ public class AdminSession implements IAdminSession{
     @Override
     public void setPassword(String login, String password) throws AdminException {
         if (userSession.isUserExist(login)) {
-            userSession.getModelUsers().getUser(login).setPassword(password);
+            User user = userSession.getModelUsers().getUser(login);
+            String hash = Tools.getMD5Hash(password);
+            user.setPassword(hash);
+            userSession.getModelUsers().updateUser(user);
+        }
+    }
+
+    @Override
+    public void setFio(String login, String fio) throws AdminException {
+        if (userSession.isUserExist(login)) {
+            User user = userSession.getModelUsers().getUser(login);
+            user.setFio(fio);
+            userSession.getModelUsers().updateUser(user);
         }
     }
 
     @Override
     public void setAddress(String login, String address) throws AdminException {
         if (userSession.isUserExist(login)) {
-            userSession.getModelUsers().getUser(login).setAddress(address);
+            User user = userSession.getModelUsers().getUser(login);
+            user.setAddress(address);
+            userSession.getModelUsers().updateUser(user);
         }
     }
 
     @Override
     public void setPhone(String login, String phone) throws AdminException {
         if (userSession.isUserExist(login)) {
-            userSession.getModelUsers().getUser(login).setPhoneNumber(phone);
+            User user = userSession.getModelUsers().getUser(login);
+            user.setPhoneNumber(phone);
+            userSession.getModelUsers().updateUser(user);
         }
     }
 
@@ -96,12 +116,12 @@ public class AdminSession implements IAdminSession{
         if (userSession.isUserExist(login)) {
 //            userSession.getModelUsers().getUser(login).deleteCounter(counter);
             UserCounter userCounter = userSession.getModelUserCounters().getUserCountersList().stream()
-                .filter(uC -> uC.getLogin().equals(login))
-                .filter(uC -> uC.getCounterName().equals(counter))
-                .findFirst().orElse(null);
-        if (!Objects.isNull(userCounter)) {
-            userSession.getModelUserCounters().deleteUserCounter(userCounter);
-        }
+                    .filter(uC -> uC.getLogin().equals(login))
+                    .filter(uC -> uC.getCounterName().equals(counter))
+                    .findFirst().orElse(null);
+            if (!Objects.isNull(userCounter)) {
+                userSession.getModelUserCounters().deleteUserCounter(userCounter);
+            }
         }
     }
 
@@ -119,12 +139,5 @@ public class AdminSession implements IAdminSession{
     public Event[] getUserActivities(String login) throws AdminException {
         return userSession.getModelEventLog().getEventLogList().stream()
                 .filter(event -> event.getLogin().equals(login)).toArray(Event[]::new);
-    }
-
-    @Override
-    public void setFio(String login, String fio) throws AdminException {
-        if (userSession.isUserExist(login)) {
-            userSession.getModelUsers().getUser(login).setFio(fio);
-        }
     }
 }

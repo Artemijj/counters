@@ -3,7 +3,6 @@ package com.localhost.model.users;
 import com.localhost.model.DBCPDataSourceFactory;
 import com.localhost.model.User;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -53,8 +52,8 @@ public class UsersJdbc implements IUsers {
             stmt.setString(2, password);
             stmt.setBoolean(3, isAdmin);
             stmt.setString(4, fio);
-            stmt.setString(5, phone);
-            stmt.setString(6, address);
+            stmt.setString(5, address);
+            stmt.setString(6, phone);
             result = stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
@@ -102,5 +101,32 @@ public class UsersJdbc implements IUsers {
 //            throw new RuntimeException(e);
         }
         return user;
+    }
+
+    @Override
+    public void updateUser(User user) {
+        String login = user.getLogin();
+        String password = user.getPassword();
+        Boolean isAdmin = user.getIsAdmin();
+        String fio = user.getFio();
+        String phone = user.getPhoneNumber();
+        String address = user.getAddress();
+        String sql = "UPDATE counter.users SET password = ?, is_admin = ?, fio = ?, address = ?, phone = ? WHERE login = ?";
+//        int result = 0;
+        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(6, login);
+            stmt.setString(1, password);
+            stmt.setBoolean(2, isAdmin);
+            stmt.setString(3, fio);
+            stmt.setString(4, address);
+            stmt.setString(5, phone);
+            stmt.executeUpdate();
+//            connection.close();
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+//            throw new RuntimeException(e);
+        }
     }
 }

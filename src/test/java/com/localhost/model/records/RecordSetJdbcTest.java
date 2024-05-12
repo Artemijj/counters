@@ -19,7 +19,7 @@ public class RecordSetJdbcTest {
     IUsers users = new UsersJdbc();
     private User user = new User("newUser", "pass", false);
 
-    private Record record = new Record(1, "newUser", counterType, counterValue);
+    private Record record = new Record("newUser", counterType, counterValue);
 
     @BeforeEach
     public void setUp() {

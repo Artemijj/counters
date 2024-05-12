@@ -82,8 +82,8 @@ public class UserCountersJdbc implements IUserCounters{
         String sql = "DELETE FROM counter.user_counters WHERE login=?";
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.executeUpdate();
             stmt.setString(1, login);
+            stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
             System.err.println("SQL error code - " + e.getErrorCode());

@@ -12,6 +12,7 @@ public interface IAdminSession {
     User getUserData(String login) throws AdminException;
 
     void setPassword(String login, String password) throws AdminException;
+    void setFio(String login, String password) throws AdminException;
     void setAddress(String login, String address) throws AdminException;
     void setPhone(String login, String phone) throws AdminException;
 
@@ -23,5 +24,4 @@ public interface IAdminSession {
     void unlinkCounter(String login, String counter) throws AdminException;
     CounterValue[] getCounterValues(String login, String counter) throws AdminException;
     Event[] getUserActivities(String login) throws AdminException;
-    void setFio(String login, String fio) throws AdminException;
 }

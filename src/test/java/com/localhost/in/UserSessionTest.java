@@ -1,6 +1,7 @@
 package com.localhost.in;
 
 import com.localhost.model.CounterValue;
+import com.localhost.model.DBCPDataSourceFactory;
 import com.localhost.model.Record;
 import com.localhost.model.User;
 import com.localhost.model.systemCounters.ISystemCounters;
@@ -8,9 +9,11 @@ import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
 import com.localhost.model.users.IUsers;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 public class UserSessionTest {
@@ -24,7 +27,12 @@ public class UserSessionTest {
 
     @Test
     public void logInTrueTest() {
-        userSession.getModelUsers().addUser(user);
+        try {
+            userSession.getAdminSession().addUser("name", "pass");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+//        userSession.getModelUsers().addUser(user);
         boolean actual = userSession.logIn("name", "pass");
         Assertions.assertTrue(actual);
     }
@@ -48,7 +56,12 @@ public class UserSessionTest {
 
     @Test
     public void isAdminFalseTest() {
-        userSession.getModelUsers().addUser(user);
+        try {
+            userSession.getAdminSession().addUser("name", "pass");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+//        userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
         boolean actual = userSession.isAdmin();
         Assertions.assertFalse(actual);
@@ -56,7 +69,12 @@ public class UserSessionTest {
 
     @Test
     public void isUserTrueTest() {
-        userSession.getModelUsers().addUser(user);
+        try {
+            userSession.getAdminSession().addUser("name", "pass");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+//        userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
         boolean actual = userSession.isUser();
         Assertions.assertTrue(actual);
@@ -64,7 +82,12 @@ public class UserSessionTest {
 
     @Test
     public void getLoginTest() {
-        userSession.getModelUsers().addUser(user);
+        try {
+            userSession.getAdminSession().addUser("name", "pass");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+//        userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
         String expectedLogin = "name";
         String actualLogin = userSession.getLogin();
@@ -73,10 +96,12 @@ public class UserSessionTest {
 
     @Test
     public void getLastValueClassTest() {
+        userSession.getModelUsers().addUser(user);
+        userSession.logIn("name", "pass");
         String counterType = "type";
 //        String counterTypeName = counterType.getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), 1);
-        Record record = new Record(1, "name", counterType, counterValue);
+        Record record = new Record("name", counterType, counterValue);
         userSession.getModelRecordSet().addRecord(record);
         CounterValue actual = userSession.getLastValue(counterType);
         Assertions.assertInstanceOf(CounterValue.class, actual);
@@ -84,12 +109,17 @@ public class UserSessionTest {
 
     @Test
     public void getLastValueValueTest() {
-        userSession.getModelUsers().addUser(user);
+        try {
+            userSession.getAdminSession().addUser("name", "pass");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+//        userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
         String counterType = "type";
 //        String counterTypeName = counterType.getCounterTypeName();
         CounterValue counterValue = new CounterValue(new Date(), 1);
-        Record record = new Record(1, "name", counterType, counterValue);
+        Record record = new Record("name", counterType, counterValue);
         userSession.getModelRecordSet().addRecord(record);
         int expectedValue = 1;
         CounterValue actualCounterValue = userSession.getLastValue(counterType);
@@ -146,9 +176,19 @@ public class UserSessionTest {
 
     @Test
     public void addCounterTest() {
-        userSession.getModelUsers().addUser(user);
+        try {
+            userSession.getAdminSession().addUser("name", "pass");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
+//        userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
         String one = "one";
+        try {
+            userSession.getAdminSession().createCounter("one");
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
         userSession.addCounter(one);
         int expectedNumber = 1;
         int actualNumber;
@@ -165,6 +205,11 @@ public class UserSessionTest {
         userSession.getModelUsers().addUser(user);
         userSession.logIn("name", "pass");
         String one = "one";
+        try {
+            userSession.getAdminSession().createCounter(one);
+        } catch (AdminException e) {
+            throw new RuntimeException(e);
+        }
         userSession.addCounter(one);
         userSession.deleteCounter(one);
         int expectedNumber = 0;
@@ -175,5 +220,25 @@ public class UserSessionTest {
             throw new RuntimeException(e);
         }
         Assertions.assertEquals(expectedNumber, actualNumber);
+    }
+
+    @AfterEach
+    public void clearDB() {
+        String events = "DELETE FROM counter.events";
+        String records = "DELETE FROM counter.records";
+        String systemCounters = "DELETE FROM counter.system_counters";
+        String userCounters = "DELETE FROM counter.user_counters";
+        String users = "DELETE FROM counter.users";
+        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(events);
+            stmt.executeUpdate(records);
+            stmt.executeUpdate(systemCounters);
+            stmt.executeUpdate(userCounters);
+            stmt.executeUpdate(users);
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+        }
     }
 }

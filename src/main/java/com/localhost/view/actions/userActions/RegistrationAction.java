@@ -27,8 +27,8 @@ public class RegistrationAction implements IAction {
         String address = inputOutput.get();
         IAdminSession adminSession = session.getAdminSession();
         try {
-            adminSession.setFio(name, fio);
             adminSession.addUser(name, password);
+            adminSession.setFio(name, fio);
             adminSession.setPhone(name, phone);
             adminSession.setAddress(name, address);
             session.addEvent("Зарегистрировался пользователь с именем: " + name);

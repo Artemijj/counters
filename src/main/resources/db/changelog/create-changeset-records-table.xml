@@ -3,11 +3,10 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-‹!-- Здесь мы позже напишем скрипт -->
     <changeSet id="create_table_records" author="artemij">
         <createTable tableName="records">
             <column name="id" autoIncrement="false" type="integer" defaultValueComputed="nextval('counter.recordsid')">
-                <constraints primaryKeyName="records_pkey" nullable="false" primaryKey="true" references=""/>
+                <constraints primaryKeyName="records_pkey" nullable="false" primaryKey="true"/>
             </column>
             <column name="login" type="varchar">
                 <constraints nullable="false" foreignKeyName="users_fkey" references="counter.users(login)" deleteCascade="true"/>

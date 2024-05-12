@@ -2,7 +2,6 @@ package com.localhost.model.events;
 
 import com.localhost.model.DBCPDataSourceFactory;
 import com.localhost.model.Event;
-import com.localhost.model.Tools;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class EventLogJdbc implements IEventLog{
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
 //                Event event = new Event(resultSet.getInt("id"), resultSet.getString("login"), new Date(resultSet.getTimestamp("date").getTime()), resultSet.getString("event"));
-                Event event = new Event(resultSet.getInt("id"), resultSet.getString("login"), new Date(resultSet.getDate("date").getTime()), resultSet.getString("event"));
+                Event event = new Event(resultSet.getString("login"), new Date(resultSet.getDate("date").getTime()), resultSet.getString("event"));
                 events.add(event);
             }
 //            connection.close();
@@ -38,19 +37,19 @@ public class EventLogJdbc implements IEventLog{
 
     @Override
     public boolean addEvent(Event event) {
-        int id = event.getId();
+//        int id = event.getId();
         String login = event.getLogin();
 //        Timestamp date = new Timestamp(event.getDate().getTime());
         java.sql.Date date = new java.sql.Date(event.getDate().getTime());
         String txt = event.getActivity();
-        String sql = "INSERT INTO counter.events VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO counter.events (login, date, event) VALUES (?, ?, ?)";
         int result = 0;
         try (Connection connection = DBCPDataSourceFactory.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, id);
-            stmt.setString(2, login);
-            stmt.setDate(3, date);
-            stmt.setString(4, txt);
+//            stmt.setInt(1, id);
+            stmt.setString(1, login);
+            stmt.setDate(2, date);
+            stmt.setString(3, txt);
             result = stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {

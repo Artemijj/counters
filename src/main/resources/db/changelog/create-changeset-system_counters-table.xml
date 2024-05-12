@@ -3,7 +3,6 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-‹!-- Здесь мы позже напишем скрипт -->
     <changeSet id="create_table_system_counters" author="artemij">
         <createTable tableName="system_counters">
             <column name="counter_type" type="varchar">

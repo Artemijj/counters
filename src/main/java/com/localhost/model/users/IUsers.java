@@ -9,4 +9,5 @@ public interface IUsers {
     boolean addUser(User user);
     void deleteUser(User user);
     User getUser(String login);
+    void updateUser(User user);
 }

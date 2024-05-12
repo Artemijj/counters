@@ -9,20 +9,11 @@ import com.localhost.view.actions.userActions.UserLoginAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 public class FirstActionTest {
     private IUserSession userSession = new UserSession();
 
     private FirstAction firstAction;
-
-    @Mock
-    TestInputOutput tioMock;
 
     @BeforeEach
     public void setUp() {

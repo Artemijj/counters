@@ -3,12 +3,10 @@ package com.localhost.model.records;
 import com.localhost.model.CounterValue;
 import com.localhost.model.DBCPDataSourceFactory;
 import com.localhost.model.Record;
-import com.localhost.model.Tools;
 
 import java.sql.*;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class RecordSetJdbc implements IRecordSet{
@@ -27,7 +25,7 @@ public class RecordSetJdbc implements IRecordSet{
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
 //                Record record = new Record(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getTimestamp("date").getTime()), resultSet.getInt("value")));
-                Record record = new Record(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getDate("date").getTime()), resultSet.getInt("value")));
+                Record record = new Record(resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getDate("date").getTime()), resultSet.getInt("value")));
                 records.add(record);
             }
 //            connection.close();
@@ -41,22 +39,22 @@ public class RecordSetJdbc implements IRecordSet{
 
     @Override
     public boolean addRecord(Record record) {
-        int id = record.getId();
+//        int id = record.getId();
         String login = record.getLogin();
         String counterType = record.getCounterType();
 //        Timestamp date = new Timestamp(record.getCounterValue().getDate().getTime());
         java.sql.Date date = new java.sql.Date(record.getCounterValue().getDate().getTime());
         int value = record.getCounterValue().getValue();
-        String sql = "INSERT INTO counter.records VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO counter.records (login, counter_type, date, value) VALUES (?, ?, ?, ?)";
         int result = 0;
         if (checkDate()) {
             try (Connection connection = DBCPDataSourceFactory.getConnection()) {
                 PreparedStatement stmt = connection.prepareStatement(sql);
-                stmt.setInt(1, id);
-                stmt.setString(2, login);
-                stmt.setString(3, counterType);
-                stmt.setDate(4, date);
-                stmt.setInt(5, value);
+//                stmt.setInt(1, id);
+                stmt.setString(1, login);
+                stmt.setString(2, counterType);
+                stmt.setDate(3, date);
+                stmt.setInt(4, value);
                 result = stmt.executeUpdate();
 //            connection.close();
             } catch (SQLException e) {

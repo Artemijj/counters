@@ -3,9 +3,11 @@ package com.localhost.in;
 import com.localhost.model.*;
 import com.localhost.model.Record;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 public class AdminSessionTest {
@@ -211,8 +213,8 @@ public class AdminSessionTest {
         userSession.logIn("newUser", "passwd");
         CounterValue counterValue1 = new CounterValue(new Date(0L), 1);
         CounterValue counterValue2 = new CounterValue(new Date(), 2);
-        userSession.getModelRecordSet().addRecord(new Record(1, "newUser", one, counterValue1));
-        userSession.getModelRecordSet().addRecord(new Record(2, "newUser", one, counterValue2));
+        userSession.getModelRecordSet().addRecord(new Record("newUser", one, counterValue1));
+        userSession.getModelRecordSet().addRecord(new Record("newUser", one, counterValue2));
         CounterValue[] counterValues;
         try {
             counterValues = adminSession.getCounterValues("newUser", one);
@@ -231,9 +233,9 @@ public class AdminSessionTest {
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
-        userSession.getModelEventLog().addEvent(new Event(1, "newUser", new Date(), "event1"));
-        userSession.getModelEventLog().addEvent(new Event(2, "newUser", new Date(), "event2"));
-        userSession.getModelEventLog().addEvent(new Event(3, "newUser", new Date(), "event3"));
+        userSession.getModelEventLog().addEvent(new Event("newUser", new Date(), "event1"));
+        userSession.getModelEventLog().addEvent(new Event("newUser", new Date(), "event2"));
+        userSession.getModelEventLog().addEvent(new Event("newUser", new Date(), "event3"));
         Event[] events;
         try {
             events = adminSession.getUserActivities("newUser");
@@ -256,5 +258,25 @@ public class AdminSessionTest {
         String expectedAFio = "fio";
         String actualFio = userSession.getModelUsers().getUser("newUser").getFio();
         Assertions.assertEquals(expectedAFio, actualFio);
+    }
+
+    @AfterEach
+    public void clearDB() {
+        String events = "DELETE FROM counter.events";
+        String records = "DELETE FROM counter.records";
+        String systemCounters = "DELETE FROM counter.system_counters";
+        String userCounters = "DELETE FROM counter.user_counters";
+        String users = "DELETE FROM counter.users";
+        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(events);
+            stmt.executeUpdate(records);
+            stmt.executeUpdate(systemCounters);
+            stmt.executeUpdate(userCounters);
+            stmt.executeUpdate(users);
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+        }
     }
 }

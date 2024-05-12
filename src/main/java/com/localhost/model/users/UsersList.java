@@ -42,4 +42,9 @@ public class UsersList implements IUsers{
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public void updateUser(User user) {
+
+    }
 }

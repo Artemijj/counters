@@ -15,15 +15,15 @@ public class EventTest {
 
     @BeforeEach
     public void setUp() {
-        event = new Event(1, "name", date, "activity");
+        event = new Event("name", date, "activity");
     }
 
-    @Test
-    public void getIdTest() {
-        int expectedId = 1;
-        int actualId = event.getId();
-        Assertions.assertEquals(expectedId, actualId);
-    }
+//    @Test
+//    public void getIdTest() {
+//        int expectedId = 1;
+//        int actualId = event.getId();
+//        Assertions.assertEquals(expectedId, actualId);
+//    }
 
     @Test
     public void getLoginTest() {

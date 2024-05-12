@@ -45,7 +45,7 @@ public class ChoiceSendCounterAction implements IAction {
         int id = Tools.nextId(session.getModelRecordSet().getRecordSetList());
         String counterType = types[selectedNumber];
         CounterValue counterValue = new CounterValue(new Date(), value);
-        boolean result = session.getModelRecordSet().addRecord(new Record(id, session.getLogin(), counterType, counterValue));
+        boolean result = session.getModelRecordSet().addRecord(new Record(session.getLogin(), counterType, counterValue));
         if (result) {
             session.addEvent("Передал показания счётчика " + types[selectedNumber] + " - " + value);
         } else {
