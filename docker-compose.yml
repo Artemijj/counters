@@ -1,0 +1,48 @@
+# Use postgres/example user/password credentials
+#version: '3.9'
+
+services:
+
+  db:
+    container_name: postgres-container
+    image: postgres
+    restart: "no"
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    ports:
+      - "5432:5432"
+#    networks:
+#      - postgres-db-network
+    volumes:
+      - ./src/main/resources:/docker-entrypoint-initdb.d
+    healthcheck:
+#      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
+      test: ["CMD-SHELL", "sh -c 'pg_isready -U counter -d counters'"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    environment:
+      POSTGRES_USER: counter
+      POSTGRES_PASSWORD: counter
+      POSTGRES_DB: counters
+
+
+  liquibase:
+    container_name: liquibase-container
+    image: liquibase
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./src/main/resources:/liquibase/
+#      - ./main/resources/liquibase.properties:/liquibase/liquibase.properties:ro
+    command: --defaults-file=/liquibase/liquibase.properties update
+#    networks:
+#      - postgres-db-network
