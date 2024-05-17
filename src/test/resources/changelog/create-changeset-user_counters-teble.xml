@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create_table_user_counters" author="artemij">
+        <createTable tableName="user_counters">
+            <column name="login" type="varchar">
+                <constraints nullable="false" primaryKeyName="user_counters_pkey" primaryKey="true" foreignKeyName="users_fkey" references="counter.users(login)" deleteCascade="true"/>
+            </column>
+            <column name="counter_name" type="varchar">
+                <constraints nullable="false" primaryKeyName="user_counters_pkey" primaryKey="true" foreignKeyName="system_counters_fkey" references="counter.system_counters(counter_type)" deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

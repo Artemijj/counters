@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <include file="create-changeset-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-system_counters-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-eventsid-sequence.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-events-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-recordsid-sequence.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-records-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-changeset-user_counters-teble.xml" relativeToChangelogFile="true"/>
+<!--    <include file="insert-changeset-users-table.xml" relativeToChangelogFile="true"/>-->
+<!--    <include file="insert-changeset-system_counters-table.xml" relativeToChangelogFile="true"/>-->
+</databaseChangeLog>

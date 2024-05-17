@@ -3,13 +3,24 @@ package com.localhost.model.events;
 import com.localhost.model.DBCPDataSourceFactory;
 import com.localhost.model.Event;
 import org.junit.jupiter.api.*;
+import org.testcontainers.containers.ComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 import java.util.Date;
 
+@Testcontainers
 public class EventLogJdbcTest {
+    @Container
+    public static ComposeContainer dockerComposeContainer = new ComposeContainer(new File("src/test/resources/docker-compose-test.yml"))
+            .withExposedService("db", 5433)
+            .withLocalCompose(true)
+            .withStartupTimeout(Duration.ofSeconds(30));
     private IEventLog eventLog;
 
     Event event = new Event("login", new Date(), "activity");

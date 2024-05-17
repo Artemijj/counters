@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create_table_records" author="artemij">
+        <createTable tableName="records">
+            <column name="id" autoIncrement="false" type="integer" defaultValueComputed="nextval('counter.recordsid')">
+                <constraints primaryKeyName="records_pkey" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="login" type="varchar">
+                <constraints nullable="false" foreignKeyName="users_fkey" references="counter.users(login)" deleteCascade="true"/>
+            </column>
+            <column name="counter_type" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
