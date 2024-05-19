@@ -1,23 +1,23 @@
 package com.localhost.model.userCounters;
 
-import com.localhost.model.DBCPDataSourceFactory;
+import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.UserCounter;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class UserCountersJdbc implements IUserCounters{
-//    private Connection connection;
-//
-//    public UserCountersJdbc() {
-//        connection = DBCPDataSourceFactory.getConnection();
-//    }
+    private DBCPDataSourceFactory dataSource;
+
+    public UserCountersJdbc(String fileProp) {
+        dataSource = new DBCPDataSourceFactory(fileProp);
+    }
 
     @Override
     public ArrayList<UserCounter> getUserCountersList() {
         ArrayList<UserCounter> userCounters = new ArrayList<>();
         String sql = "SELECT * FROM counter.user_counters";
-        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
@@ -37,7 +37,7 @@ public class UserCountersJdbc implements IUserCounters{
     public ArrayList<UserCounter> getUserCountersListByUser(String login) {
         ArrayList<UserCounter> userCounters = new ArrayList<>();
         String sql = "SELECT * FROM counter.user_counters WHERE login=?";
-        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
             ResultSet resultSet = stmt.executeQuery();
@@ -61,7 +61,7 @@ public class UserCountersJdbc implements IUserCounters{
         String counterName = userCounter.getCounterName();
         String sql = "INSERT INTO counter.user_counters VALUES (?, ?)";
         int result = 0;
-        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
 //            stmt.setInt(1, id);
             stmt.setString(1, login);
@@ -80,7 +80,7 @@ public class UserCountersJdbc implements IUserCounters{
     public void deleteUserCounter(UserCounter userCounter) {
         String login = userCounter.getLogin();
         String sql = "DELETE FROM counter.user_counters WHERE login=?";
-        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
             stmt.executeUpdate();

@@ -1,29 +1,39 @@
 package com.localhost.model.records;
 
 import com.localhost.model.CounterValue;
-import com.localhost.model.DBCPDataSourceFactory;
+import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.Record;
 import com.localhost.model.User;
 import com.localhost.model.users.*;
 import org.junit.jupiter.api.*;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.Properties;
 
 public class RecordSetJdbcTest {
+    private Properties properties = new Properties();
     private IRecordSet recordSet;
     private String counterType = "type";
     private CounterValue counterValue = new CounterValue(new Date(), 1);
-    IUsers users = new UsersJdbc();
+    IUsers users;
     private User user = new User("newUser", "pass", false);
 
     private Record record = new Record("newUser", counterType, counterValue);
 
     @BeforeEach
     public void setUp() {
-        recordSet = new RecordSetJdbc();
+        try {
+            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        recordSet = new RecordSetJdbc(properties.getProperty("liqPropTest"));
+        users = new UsersJdbc(properties.getProperty("liqPropTest"));
     }
 
     @Test
@@ -48,23 +58,23 @@ public class RecordSetJdbcTest {
         Assertions.assertFalse(actual);
     }
 
-    @AfterEach
-    public void clearDB() {
-        String events = "DELETE FROM counter.events";
-        String records = "DELETE FROM counter.records";
-        String systemCounters = "DELETE FROM counter.system_counters";
-        String userCounters = "DELETE FROM counter.user_counters";
-        String users = "DELETE FROM counter.users";
-        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
-            Statement stmt = connection.createStatement();
-            stmt.executeUpdate(events);
-            stmt.executeUpdate(records);
-            stmt.executeUpdate(systemCounters);
-            stmt.executeUpdate(userCounters);
-            stmt.executeUpdate(users);
-        } catch (SQLException e) {
-            System.err.println("SQL error code - " + e.getErrorCode());
-            System.err.println(e.getMessage());
-        }
-    }
+//    @AfterEach
+//    public void clearDB() {
+//        String events = "DELETE FROM counter.events";
+//        String records = "DELETE FROM counter.records";
+//        String systemCounters = "DELETE FROM counter.system_counters";
+//        String userCounters = "DELETE FROM counter.user_counters";
+//        String users = "DELETE FROM counter.users";
+//        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
+//            Statement stmt = connection.createStatement();
+//            stmt.executeUpdate(events);
+//            stmt.executeUpdate(records);
+//            stmt.executeUpdate(systemCounters);
+//            stmt.executeUpdate(userCounters);
+//            stmt.executeUpdate(users);
+//        } catch (SQLException e) {
+//            System.err.println("SQL error code - " + e.getErrorCode());
+//            System.err.println(e.getMessage());
+//        }
+//    }
 }

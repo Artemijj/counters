@@ -11,7 +11,12 @@ import com.localhost.model.userCounters.UserCountersJdbc;
 import com.localhost.model.users.IUsers;
 import com.localhost.model.users.UsersJdbc;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class ModelJdbc implements IModel{
+    private Properties properties = new Properties();
     private IUsers users;
     private IUserCounters userCounters;
     private ISystemCounters systemCounters;
@@ -19,11 +24,16 @@ public class ModelJdbc implements IModel{
     private IEventLog eventLog;
 
     public ModelJdbc() {
-        users = new UsersJdbc();
-        userCounters = new UserCountersJdbc();
-        systemCounters = new SystemCountersJdbc();
-        recordSet = new RecordSetJdbc();
-        eventLog = new EventLogJdbc();
+        try {
+            properties.load(new FileInputStream("./src/main/resources/file.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        users = new UsersJdbc(properties.getProperty("liqProp"));
+        userCounters = new UserCountersJdbc(properties.getProperty("liqProp"));
+        systemCounters = new SystemCountersJdbc(properties.getProperty("liqProp"));
+        recordSet = new RecordSetJdbc(properties.getProperty("liqProp"));
+        eventLog = new EventLogJdbc(properties.getProperty("liqProp"));
     }
 
     @Override

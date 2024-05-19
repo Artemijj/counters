@@ -16,11 +16,11 @@ services:
     #    tmpfs:
     #      size: 134217728 # 128*2^20 bytes = 128Mb
     ports:
-      - "5433:5433"
+      - "5433:5432"
 #    networks:
 #      - postgres-db-network
     volumes:
-      - ./src/main/resources:/docker-entrypoint-initdb.d
+      - ./src/test/resources:/docker-entrypoint-initdb.d
     healthcheck:
 #      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
       test: ["CMD-SHELL", "sh -c 'pg_isready -U counter -d counters'"]
@@ -33,6 +33,7 @@ services:
       POSTGRES_DB: counters
     expose:
       - 5433
+    privileged: true
 
 
   liquibase:
@@ -48,3 +49,4 @@ services:
     command: --defaults-file=/liquibase/changelog/liquibase.properties update
 #    networks:
 #      - postgres-db-network
+    privileged: true
