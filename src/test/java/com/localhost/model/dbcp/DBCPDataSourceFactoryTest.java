@@ -17,11 +17,11 @@ public class DBCPDataSourceFactoryTest {
     @Test
     public void setUp() {
         try {
-            properties.load(new FileInputStream("./src/main/resources/file.properties"));
+            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        dataSource = new DBCPDataSourceFactory(properties.getProperty("liqProp"));
+        dataSource = new DBCPDataSourceFactory(properties.getProperty("liqPropTest"));
         connection = dataSource.getConnection();
         Assertions.assertTrue(connection instanceof Connection);
     }

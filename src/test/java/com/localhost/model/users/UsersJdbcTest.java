@@ -1,30 +1,29 @@
 package com.localhost.model.users;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.User;
+import com.localhost.model.model.IModel;
+import com.localhost.model.model.TestModelJdbc;
 import org.junit.jupiter.api.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 
 public class UsersJdbcTest {
-    private Properties properties = new Properties();
+//    private Properties properties = new Properties();
     private IUsers users;
 
     private User user = new User("name", "pass", false);
 
     @BeforeEach
     public void setUp() {
-        try {
-            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        users = new UsersJdbc(properties.getProperty("liqPropTest"));
+//        try {
+//            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        IModel model = new TestModelJdbc();
+        users = model.getUsers();
     }
 
     @Test

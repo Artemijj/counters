@@ -1,19 +1,17 @@
 package com.localhost.model.userCounters;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.User;
 import com.localhost.model.UserCounter;
+import com.localhost.model.model.IModel;
+import com.localhost.model.model.TestModelJdbc;
 import org.junit.jupiter.api.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 
 public class UserCountersJdbcTest {
-    private Properties properties = new Properties();
+//    private Properties properties = new Properties();
     private IUserCounters userCountersJdbc;
     private User user = new User("name", "pass", false);
     private String counterName = "counterName";
@@ -22,12 +20,13 @@ public class UserCountersJdbcTest {
 
     @BeforeEach
     public void setUp() {
-        try {
-            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        userCountersJdbc = new UserCountersJdbc(properties.getProperty("liqPropTest"));
+//        try {
+//            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        IModel model = new TestModelJdbc();
+        userCountersJdbc = model.getUserCounters();
         userCounter = new UserCounter("name", counterName);
     }
 

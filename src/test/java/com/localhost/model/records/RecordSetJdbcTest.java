@@ -1,22 +1,20 @@
 package com.localhost.model.records;
 
 import com.localhost.model.CounterValue;
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.Record;
 import com.localhost.model.User;
+import com.localhost.model.model.IModel;
+import com.localhost.model.model.TestModelJdbc;
 import com.localhost.model.users.*;
 import org.junit.jupiter.api.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 import java.util.Properties;
 
 public class RecordSetJdbcTest {
-    private Properties properties = new Properties();
+//    private Properties properties = new Properties();
     private IRecordSet recordSet;
     private String counterType = "type";
     private CounterValue counterValue = new CounterValue(new Date(), 1);
@@ -27,13 +25,14 @@ public class RecordSetJdbcTest {
 
     @BeforeEach
     public void setUp() {
-        try {
-            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        recordSet = new RecordSetJdbc(properties.getProperty("liqPropTest"));
-        users = new UsersJdbc(properties.getProperty("liqPropTest"));
+//        try {
+//            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        IModel model = new TestModelJdbc();
+        recordSet = model.getRecordSet();
+        users = model.getUsers();
     }
 
     @Test

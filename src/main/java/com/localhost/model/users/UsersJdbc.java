@@ -1,24 +1,25 @@
 package com.localhost.model.users;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class UsersJdbc implements IUsers {
-    private DBCPDataSourceFactory dataSource;
+//    private DBCPDataSourceFactory dataSource;
+    private Connection connection;
 
-    public UsersJdbc(String fileProp) {
-        dataSource = new DBCPDataSourceFactory(fileProp);
+    public UsersJdbc(Connection connection) {
+        this.connection = this.connection;
+//        dataSource = new DBCPDataSourceFactory(fileProp);
     }
 
     @Override
     public ArrayList<User> getUserList() {
         ArrayList<User> users = new ArrayList<>();
         String sql = "SELECT * FROM counter.users";
-        try (Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
+//            Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
                 User user = new User(resultSet.getString("login"), resultSet.getString("password"), resultSet.getBoolean("is_admin"));
@@ -46,8 +47,8 @@ public class UsersJdbc implements IUsers {
         String address = user.getAddress();
         String sql = "INSERT INTO counter.users VALUES (?, ?, ?, ?, ?, ?)";
         int result = 0;
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
             stmt.setString(2, password);
             stmt.setBoolean(3, isAdmin);
@@ -68,8 +69,8 @@ public class UsersJdbc implements IUsers {
     public void deleteUser(User user) {
         String login = user.getLogin();
         String sql = "DELETE FROM counter.users WHERE login=?";
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
             stmt.executeUpdate();
 //            connection.close();
@@ -84,8 +85,8 @@ public class UsersJdbc implements IUsers {
     public User getUser(String login) {
         User user = null;
         String sql = "SELECT * FROM counter.users WHERE login=?";
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
@@ -113,8 +114,8 @@ public class UsersJdbc implements IUsers {
         String address = user.getAddress();
         String sql = "UPDATE counter.users SET password = ?, is_admin = ?, fio = ?, address = ?, phone = ? WHERE login = ?";
 //        int result = 0;
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(6, login);
             stmt.setString(1, password);
             stmt.setBoolean(2, isAdmin);

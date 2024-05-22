@@ -1,23 +1,23 @@
 package com.localhost.model.systemCounters;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
-
 import java.sql.*;
 import java.util.ArrayList;
 
 public class SystemCountersJdbc implements ISystemCounters {
-    private DBCPDataSourceFactory dataSource;
+//    private DBCPDataSourceFactory dataSource;
+    private Connection connection;
 
-    public SystemCountersJdbc(String fileProp) {
-        dataSource = new DBCPDataSourceFactory(fileProp);
+    public SystemCountersJdbc(Connection connection) {
+        this.connection = this.connection;
+//        dataSource = new DBCPDataSourceFactory(fileProp);
     }
 
     @Override
     public ArrayList<String> getCounterList() {
         ArrayList<String> counterTypes = new ArrayList<>();
         String sql = "SELECT * FROM counter.system_counters";
-        try (Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
+//            Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
                 String counterType = resultSet.getString("counter_type");
@@ -37,8 +37,8 @@ public class SystemCountersJdbc implements ISystemCounters {
 //        String counterName = counterType.getCounterTypeName();
         String sql = "INSERT INTO counter.system_counters VALUES (?)";
         int result = 0;
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, counterType);
             result = stmt.executeUpdate();
 //            connection.close();
@@ -54,8 +54,8 @@ public class SystemCountersJdbc implements ISystemCounters {
     public void deleteCounter(String counterType) {
 //        String counterName = counterType.getCounterTypeName();
         String sql = "DELETE FROM counter.system_counters WHERE counter_type=?";
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, counterType);
             stmt.executeUpdate();
 //            connection.close();

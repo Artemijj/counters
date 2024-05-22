@@ -1,7 +1,8 @@
 package com.localhost.model.systemCounters;
 
 import com.localhost.model.dbcp.DBCPDataSourceFactory;
-import org.junit.jupiter.api.AfterEach;
+import com.localhost.model.model.IModel;
+import com.localhost.model.model.TestModelJdbc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,21 +15,23 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class SystemCountersJdbcTest {
-    private Properties properties = new Properties();
+//    private Properties properties = new Properties();
     private DBCPDataSourceFactory dataSource;
+    private Connection connection;
 
     ISystemCounters counters;
     String counterType = "type";
 
     @BeforeEach
     public void setUp() {
-        try {
-            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        counters = new SystemCountersJdbc(properties.getProperty("liqPropTest"));
-        dataSource = new DBCPDataSourceFactory(properties.getProperty("liqPropTest"));
+//        try {
+//            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        IModel model = new TestModelJdbc();
+        counters = model.getSystemCounters();
+        connection = model.getDataSource().getConnection();
     }
 
     @Test
@@ -44,8 +47,8 @@ public class SystemCountersJdbcTest {
     public void getCounterListTest() {
         String counter1 = "INSERT INTO counter.system_counters VALUES ('counter1')";
         String counter2 = "INSERT INTO counter.system_counters VALUES ('counter2')";
-        try (Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
+//            Statement stmt = connection.createStatement();
             stmt.executeUpdate(counter1);
             stmt.executeUpdate(counter2);
         } catch (SQLException e) {

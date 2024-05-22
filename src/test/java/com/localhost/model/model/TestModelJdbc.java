@@ -16,7 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class ModelJdbc implements IModel{
+public class TestModelJdbc implements IModel{
     private DBCPDataSourceFactory dataSource;
     private Properties properties = new Properties();
     private IUsers users;
@@ -25,13 +25,14 @@ public class ModelJdbc implements IModel{
     private IRecordSet recordSet;
     private IEventLog eventLog;
 
-    public ModelJdbc() {
+    public TestModelJdbc() {
         try {
-            properties.load(new FileInputStream("./src/main/resources/file.properties"));
+            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        dataSource = new DBCPDataSourceFactory(properties.getProperty("appProp"));
+        dataSource = new DBCPDataSourceFactory(properties.getProperty("appPropTest"));
+        System.out.println("TestModelJdbc " + properties.getProperty("appPropTest"));//!!!!!!!!!!!!!!
 
         users = new UsersJdbc(dataSource.getConnection());
         userCounters = new UserCountersJdbc(dataSource.getConnection());

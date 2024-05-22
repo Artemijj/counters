@@ -20,7 +20,7 @@ services:
 #    networks:
 #      - postgres-db-network
     volumes:
-      - ./src/test/resources:/docker-entrypoint-initdb.d
+      - ./:/docker-entrypoint-initdb.d
     healthcheck:
 #      test: ["CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'"]
       test: ["CMD-SHELL", "sh -c 'pg_isready -U counter -d counters'"]
@@ -44,7 +44,7 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - ./src/test/resources/db/changelog:/liquibase/changelog
+      - /home/artemij/IdeaProjects/counters/src/test/resources/db/changelog:/liquibase/changelog
 #      - ./src/main/resources/liquibase.properties:/liquibase/changelog/liquibase.properties
     command: --defaults-file=/liquibase/changelog/liquibase.properties update
 #    networks:

@@ -8,18 +8,20 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class EventLogJdbc implements IEventLog{
-    private DBCPDataSourceFactory dataSource;
+//    private DBCPDataSourceFactory dataSource;
+    private Connection connection;
 
-    public EventLogJdbc(String fileProp) {
-        dataSource = new DBCPDataSourceFactory(fileProp);
+    public EventLogJdbc(Connection connection) {
+        this.connection = connection;
+//        dataSource = new DBCPDataSourceFactory(fileProp);
     }
 
     @Override
     public ArrayList<Event> getEventLogList() {
         ArrayList<Event> events = new ArrayList<>();
         String sql = "SELECT * FROM counter.events";
-        try (Connection connection = dataSource.getConnection()) {
-            Statement stmt = connection.createStatement();
+        try (Statement stmt = connection.createStatement()) {
+//            Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery(sql);
             while (resultSet.next()) {
 //                Event event = new Event(resultSet.getInt("id"), resultSet.getString("login"), new Date(resultSet.getTimestamp("date").getTime()), resultSet.getString("event"));
@@ -44,8 +46,8 @@ public class EventLogJdbc implements IEventLog{
         String txt = event.getActivity();
         String sql = "INSERT INTO counter.events (login, date, event) VALUES (?, ?, ?)";
         int result = 0;
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement stmt = connection.prepareStatement(sql);
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+//            PreparedStatement stmt = connection.prepareStatement(sql);
 //            stmt.setInt(1, id);
             stmt.setString(1, login);
             stmt.setDate(2, date);

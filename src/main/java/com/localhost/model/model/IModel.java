@@ -1,5 +1,6 @@
 package com.localhost.model.model;
 
+import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
@@ -12,4 +13,5 @@ public interface IModel {
     ISystemCounters getSystemCounters();
     IRecordSet getRecordSet();
     IEventLog getEventLog();
+    DBCPDataSourceFactory getDataSource();
 }

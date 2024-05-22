@@ -1,7 +1,8 @@
 package com.localhost.model.events;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.Event;
+import com.localhost.model.model.IModel;
+import com.localhost.model.model.TestModelJdbc;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -10,18 +11,16 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Properties;
 
 @Testcontainers
 public class EventLogJdbcTest {
-    private Properties properties = new Properties();
+//    private Properties properties = new Properties();
     @Container
-    public static ComposeContainer dockerComposeContainer = new ComposeContainer(new File("src/test/resources/docker-compose-test.yml"))
+//    public static ComposeContainer dockerComposeContainer = new ComposeContainer(new File("./src/test/resources/docker-compose.yml"))
+        public static ComposeContainer dockerComposeContainer = new ComposeContainer(new File("./src/test/resources/docker-compose.yml"))
 //            .withExposedService("db", 5433)
             .withLocalCompose(true)
             .withStartupTimeout(Duration.ofSeconds(30));
@@ -31,12 +30,13 @@ public class EventLogJdbcTest {
 
     @BeforeEach
     public void setUp() {
-        try {
-            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        eventLog = new EventLogJdbc(properties.getProperty("liqPropTest"));
+//        try {
+//            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        IModel model = new TestModelJdbc();
+        eventLog = model.getEventLog();
     }
 
     @Test

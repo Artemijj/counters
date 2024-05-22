@@ -1,5 +1,6 @@
 package com.localhost.model.model;
 
+import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.systemCounters.SystemCountersList;
 import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.EventLogList;
@@ -50,5 +51,10 @@ public class ModelList implements IModel{
     @Override
     public IEventLog getEventLog() {
         return eventLog;
+    }
+
+    @Override
+    public DBCPDataSourceFactory getDataSource() {
+        return null;
     }
 }
