@@ -1,6 +1,6 @@
 package com.localhost.model.model;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
+import com.localhost.model.DBCPDataSourceFactory;
 import com.localhost.model.events.EventLogJdbc;
 import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
@@ -14,6 +14,7 @@ import com.localhost.model.users.UsersJdbc;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Properties;
 
 public class ModelJdbc implements IModel{
@@ -24,6 +25,7 @@ public class ModelJdbc implements IModel{
     private ISystemCounters systemCounters;
     private IRecordSet recordSet;
     private IEventLog eventLog;
+    private Connection connection;
 
     public ModelJdbc() {
         try {
@@ -33,11 +35,12 @@ public class ModelJdbc implements IModel{
         }
         dataSource = new DBCPDataSourceFactory(properties.getProperty("appProp"));
 
-        users = new UsersJdbc(dataSource.getConnection());
-        userCounters = new UserCountersJdbc(dataSource.getConnection());
-        systemCounters = new SystemCountersJdbc(dataSource.getConnection());
-        recordSet = new RecordSetJdbc(dataSource.getConnection());
-        eventLog = new EventLogJdbc(dataSource.getConnection());
+        connection = dataSource.getConnection();
+        users = new UsersJdbc(connection);
+        userCounters = new UserCountersJdbc(connection);
+        systemCounters = new SystemCountersJdbc(connection);
+        recordSet = new RecordSetJdbc(connection);
+        eventLog = new EventLogJdbc(connection);
     }
 
     @Override
@@ -66,7 +69,7 @@ public class ModelJdbc implements IModel{
     }
 
     @Override
-    public DBCPDataSourceFactory getDataSource() {
-        return dataSource;
+    public Connection getCon() {
+        return connection;
     }
 }

@@ -1,6 +1,5 @@
 package com.localhost.model.events;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.Event;
 
 import java.sql.*;

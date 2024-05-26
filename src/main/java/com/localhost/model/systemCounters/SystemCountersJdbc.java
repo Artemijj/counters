@@ -8,7 +8,7 @@ public class SystemCountersJdbc implements ISystemCounters {
     private Connection connection;
 
     public SystemCountersJdbc(Connection connection) {
-        this.connection = this.connection;
+        this.connection = connection;
 //        dataSource = new DBCPDataSourceFactory(fileProp);
     }
 

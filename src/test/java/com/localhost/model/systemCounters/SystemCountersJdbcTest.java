@@ -1,43 +1,44 @@
 package com.localhost.model.systemCounters;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.model.IModel;
 import com.localhost.model.model.TestModelJdbc;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.testcontainers.containers.ComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
+import java.time.Duration;
 
+@Testcontainers
 public class SystemCountersJdbcTest {
-//    private Properties properties = new Properties();
-    private DBCPDataSourceFactory dataSource;
-    private Connection connection;
-
+    @Container
+        public static ComposeContainer dockerComposeContainer = new ComposeContainer(new File("./src/test/resources/docker-compose.yml"))
+//            .withExposedService("db", 5433)
+            .withLocalCompose(true)
+            .withStartupTimeout(Duration.ofSeconds(30));
+    private IModel model = new TestModelJdbc();
+    private Connection connection = model.getCon();
     ISystemCounters counters;
-    String counterType = "type";
+    String counterType1 = "type1";
+    String counterType2 = "type2";
 
     @BeforeEach
     public void setUp() {
-//        try {
-//            properties.load(new FileInputStream("./src/test/resources/file-test.properties"));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-        IModel model = new TestModelJdbc();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         counters = model.getSystemCounters();
-        connection = model.getDataSource().getConnection();
     }
 
     @Test
     public void getCounterListEmptyTest() {
-//        String counter1 = "";
-//        String counter2 = "";
         int expectedNumber = 0;
         int actualNumber = counters.getCounterList().size();
         Assertions.assertEquals(expectedNumber, actualNumber);
@@ -45,74 +46,51 @@ public class SystemCountersJdbcTest {
 
     @Test
     public void getCounterListTest() {
-        String counter1 = "INSERT INTO counter.system_counters VALUES ('counter1')";
-        String counter2 = "INSERT INTO counter.system_counters VALUES ('counter2')";
-        try (Statement stmt = connection.createStatement()) {
-//            Statement stmt = connection.createStatement();
-            stmt.executeUpdate(counter1);
-            stmt.executeUpdate(counter2);
-        } catch (SQLException e) {
-            System.err.println("SQL error code - " + e.getErrorCode());
-            System.err.println(e.getMessage());
-        }
-        int expectedNumber = 2;
+        counters.addCounter(counterType1);
+        int expectedNumber = 1;
         int actualNumber = counters.getCounterList().size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
     @Test
     public void addCounterTrueTest() {
-        boolean actual = counters.addCounter(counterType);
+        boolean actual = counters.addCounter(counterType1);
         Assertions.assertTrue(actual);
     }
 
-//    @Test
-//    public void addCounterFalseTest() {
-//        counters.addCounter(counterType);
-////        boolean actual = counters.addCounter(counterType);
-//        String expectedMessage = "ERROR: duplicate key value violates unique constraint \"counter_type\"\n" +
-//  "Подробности: Key (counter_type)=(type) already exists.";
-////        String actualMessage =
-//        SQLException thrown = Assertions.assertThrows(SQLException.class, () -> {
-//            counters.addCounter(counterType);
-//        }, "SQLException was expected");
-////        String actualMessage = thrown.getMessage();
-//        Assertions.assertEquals(expectedMessage, thrown.getMessage());
-//    }
-
     @Test
     public void addCounterFalseTest() {
-        counters.addCounter(counterType);
-        boolean actual = counters.addCounter(counterType);
+        counters.addCounter(counterType1);
+        boolean actual = counters.addCounter(counterType1);
         Assertions.assertFalse(actual);
     }
 
     @Test
     public void deleteCounterTest() {
-        int expectedNumber = 0;
-        counters.addCounter(counterType);
-        counters.deleteCounter(counterType);
+        int expectedNumber = 1;
+        counters.addCounter(counterType1);
+        counters.addCounter(counterType2);
+        counters.deleteCounter(counterType1);
         int actualNumber = counters.getCounterList().size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
-//    @AfterEach
-//    public void clearDB() {
-//        String events = "DELETE FROM counter.events";
-//        String records = "DELETE FROM counter.records";
-//        String systemCounters = "DELETE FROM counter.system_counters";
-//        String userCounters = "DELETE FROM counter.user_counters";
-//        String users = "DELETE FROM counter.users";
-//        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
-//            Statement stmt = connection.createStatement();
-//            stmt.executeUpdate(events);
-//            stmt.executeUpdate(records);
-//            stmt.executeUpdate(systemCounters);
-//            stmt.executeUpdate(userCounters);
-//            stmt.executeUpdate(users);
-//        } catch (SQLException e) {
-//            System.err.println("SQL error code - " + e.getErrorCode());
-//            System.err.println(e.getMessage());
-//        }
-//    }
+    @AfterEach
+    public void clearDB() {
+        String events = "DELETE FROM counter.events";
+        String records = "DELETE FROM counter.records";
+        String systemCounters = "DELETE FROM counter.system_counters";
+        String userCounters = "DELETE FROM counter.user_counters";
+        String users = "DELETE FROM counter.users";
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(events);
+            stmt.executeUpdate(records);
+            stmt.executeUpdate(systemCounters);
+            stmt.executeUpdate(userCounters);
+            stmt.executeUpdate(users);
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+        }
+    }
 }

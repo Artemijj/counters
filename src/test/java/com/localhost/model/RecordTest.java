@@ -1,15 +1,9 @@
 package com.localhost.model;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class RecordTest {
     private Record record;

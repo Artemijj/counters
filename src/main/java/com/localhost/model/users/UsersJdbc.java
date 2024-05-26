@@ -10,7 +10,7 @@ public class UsersJdbc implements IUsers {
     private Connection connection;
 
     public UsersJdbc(Connection connection) {
-        this.connection = this.connection;
+        this.connection = connection;
 //        dataSource = new DBCPDataSourceFactory(fileProp);
     }
 

@@ -80,10 +80,12 @@ public class UserCountersJdbc implements IUserCounters{
     @Override
     public void deleteUserCounter(UserCounter userCounter) {
         String login = userCounter.getLogin();
-        String sql = "DELETE FROM counter.user_counters WHERE login=?";
+        String counterName = userCounter.getCounterName();
+        String sql = "DELETE FROM counter.user_counters WHERE login=? AND counter_name=?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 //            PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setString(1, login);
+            stmt.setString(2, counterName);
             stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {

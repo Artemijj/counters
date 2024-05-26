@@ -1,28 +1,47 @@
 package com.localhost.in;
 
 import com.localhost.model.CounterValue;
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.Record;
 import com.localhost.model.User;
+import com.localhost.model.model.IModel;
+import com.localhost.model.model.TestModelJdbc;
 import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.IEventLog;
 import com.localhost.model.records.IRecordSet;
 import com.localhost.model.users.IUsers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.*;
+import org.testcontainers.containers.ComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 import java.util.Date;
 
+@Testcontainers
 public class UserSessionTest {
-    private UserSession userSession;
+    @Container
+    public static ComposeContainer dockerComposeContainer = new ComposeContainer(new File("./src/test/resources/docker-compose.yml"))
+//            .withExposedService("db", 5433)
+            .withLocalCompose(true)
+            .withStartupTimeout(Duration.ofSeconds(30));
+    private IModel model = new TestModelJdbc();
+    private Connection connection = model.getCon();
+    private IUserSession userSession;
     private User user = new User("name", "pass", false);
 
     @BeforeEach
     public void setUp() {
-        userSession = new UserSession();
+        userSession = new TestUserSession();
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -189,7 +208,11 @@ public class UserSessionTest {
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
-        userSession.addCounter(one);
+        try {
+            userSession.addCounter(one);
+        } catch (AddCounterException e) {
+            throw new RuntimeException(e);
+        }
         int expectedNumber = 1;
         int actualNumber;
         try {
@@ -210,8 +233,13 @@ public class UserSessionTest {
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
-        userSession.addCounter(one);
-        userSession.deleteCounter(one);
+        try {
+            userSession.addCounter(one);
+            userSession.deleteCounter(one);
+        } catch (AddCounterException e) {
+            throw new RuntimeException(e);
+        }
+//        userSession.deleteCounter(one);
         int expectedNumber = 0;
         int actualNumber;
         try {
@@ -222,23 +250,22 @@ public class UserSessionTest {
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
-//    @AfterEach
-//    public void clearDB() {
-//        String events = "DELETE FROM counter.events";
-//        String records = "DELETE FROM counter.records";
-//        String systemCounters = "DELETE FROM counter.system_counters";
-//        String userCounters = "DELETE FROM counter.user_counters";
-//        String users = "DELETE FROM counter.users";
-//        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
-//            Statement stmt = connection.createStatement();
-//            stmt.executeUpdate(events);
-//            stmt.executeUpdate(records);
-//            stmt.executeUpdate(systemCounters);
-//            stmt.executeUpdate(userCounters);
-//            stmt.executeUpdate(users);
-//        } catch (SQLException e) {
-//            System.err.println("SQL error code - " + e.getErrorCode());
-//            System.err.println(e.getMessage());
-//        }
-//    }
+    @AfterEach
+    public void clearDB() {
+        String events = "DELETE FROM counter.events";
+        String records = "DELETE FROM counter.records";
+        String systemCounters = "DELETE FROM counter.system_counters";
+        String userCounters = "DELETE FROM counter.user_counters";
+        String users = "DELETE FROM counter.users";
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(events);
+            stmt.executeUpdate(records);
+            stmt.executeUpdate(systemCounters);
+            stmt.executeUpdate(userCounters);
+            stmt.executeUpdate(users);
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+        }
+    }
 }

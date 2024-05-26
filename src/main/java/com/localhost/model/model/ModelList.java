@@ -1,6 +1,5 @@
 package com.localhost.model.model;
 
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
 import com.localhost.model.systemCounters.SystemCountersList;
 import com.localhost.model.systemCounters.ISystemCounters;
 import com.localhost.model.events.EventLogList;
@@ -11,6 +10,8 @@ import com.localhost.model.userCounters.UserCountersList;
 import com.localhost.model.users.IUsers;
 import com.localhost.model.records.RecordSetList;
 import com.localhost.model.users.UsersList;
+
+import java.sql.Connection;
 
 public class ModelList implements IModel{
     private IUsers users;
@@ -54,7 +55,7 @@ public class ModelList implements IModel{
     }
 
     @Override
-    public DBCPDataSourceFactory getDataSource() {
+    public Connection getCon() {
         return null;
     }
 }

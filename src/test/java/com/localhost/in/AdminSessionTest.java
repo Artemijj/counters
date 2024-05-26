@@ -2,21 +2,40 @@ package com.localhost.in;
 
 import com.localhost.model.*;
 import com.localhost.model.Record;
-import com.localhost.model.dbcp.DBCPDataSourceFactory;
+import com.localhost.model.model.IModel;
+import com.localhost.model.model.TestModelJdbc;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.*;
+import org.testcontainers.containers.ComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 import java.util.Date;
 
+@Testcontainers
 public class AdminSessionTest {
+    @Container
+    public static ComposeContainer dockerComposeContainer = new ComposeContainer(new File("./src/test/resources/docker-compose.yml"))
+//            .withExposedService("db", 5433)
+            .withLocalCompose(true)
+            .withStartupTimeout(Duration.ofSeconds(30));
+    private IModel model = new TestModelJdbc();
+    private Connection connection = model.getCon();
     private IAdminSession adminSession;
-    private IUserSession userSession = new UserSession();
+    private IUserSession userSession = new TestUserSession();
 
     @BeforeEach
     public void setUp() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         adminSession = new AdminSession(userSession);
     }
 
@@ -261,23 +280,22 @@ public class AdminSessionTest {
         Assertions.assertEquals(expectedAFio, actualFio);
     }
 
-//    @AfterEach
-//    public void clearDB() {
-//        String events = "DELETE FROM counter.events";
-//        String records = "DELETE FROM counter.records";
-//        String systemCounters = "DELETE FROM counter.system_counters";
-//        String userCounters = "DELETE FROM counter.user_counters";
-//        String users = "DELETE FROM counter.users";
-//        try (Connection connection = DBCPDataSourceFactory.getConnection()) {
-//            Statement stmt = connection.createStatement();
-//            stmt.executeUpdate(events);
-//            stmt.executeUpdate(records);
-//            stmt.executeUpdate(systemCounters);
-//            stmt.executeUpdate(userCounters);
-//            stmt.executeUpdate(users);
-//        } catch (SQLException e) {
-//            System.err.println("SQL error code - " + e.getErrorCode());
-//            System.err.println(e.getMessage());
-//        }
-//    }
+    @AfterEach
+    public void clearDB() {
+        String events = "DELETE FROM counter.events";
+        String records = "DELETE FROM counter.records";
+        String systemCounters = "DELETE FROM counter.system_counters";
+        String userCounters = "DELETE FROM counter.user_counters";
+        String users = "DELETE FROM counter.users";
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(events);
+            stmt.executeUpdate(records);
+            stmt.executeUpdate(systemCounters);
+            stmt.executeUpdate(userCounters);
+            stmt.executeUpdate(users);
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+        }
+    }
 }
