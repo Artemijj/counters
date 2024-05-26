@@ -7,6 +7,7 @@ import com.localhost.view.actions.IAction;
 import com.localhost.view.actions.adminActions.AdminPageAction;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ViewUserCountersAction implements IAction {
     @Override
@@ -17,8 +18,10 @@ public class ViewUserCountersAction implements IAction {
         login = inputOutput.get();
         if (!login.equals("p")) {
             try {
-                Arrays.stream(session.getAdminSession().getUserCounters(login))
-                        .forEach(counterType -> inputOutput.put(counterType));
+//                Arrays.stream(session.getAdminSession().getUserCounters(login))
+//                        .forEach(counterType -> inputOutput.put(counterType));
+                List<String> counters = session.getAdminSession().getUserCounters(login);
+                counters.forEach(counterType -> inputOutput.put(counterType));
             } catch (AdminException e) {
                 return new AdminPageAction();
             }

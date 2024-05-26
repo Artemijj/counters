@@ -73,14 +73,60 @@ public class RecordSetJdbc implements IRecordSet{
         String sql = "DELETE FROM counter.records WHERE id=?";
         try (PreparedStatement stmt = connection.prepareStatement(sql);) {
 //            PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.executeUpdate();
             stmt.setInt(1, id);
+            stmt.executeUpdate();
 //            connection.close();
         } catch (SQLException e) {
             System.err.println("SQL error code - " + e.getErrorCode());
             System.err.println(e.getMessage());
 //            throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public ArrayList<Record> getRecordSetListByUserAndType(String login, String type) {
+        ArrayList<Record> records = new ArrayList<>();
+        String sql = "SELECT * FROM counter.records WHERE login=? AND counter_type=?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, login);
+            stmt.setString(2, type);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+//                Record record = new Record(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getTimestamp("date").getTime()), resultSet.getInt("value")));
+                Record record = new Record(resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getDate("date").getTime()), resultSet.getInt("value")));
+                records.add(record);
+            }
+//            connection.close();
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+//            throw new RuntimeException(e);
+        }
+        return records;
+    }
+
+    @Override
+    public ArrayList<Record> getRecordSetListByUserTypeDate(String login, String type, int month, int year) {
+        ArrayList<Record> records = new ArrayList<>();
+        String sql = "SELECT * FROM counter.records WHERE login=? AND counter_type=? AND EXTRACT(MONTH FROM date) = ? AND EXTRACT(YEAR FROM date) = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, login);
+            stmt.setString(2, type);
+            stmt.setInt(3, month);
+            stmt.setInt(4, year);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+//                Record record = new Record(resultSet.getInt("id"), resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getTimestamp("date").getTime()), resultSet.getInt("value")));
+                Record record = new Record(resultSet.getString("login"), resultSet.getString("counter_type"), new CounterValue(new Date(resultSet.getDate("date").getTime()), resultSet.getInt("value")));
+                records.add(record);
+            }
+//            connection.close();
+        } catch (SQLException e) {
+            System.err.println("SQL error code - " + e.getErrorCode());
+            System.err.println(e.getMessage());
+//            throw new RuntimeException(e);
+        }
+        return records;
     }
 
 //    @Override

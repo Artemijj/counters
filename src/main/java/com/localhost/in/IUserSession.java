@@ -7,6 +7,8 @@ import com.localhost.model.records.IRecordSet;
 import com.localhost.model.userCounters.IUserCounters;
 import com.localhost.model.users.IUsers;
 
+import java.util.List;
+
 public interface IUserSession {
 //    boolean createUser(String login, String password, String phoneNumber, String address);
     boolean logIn(String user, String password);
@@ -19,11 +21,11 @@ public interface IUserSession {
         return getAdminSession().getUserData(getLogin());
     }
 
-    default String[] userCounters() throws AdminException {
+    default List<String> userCounters() throws AdminException {
         return getAdminSession().getUserCounters(getLogin());
     }
 
-    default CounterValue[] getCounterValues(String counter) throws AdminException {
+    default List<CounterValue> getCounterValues(String counter) throws AdminException {
         return getAdminSession().getCounterValues(getLogin(), counter);
     }
 

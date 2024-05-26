@@ -7,23 +7,24 @@ import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
 
 import java.util.Date;
+import java.util.List;
 
 public class ChoiceSendCounterAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
-        String[] types;
+        List<String> types;
         try {
             types = session.userCounters();
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
 
-        int arrLength = types.length;
+        int arrLength = types.size();
 
         inputOutput.put("Выберите тип счётчика, для передачи показаний.");
 
         for (int i = 0; i <= arrLength - 1; i++) {
-            inputOutput.put(i + " - " + types[i]);
+            inputOutput.put(i + " - " + types.get(i));
         }
         inputOutput.put("p - Выход на предыдущий экран.");
 
@@ -42,12 +43,12 @@ public class ChoiceSendCounterAction implements IAction {
 
         inputOutput.put("Введите показание счётчика (целое число).");
         int value = Tools.parse(inputOutput.get());
-        int id = Tools.nextId(session.getModelRecordSet().getRecordSetList());
-        String counterType = types[selectedNumber];
+//        int id = Tools.nextId(session.getModelRecordSet().getRecordSetList());
+        String counterType = types.get(selectedNumber);
         CounterValue counterValue = new CounterValue(new Date(), value);
         boolean result = session.getModelRecordSet().addRecord(new Record(session.getLogin(), counterType, counterValue));
         if (result) {
-            session.addEvent("Передал показания счётчика " + types[selectedNumber] + " - " + value);
+            session.addEvent("Передал показания счётчика " + types.get(selectedNumber) + " - " + value);
         } else {
             inputOutput.put("Показания можно передавать один раз в месяц.");
         }

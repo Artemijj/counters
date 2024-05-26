@@ -2,7 +2,11 @@ package com.localhost.in;
 
 import com.localhost.model.*;
 
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toCollection;
 
 public class AdminSession implements IAdminSession {
 
@@ -37,8 +41,8 @@ public class AdminSession implements IAdminSession {
     }
 
     @Override
-    public User[] getAllUsers() throws AdminException {
-        return userSession.getModelUsers().getUserList().toArray(new User[0]);
+    public ArrayList<User> getAllUsers() throws AdminException {
+        return userSession.getModelUsers().getUserList();
     }
 
     @Override
@@ -89,18 +93,19 @@ public class AdminSession implements IAdminSession {
     }
 
     @Override
-    public String[] getAllSystemCounters() {
-        return userSession.getModelSystemCounters().getCounterList().toArray(new String[0]);
+    public ArrayList<String> getAllSystemCounters() {
+        return userSession.getModelSystemCounters().getCounterList();
     }
 
     @Override
-    public String[] getUserCounters(String login) throws AdminException {
+    public ArrayList<String> getUserCounters(String login) throws AdminException {
         return userSession.getModelUserCounters().getUserCountersListByUser(login)
                 .stream()
                 .map(userCounter -> userCounter.getCounterName())
-//                .map(name -> new CounterType(name))
-                .toArray(String[]::new);
-//                .toArray(new CounterType[0]);
+                .collect(toCollection(ArrayList::new));
+////                .map(name -> new CounterType(name))
+//                .toArray(String[]::new);
+////                .toArray(new CounterType[0]);
     }
 
     @Override
@@ -126,18 +131,20 @@ public class AdminSession implements IAdminSession {
     }
 
     @Override
-    public CounterValue[] getCounterValues(String login, String counter) throws AdminException {
+    public ArrayList<CounterValue> getCounterValues(String login, String counter) throws AdminException {
         return userSession.getModelRecordSet().getRecordSetList().stream()
 //                .filter(reading -> reading.getLogin().equals(userSession.getModelUsers().getUser(login)))
                 .filter(reading -> reading.getLogin().equals(userSession.getLogin()))
                 .filter(reading -> reading.getCounterType().equals(counter))
                 .map(reading -> reading.getCounterValue())
-                .toArray(CounterValue[]::new);
+                .collect(toCollection(ArrayList::new));
+//                .toArray(CounterValue[]::new);
     }
 
     @Override
-    public Event[] getUserActivities(String login) throws AdminException {
+    public ArrayList<Event> getUserActivities(String login) throws AdminException {
         return userSession.getModelEventLog().getEventLogList().stream()
-                .filter(event -> event.getLogin().equals(login)).toArray(Event[]::new);
+                .filter(event -> event.getLogin().equals(login)).collect(Collectors.toCollection(ArrayList::new));
+//                .toArray(Event[]::new);
     }
 }

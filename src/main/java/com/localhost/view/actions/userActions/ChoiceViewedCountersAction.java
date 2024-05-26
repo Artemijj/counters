@@ -6,21 +6,23 @@ import com.localhost.model.Record;
 import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
 
+import java.util.List;
+
 public class ChoiceViewedCountersAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
-        String[] types;
+        List<String> types;
         try {
             types = session.userCounters();
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
 
-        int arrLength = types.length;
+        int arrLength = types.size();
 
         inputOutput.put("Выберите тип счётчика, для просмотра показаний.");
         for (int i = 0; i <= arrLength - 1; i++) {
-            inputOutput.put(i + " - " + types[i]);
+            inputOutput.put(i + " - " + types.get(i));
         }
         inputOutput.put("p - Выход на предыдущий экран.");
 
@@ -37,13 +39,16 @@ public class ChoiceViewedCountersAction implements IAction {
             return new ChoiceViewedCountersAction();
         }
 
-        inputOutput.put("Показания счётчика " + types[selectedNumber] + ":");
-        session.getModelRecordSet().getRecordSetList().stream()
-                        .filter(record -> record.getLogin().equals(session.getModelUsers().getUser(session.getLogin())))
-                        .filter(record -> record.getCounterType().equals(types[selectedNumber]))
+        inputOutput.put("Показания счётчика " + types.get(selectedNumber) + ":");
+        String login = session.getLogin();
+        String type = types.get(selectedNumber);
+
+        session.getModelRecordSet().getRecordSetListByUserAndType(login, type).stream()
+//                        .filter(record -> record.getLogin().equals(session.getModelUsers().getUser(session.getLogin())))
+//                        .filter(record -> record.getCounterType().equals(types.get(selectedNumber)))
                         .map(Record::getCounterValue)
                         .forEach(counterValue -> inputOutput.put(counterValue.getDate() + " | " + counterValue.getValue()));
-        session.addEvent("Просмотрел показания счётчика " + types[selectedNumber]);
+        session.addEvent("Просмотрел показания счётчика " + types.get(selectedNumber));
 
         return this;
     }

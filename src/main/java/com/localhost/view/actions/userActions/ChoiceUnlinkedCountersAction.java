@@ -8,6 +8,7 @@ import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChoiceUnlinkedCountersAction implements IAction {
     @Override
@@ -19,17 +20,17 @@ public class ChoiceUnlinkedCountersAction implements IAction {
 ////        for (int i = 0; i <= size - 1; i++) {
 ////            inputOutput.put(i + " - " + counters.get(i).getCounterTypeName());
 ////        }
-        String[] types;
+        List<String> types;
         try {
             types = session.userCounters();
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
 
-        int arrLength = types.length;
+        int arrLength = types.size();
 
         for (int i = 0; i <= arrLength - 1; i++) {
-            inputOutput.put(i + " - " + types[i]);
+            inputOutput.put(i + " - " + types.get(i));
         }
         inputOutput.put("p - Выход на предыдущий экран.");
 
@@ -55,12 +56,12 @@ public class ChoiceUnlinkedCountersAction implements IAction {
 
 //        session.getModelUsers().getUser(session.getLogin()).deleteCounter(counters.get(selectedNumber));
         try {
-            session.deleteCounter(types[selectedNumber]);
+            session.deleteCounter(types.get(selectedNumber));
         } catch (AddCounterException e) {
             throw new RuntimeException(e);
         }
         inputOutput.put("Счётчик удалён.");
-        session.addEvent("Удалил из личного кабинета  счётчик - " + types[selectedNumber]);
+        session.addEvent("Удалил из личного кабинета  счётчик - " + types.get(selectedNumber));
 
         return this;
     }

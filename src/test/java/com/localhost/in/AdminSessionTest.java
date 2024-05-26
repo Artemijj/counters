@@ -15,7 +15,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Testcontainers
 public class AdminSessionTest {
@@ -77,7 +79,7 @@ public class AdminSessionTest {
 
     @Test
     public void getAllUsersTest() {
-        User[] users;
+        List<User> users;
         try {
             adminSession.addUser("user1", "passwd1");
             adminSession.addUser("user2", "passwd2");
@@ -86,7 +88,7 @@ public class AdminSessionTest {
             throw new RuntimeException(e);
         }
         int expectedNumber = 2;
-        int actualNumber = users.length;
+        int actualNumber = users.size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
@@ -153,9 +155,9 @@ public class AdminSessionTest {
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         userSession.getModelSystemCounters().addCounter(three);
-        String[] systemCounters = adminSession.getAllSystemCounters();
+        List<String> systemCounters = adminSession.getAllSystemCounters();
         int expectedNumber = 3;
-        int actualNumber = systemCounters.length;
+        int actualNumber = systemCounters.size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
@@ -167,7 +169,7 @@ public class AdminSessionTest {
         userSession.getModelSystemCounters().addCounter(one);
         userSession.getModelSystemCounters().addCounter(two);
         userSession.getModelSystemCounters().addCounter(three);
-        String[] userCounters;
+        List<String> userCounters;
         try {
             adminSession.addUser("newUser", "passwd");
             adminSession.linkCounter("newUser", one);
@@ -178,7 +180,7 @@ public class AdminSessionTest {
             throw new RuntimeException(e);
         }
         int expectedNumber = 3;
-        int actualNumber = userCounters.length;
+        int actualNumber = userCounters.size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
@@ -186,7 +188,7 @@ public class AdminSessionTest {
     public void linkCounterTest() {
         String one = "one";
         userSession.getModelSystemCounters().addCounter(one);
-        String[] userCounters;
+        List<String> userCounters;
         try {
             adminSession.addUser("newUser", "passwd");
             adminSession.linkCounter("newUser", one);
@@ -195,7 +197,7 @@ public class AdminSessionTest {
             throw new RuntimeException(e);
         }
         int expectedNumber = 1;
-        int actualNumber = userCounters.length;
+        int actualNumber = userCounters.size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
@@ -203,7 +205,7 @@ public class AdminSessionTest {
     public void unlinkCounterTest() {
         String one = "one";
         userSession.getModelSystemCounters().addCounter(one);
-        String[] userCounters;
+        List<String> userCounters;
         try {
             adminSession.addUser("newUser", "passwd");
             adminSession.linkCounter("newUser", one);
@@ -213,7 +215,7 @@ public class AdminSessionTest {
             throw new RuntimeException(e);
         }
         int expectedNumber = 0;
-        int actualNumber = userCounters.length;
+        int actualNumber = userCounters.size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
@@ -235,14 +237,14 @@ public class AdminSessionTest {
         CounterValue counterValue2 = new CounterValue(new Date(), 2);
         userSession.getModelRecordSet().addRecord(new Record("newUser", one, counterValue1));
         userSession.getModelRecordSet().addRecord(new Record("newUser", one, counterValue2));
-        CounterValue[] counterValues;
+        ArrayList<CounterValue> counterValues;
         try {
             counterValues = adminSession.getCounterValues("newUser", one);
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
         int expectedNumber = 2;
-        int actualNumber = counterValues.length;
+        int actualNumber = counterValues.size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
@@ -256,14 +258,14 @@ public class AdminSessionTest {
         userSession.getModelEventLog().addEvent(new Event("newUser", new Date(), "event1"));
         userSession.getModelEventLog().addEvent(new Event("newUser", new Date(), "event2"));
         userSession.getModelEventLog().addEvent(new Event("newUser", new Date(), "event3"));
-        Event[] events;
+        List<Event> events;
         try {
             events = adminSession.getUserActivities("newUser");
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
         int expectedNumber = 3;
-        int actualNumber = events.length;
+        int actualNumber = events.size();
         Assertions.assertEquals(expectedNumber, actualNumber);
     }
 

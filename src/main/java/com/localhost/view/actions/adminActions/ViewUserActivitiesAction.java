@@ -2,10 +2,12 @@ package com.localhost.view.actions.adminActions;
 
 import com.localhost.in.AdminException;
 import com.localhost.in.IUserSession;
+import com.localhost.model.Event;
 import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class ViewUserActivitiesAction implements IAction {
     @Override
@@ -17,8 +19,10 @@ public class ViewUserActivitiesAction implements IAction {
         login = inputOutput.get();
         if (!login.equals("p")) {
             try {
-                Arrays.stream(session.getAdminSession().getUserActivities(login))
-                        .forEach(event -> inputOutput.put(event.getId() + " " + event.getLogin() + " " + event.getDate() + " " + event.getActivity()));
+//                Arrays.stream(session.getAdminSession().getUserActivities(login))
+//                        .forEach(event -> inputOutput.put(event.getId() + " " + event.getLogin() + " " + event.getDate() + " " + event.getActivity()));
+                List<Event> events = session.getAdminSession().getUserActivities(login);
+                events.forEach(event -> inputOutput.put(event.getId() + " " + event.getLogin() + " " + event.getDate() + " " + event.getActivity()));
             } catch (AdminException e) {
                 return new AdminPageAction();
             }

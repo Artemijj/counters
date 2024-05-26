@@ -6,23 +6,18 @@ import com.localhost.model.*;
 import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
 
+import java.util.List;
+
 public class ChoiceLinkedCountersAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         inputOutput.put("Выберите тип счётчика, для добавления в свой кабинет.");
-//        ArrayList<CounterType> counters = session.getModelCounters().getCounterList();
-////        int size = counters.size();
-////        for (int i = 0; i <= size - 1; i++) {
-////            inputOutput.put(i + " - " + counters.get(i).getCounterTypeName());
-////        }
-        String[] counters = session.getAdminSession().getAllSystemCounters();
-        int length = counters.length;
+        List<String> counters = session.getAdminSession().getAllSystemCounters();
+        int length = counters.size();
         for (int i = 0; i < length; i++) {
-            inputOutput.put(i + " - " + counters[i]);
+            inputOutput.put(i + " - " + counters.get(i));
         }
 
-//        counters.stream()
-//                .forEach(counterType -> inputOutput.put(counters.indexOf(counterType) + " - " + counterType.getCounterTypeName()));
         inputOutput.put("p - Выход на предыдущий экран.");
 
         inputOutput.put("Введите номер добавляемого счётчика.");
@@ -40,14 +35,13 @@ public class ChoiceLinkedCountersAction implements IAction {
             return new ChoiceLinkedCountersAction();
         }
 
-//        session.getModelUsers().getUser(session.getLogin()).addCounter(counters[selectedNumber]);
         try {
-            session.addCounter(counters[selectedNumber]);
+            session.addCounter(counters.get(selectedNumber));
         } catch (AddCounterException e) {
             throw new RuntimeException(e);
         }
         inputOutput.put("Счётчик добавлен.");
-        session.addEvent("Добавил счётчик " + counters[selectedNumber]);
+        session.addEvent("Добавил счётчик " + counters.get(selectedNumber));
 
         return this;
     }

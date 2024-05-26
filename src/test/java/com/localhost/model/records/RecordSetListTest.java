@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.ZoneId;
 import java.util.Date;
 
 public class RecordSetListTest {
@@ -41,6 +42,24 @@ public class RecordSetListTest {
         recordSet.addRecord(record);
         boolean actual = recordSet.addRecord(record);
         Assertions.assertFalse(actual);
+    }
+
+    @Test
+    public void getRecordSetListByUserAndTypeTest() {
+        int expectedNumber = 1;
+        recordSet.addRecord(record);
+        int actualNumber = recordSet.getRecordSetListByUserAndType("newUser", "type").size();
+        Assertions.assertEquals(expectedNumber, actualNumber);
+    }
+
+    @Test
+    public void getRecordSetListByUserTypeDate() {
+        int expectedNumber = 1;
+        recordSet.addRecord(record);
+        int month = counterValue.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue();
+        int year = counterValue.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+        int actualNumber = recordSet.getRecordSetListByUserTypeDate("newUser", "type", month, year).size();
+        Assertions.assertEquals(expectedNumber, actualNumber);
     }
 //
 //    @Test

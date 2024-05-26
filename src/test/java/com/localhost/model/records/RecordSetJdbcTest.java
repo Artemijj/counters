@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Testcontainers
@@ -65,6 +66,26 @@ public class RecordSetJdbcTest {
         recordSet.addRecord(record);
         boolean actual = recordSet.addRecord(record);
         Assertions.assertFalse(actual);
+    }
+
+    @Test
+    public void getRecordSetListByUserAndTypeTest() {
+        recordSet.addRecord(record);
+        int expectedNumber = recordSet.getRecordSetList().size();
+        recordSet.addRecord(record);
+        int actualNumber = recordSet.getRecordSetListByUserAndType("newUser", "type").size();
+        Assertions.assertEquals(expectedNumber, actualNumber);
+    }
+
+    @Test
+    public void getRecordSetListByUserTypeDate() {
+        recordSet.addRecord(record);
+        int expectedNumber = recordSet.getRecordSetList().size();
+        recordSet.addRecord(record);
+        int month = counterValue.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue();
+        int year = counterValue.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear();
+        int actualNumber = recordSet.getRecordSetListByUserTypeDate("newUser", "type", month, year).size();
+        Assertions.assertEquals(expectedNumber, actualNumber);
     }
 
     @AfterEach

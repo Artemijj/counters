@@ -4,10 +4,11 @@ import com.localhost.model.Record;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 
-public class RecordSetList implements IRecordSet{
+import static java.util.stream.Collectors.toCollection;
+
+public class RecordSetList implements IRecordSet {
 
     private static ArrayList<Record> records;
 
@@ -40,6 +41,26 @@ public class RecordSetList implements IRecordSet{
     @Override
     public void deleteRecord(Record record) {
         records.remove(record);
+    }
+
+    @Override
+    public ArrayList<Record> getRecordSetListByUserAndType(String login, String type) {
+        ArrayList<Record> newRecords = records.stream()
+                .filter(record -> record.getLogin().equals(login))
+                .filter(record -> record.getCounterType().equals(type))
+                .collect(toCollection(ArrayList::new));
+        return newRecords;
+    }
+
+    @Override
+    public ArrayList<Record> getRecordSetListByUserTypeDate(String login, String type, int month, int year) {
+        ArrayList<Record> newRecords = records.stream()
+                .filter(record -> record.getLogin().equals(login))
+                .filter(record -> record.getCounterType().equals(type))
+                .filter(record -> record.getCounterValue().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getMonthValue() == month)
+                .filter(record -> record.getCounterValue().getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getYear() == year)
+                .collect(toCollection(ArrayList::new));
+        return newRecords;
     }
 
 //    @Override

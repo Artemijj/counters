@@ -216,7 +216,7 @@ public class UserSessionTest {
         int expectedNumber = 1;
         int actualNumber;
         try {
-            actualNumber = userSession.getAdminSession().getUserCounters("name").length;
+            actualNumber = userSession.getAdminSession().getUserCounters("name").size();
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
@@ -243,7 +243,7 @@ public class UserSessionTest {
         int expectedNumber = 0;
         int actualNumber;
         try {
-            actualNumber = userSession.getAdminSession().getUserCounters("name").length;
+            actualNumber = userSession.getAdminSession().getUserCounters("name").size();
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }

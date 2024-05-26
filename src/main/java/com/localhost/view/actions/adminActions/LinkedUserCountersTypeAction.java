@@ -6,14 +6,16 @@ import com.localhost.model.Tools;
 import com.localhost.view.IInputOutput;
 import com.localhost.view.actions.IAction;
 
+import java.util.List;
+
 public class LinkedUserCountersTypeAction implements IAction {
     @Override
     public IAction execute(IUserSession session, IInputOutput inputOutput) {
         inputOutput.put("Список существующих счётчиков:");
-        String[] counters = session.getAdminSession().getAllSystemCounters();
-        int arrLength = counters.length;
+        List<String> counters = session.getAdminSession().getAllSystemCounters();
+        int arrLength = counters.size();
         for (int i = 0; i < arrLength; i++) {
-            inputOutput.put(i + " - " + counters[i]);
+            inputOutput.put(i + " - " + counters.get(i));
         }
 
         inputOutput.put("Введите имя пользователя.");
@@ -28,8 +30,8 @@ public class LinkedUserCountersTypeAction implements IAction {
         }
 
         try {
-            session.getAdminSession().linkCounter(login, counters[selectedNumber]);
-            session.addEvent(session.getLogin() + " добавил счётчик " + counters[selectedNumber] + " пользователю " + login);
+            session.getAdminSession().linkCounter(login, counters.get(selectedNumber));
+            session.addEvent(session.getLogin() + " добавил счётчик " + counters.get(selectedNumber) + " пользователю " + login);
         } catch (AdminException e) {
             throw new RuntimeException(e);
         }
