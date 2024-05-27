@@ -20,7 +20,7 @@ public class ConsoleInputOutput implements IInputOutput{
     }
 
     @Override
-    public void put(String message) {
+    public <T> void put(T message) {
         System.out.println(message);
     }
 }

@@ -23,8 +23,8 @@ public class TestInputOutput implements IInputOutput{
     }
 
     @Override
-    public void put(String txt) {
-        message = txt;
+    public <T> void put(T txt) {
+        message = txt + "";
     }
 
     public String getMessage() {
